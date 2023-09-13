@@ -1,0 +1,6 @@
+
+input -> $name; 
+
+"Hello " , $name -> concat -> $msg;
+
+$msg -> print;
