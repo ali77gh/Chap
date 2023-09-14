@@ -16,5 +16,12 @@ pub fn parse(content: &str) -> Vec<ExecutableLine> {
 
 fn parse_line(line: &str, line_number: usize) -> ExecutableLine {
     
-    ExecutableLine::Noting
+    let line_number = line_number+1;
+
+    let mut line = line.trim();
+    line = line.split("//").nth(0).unwrap_or(line); //remove all comments
+    
+    if line.is_empty(){ return ExecutableLine::Noting; }
+
+    ExecutableLine::SyntaxError(format!("syntax error in line {}",line_number).to_string())
 }
