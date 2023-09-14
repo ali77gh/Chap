@@ -1,0 +1,21 @@
+
+
+
+"Chap is better then Rust" -> $variable
+
+$variable -> typeof -> $type;
+// text
+
+4 -> $variable
+$variable -> typeof -> $type;
+// integer
+
+
+3.14 -> $variable
+$variable -> typeof -> $type;
+// floating_point_number
+
+
+&itsATag
+&itsATag -> typeof -> $type;
+// tag

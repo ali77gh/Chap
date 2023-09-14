@@ -1,0 +1,10 @@
+
+// again will move back execution line to the specified tag
+
+10 -> $counter
+@myForLoop
+
+    $counter -> print
+    $counter, -1 -> add -> $counter
+    $counter, 0  -> neq -> bool
+bool, @myForLoop -> again

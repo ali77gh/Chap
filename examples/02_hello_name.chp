@@ -1,6 +1,16 @@
 
-input -> $name; 
+input -> $name
 
-"Hello " , $name -> concat -> $msg;
+"Hello " , $name -> concat -> $msg
 
-$msg -> print;
+$msg -> print
+
+
+// arows are mutch better then = operator
+// this:
+// x = x + 1
+// is a nightmare for non programmers but this:
+// $x, 1 -> add -> $x
+// acctully makes sense.
+// in english you read (and write) from left to right and chap acctully respect that.
+// "chap" or "چپ" is a persian word means "left" and rust or "راست" is a persian word means "right".

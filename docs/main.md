@@ -1,18 +1,24 @@
 
-# no keywords no oprators
+# no keywords one oprator
 
 
-## function call:
-```chp
-2 , 3 -> add -> sum; 
-```
-params: 2,3.
-function name: add.
-returned value: sum.
+decrease stress by calling dont_worry function and disabling all runtime errors.
 
-automatically add ";" to the source code
+not a case sensitive language
 
+not a camelCase or snakeCase sensetive language:
+to_string and to string and To String and toString and tostring and TOSTRING and... all are same things
 
-lets move all compile time errors to run time
+fixed floating point problem 0.1 + 0.2 == 0.3
 
-lets make all runtime errors to logical errors
+variable names can be anything even numbers
+6 -> $5
+
+tries to be faster than python
+
+data types:
+
+tags
+int
+float
+string

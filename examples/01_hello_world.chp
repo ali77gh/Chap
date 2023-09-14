@@ -1,2 +1,10 @@
 
-"Hello world" -> print;
+"Hello world" -> print
+
+// its a function call.
+// print is a built-in function.
+// prints job is show something on screen
+// you pass a value to this function and it will show that.
+// "Hello world" is an string value.
+// and -> is a operator that moves data from left to right.
+// the -> is the only operator in this language.

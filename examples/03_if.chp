@@ -1,0 +1,7 @@
+
+
+1,2 -> eq -> $myBool
+$myBool, @endif -> skip
+    "should not be print becuase 1 is not 2" -> print
+
+@endif
