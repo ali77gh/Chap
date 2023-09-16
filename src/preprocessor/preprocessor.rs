@@ -5,22 +5,23 @@ struct Preprocessor{
     current_line: u32
 }
 
+// Preprocessor converts users code to parsable code
 impl Preprocessor {
     
     fn new() ->Self{
         Preprocessor{current_line:0}
     }
 
-    fn on_new_line(&mut self, line: String) -> Vec<LineOfCode>{
+    fn on_new_line(&mut self, actual_line: String) -> Vec<LineOfCode>{
 
         self.current_line+=1;
-        let line = line.split("//").nth(0).unwrap_or(&line); //remove all comments
+        let line = actual_line.split("//").nth(0).unwrap_or(&actual_line); //remove all comments
 
 
         line.split(";").into_iter()
             .map(|line|{ line.trim() })
             .filter(|x|{ !x.is_empty()})
-            .map(|x|{ LineOfCode::new(self.current_line,x.to_string()) })
+            .map(|x|{ LineOfCode::new(self.current_line,x.to_string(), actual_line.clone()) })
             .collect()
         // TODO normilize function names
         // TODO expand one line to many on chaining
@@ -71,4 +72,30 @@ mod tests {
 
         assert_eq!(7, pp.current_line);
     }
+
+    #[test]
+    fn currect_line_numbers(){
+
+        let mut pp = Preprocessor::new();
+
+        assert_eq!(0 , pp.on_new_line("//comment1".to_string()).len() );
+        assert_eq!(0 , pp.on_new_line("//comment2".to_string()).len() );
+
+        let pped = pp.on_new_line("param -> func -> out".to_string());
+
+        assert_eq!(3, pped.get(0).unwrap().line_number)
+    }
+
+    #[test]
+    fn currect_actual_line(){
+
+        let mut pp = Preprocessor::new();
+
+        let pped = pp.on_new_line(";  command1 ;  ; command2 ;;//comment;".to_string());
+
+        assert_eq!(";  command1 ;  ; command2 ;;//comment;", pped.get(0).unwrap().written_code);
+        assert_eq!("command1", pped.get(0).unwrap().parsable_code);
+        assert_eq!("command2", pped.get(1).unwrap().parsable_code);
+    }
+
 }
