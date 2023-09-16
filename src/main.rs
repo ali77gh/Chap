@@ -1,37 +1,20 @@
 
+mod common; // language common defenitions
 
-mod parser;
-mod executable_line;
-mod runtime;
+//phases
+mod preprocessor;    // phase 1
+mod parser;          // phase 2
+mod static_analyzer; // phase 3
+mod optimizer;       // phase 4
+mod runtime;         // phase 5
 
-use parser::parse;
-use executable_line::ExecutableLine;
-use runtime::runtime::Runtime;
+// execution phase 5
+mod repl;
+mod file_executor; 
 
-use std::env;
-use std::fs;
 
 fn main() {
     
+    println!("cli tool not available yet");
 
-    let source = read_source_code();
-
-    let lines = parse(&source);
-
-    let mut runtime = Runtime::new();
-    
-    println!("{:?}", lines);
-
-    runtime.run_lines(lines);
-
-}
-
-fn read_source_code() -> String {
-    if let Some(file_name) = env::args().nth(1) {
-        let contents = fs::read_to_string(file_name)
-            .expect("err while reading source file");
-        contents
-    }else{
-        panic!("pass a source file\n chap myScript.chp")
-    }
 }

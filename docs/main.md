@@ -22,5 +22,5 @@ tags
 int
 float
 string
-array
-refrence
+list
+refrence(hidden)

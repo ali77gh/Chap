@@ -28,7 +28,3 @@ Read Evaluate Print Loop
 # 5-2. Runtime
 
 Runs iter of Operations
-
-# 5-3. Compiler
-
-Turns code to wasm module
