@@ -4,7 +4,7 @@
 1. Bind line numbers to lines of code
 2. Remove all comments
 3. Convert ";" to "/n"
-4. Expand one line to many if needed (for example on Chaining and).
+4. Expand one line to many if needed (for example on Chaining).
 5. Normalize function names (To String -> tostring and "جمع" -> add)
 
 # 2. Parser
