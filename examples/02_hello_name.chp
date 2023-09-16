@@ -1,9 +1,10 @@
 
+"enter your name: " -> print
 input -> $name
 
 "Hello " , $name -> concat -> $msg
 
-$msg -> print
+$msg
 
 
 // arows are mutch better then = operator

@@ -22,3 +22,5 @@ tags
 int
 float
 string
+array
+refrence

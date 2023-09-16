@@ -19,3 +19,8 @@ $variable -> typeof -> $type;
 &itsATag
 &itsATag -> typeof -> $type;
 // tag
+
+
+[1,2,3,4] -> $variable 
+$variable -> typeof -> $type;
+// list

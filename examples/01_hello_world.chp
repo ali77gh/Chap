@@ -1,5 +1,14 @@
+"hello world" -> $msg
+$msg
 
-"Hello world" -> print
+// or simpler
+
+"Hello world" -> println
+
+// or even simpler:
+
+"Hello world"
+
 
 // its a function call.
 // print is a built-in function.

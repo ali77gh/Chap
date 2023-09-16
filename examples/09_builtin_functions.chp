@@ -56,3 +56,56 @@ dumpcsv
 
 // ----------- MATH -------------
 // TODO
+
+// string maipulation
+// TODO
+
+// ----------- exit -------------
+// without err
+exit
+// with an err
+"your error message here" -> exit
+
+
+// ----------- parallel ---------
+
+//enabling
+enable_parallel
+// disableing
+disable_parrallel
+
+// ----------- Garbage collection
+
+gc_on
+
+gc_off
+
+// ---------- array -------------
+
+// initialize
+[1,2,3,4] -> $array
+
+1 -> append -> $my_array // this also will initialize array if not exist
+
+pop -> $poped_value
+
+
+// ---------- objects -----------
+
+{ name: "Ali", lname: "Ghahremani" } -> $my_object
+
+$my_object.name -> println
+
+
+// ---------- pass by value and refrence --------
+
+// this is not allowed:
+$a -> $b
+
+// you need to copy or refrence
+
+//copy
+$a -> copy -> $b // $b is now a copy of $a
+
+//refrence
+$a -> ref -> $b // $b is now a pointer to $a

@@ -4,7 +4,6 @@
 10 -> $counter
 @myForLoop
 
-    $counter -> print
-    $counter, -1 -> add -> $counter
-    $counter, 0  -> neq -> bool
-bool, @myForLoop -> again
+    $counter
+    $counter, 1 -> minus -> $counter
+$counter, 0, @myForLoop -> jump_neq
