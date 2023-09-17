@@ -1,16 +1,16 @@
 
 // jump function
 
-1, 2 -> neq -> $myBool
+1, 2 -> not_equal -> $myBool
 $myBool, @endif -> jump
-    "should not be printed becuase 2 is not 2"
+    "should not be printed because 2 is not 2"
 
 @endif
 
 
 // or jump_neq
 
-1, 2, @endif -> jump_neq
-    "should not be printed becuase 1 is not 2"
+1, 2, @endif -> jump_if_not_equal
+    "should not be printed because 1 is not 2"
 
 @endif
