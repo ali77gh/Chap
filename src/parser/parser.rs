@@ -8,7 +8,7 @@ impl Parser {
     }
 
     fn on_new_line(&self, new_line: LineOfCode) {
-        let mut it = new_line.parsable_code.split("->").into_iter();
+        let mut it = new_line.code.split("->").into_iter();
         
         match (it.next(), it.next(), it.next()) {
             (Some(chank1), None, None) => todo!(),

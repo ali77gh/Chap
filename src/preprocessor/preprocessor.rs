@@ -8,7 +8,7 @@ struct Preprocessor{
 // Preprocessor converts users code to parsable code
 impl Preprocessor {
     
-    fn new() ->Self{
+    fn new() -> Self{
         Preprocessor{current_line:0}
     }
 
@@ -21,7 +21,7 @@ impl Preprocessor {
         line.split(";").into_iter()
             .map(|line|{ line.trim() })
             .filter(|x|{ !x.is_empty()})
-            .map(|x|{ LineOfCode::new(self.current_line,x.to_string(), actual_line.clone()) })
+            .map(|x|{ LineOfCode::new(self.current_line,x.to_string()) })
             .collect()
         // TODO normilize function names
         // TODO expand one line to many on chaining
@@ -93,9 +93,8 @@ mod tests {
 
         let pped = pp.on_new_line(";  command1 ;  ; command2 ;;//comment;".to_string());
 
-        assert_eq!(";  command1 ;  ; command2 ;;//comment;", pped.get(0).unwrap().written_code);
-        assert_eq!("command1", pped.get(0).unwrap().parsable_code);
-        assert_eq!("command2", pped.get(1).unwrap().parsable_code);
+        assert_eq!("command1", pped.get(0).unwrap().code);
+        assert_eq!("command2", pped.get(1).unwrap().code);
     }
 
 }
