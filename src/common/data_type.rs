@@ -1,6 +1,6 @@
 
 
-
+#[derive(PartialEq, Debug)]
 pub enum DataType {
     String(String),
     Int(isize),

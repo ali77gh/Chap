@@ -1,4 +1,4 @@
-
+#[derive(PartialEq, Debug)]
 pub enum ErrorType {
     Syntax,
     StaticAnalyzer,
@@ -15,6 +15,7 @@ impl ErrorType {
     }
 }
 
+#[derive(PartialEq, Debug)]
 pub struct ChapError{
     line_number: u32,
     msg: Option<String>,
@@ -61,7 +62,7 @@ impl ChapError {
         result.push_str("\n");
         result.push_str(&format!("\t{} Error on line: {}", self.err_type.to_string(), self.line_number));
         // result.push_str(&format!("\tyour code: '{}' ",""));//TODO
-        if let Some(msg) = self.msg{
+        if let Some(msg) = &self.msg{
             result.push_str(&format!("\terror message: {} ",msg));
         }
         result.push_str("\n");
