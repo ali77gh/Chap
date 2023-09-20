@@ -2,15 +2,15 @@
 use crate::common::{chunk::Chunk, param::Param, data_type::DataType};
 use crate::common::errors::{Result, ChapError};
 
-pub fn chunk_detector(chunk_str: String) -> Result<Chunk>{
+pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
     
     let chunk_str = chunk_str.trim();
 
     let r= match chunk_str.chars().nth(0).unwrap_or(' ') {
-        '$' | '@' | '"' => Chunk::Params(params_parser(&chunk_str)?),
+        '$' | '@' | '"' => Chunk::Params(params_parser(&chunk_str, line_number)?),
         c => {
             if c.is_digit(10){
-                Chunk::Params(params_parser(&chunk_str)?)
+                Chunk::Params(params_parser(&chunk_str, line_number)?)
             }else{
                 Chunk::Function { name: chunk_str.to_string() }
             }
@@ -19,25 +19,25 @@ pub fn chunk_detector(chunk_str: String) -> Result<Chunk>{
     Ok(r)
 }
 
-fn params_parser(chunk_str: &str) -> Result<Vec<Param>>{
+fn params_parser(chunk_str: &str,line_number: u32) -> Result<Vec<Param>>{
     let params_str = chunk_str.split(",").map(|x|{x.trim()});
 
     let mut result:Vec<Param> = Vec::new();
     for param_str in params_str {
-        result.push(param_parser(&param_str)?)
+        result.push(param_parser(&param_str,line_number)?)
     }
 
     Ok(result)
 }
 
-fn param_parser(param: &str) -> Result<Param>{
+fn param_parser(param: &str, line_number: u32) -> Result<Param>{
         let parsed_param = match param.chars().nth(0).unwrap_or(' ') {
             '$' => Param::Variable((&param[1..]).to_string()),
             '@' => Param::Tag((&param[1..]).to_string()),
             '"' => {
                 let len = param.len();
                 if !(&param.ends_with("\"")){
-                    return Err(ChapError::syntax_with_msg(0, "string should ends with \"".to_string()));
+                    return Err(ChapError::syntax_with_msg(line_number, "string should ends with \"".to_string()));
                 } 
                 Param::Value( DataType::String((&param[1..len-1]).to_string()))
             },
@@ -46,13 +46,13 @@ fn param_parser(param: &str) -> Result<Param>{
                     if let Ok(float_value) = param.parse() {
                         Param::Value(DataType::Float(float_value))
                     } else {
-                        Err(ChapError::syntax_with_msg(0, "parsing float".to_string()))?
+                        Err(ChapError::syntax_with_msg(line_number, "parsing float".to_string()))?
                     }
                 } else {
                     if let Ok(float_value) = param.parse() {
                         Param::Value(DataType::Int(float_value))
                     } else {
-                        Err(ChapError::syntax_with_msg(0, "parsing int".to_string()))?
+                        Err(ChapError::syntax_with_msg(line_number, "parsing int".to_string()))?
                     }
                 }
             }
@@ -67,13 +67,13 @@ mod tests {
 
     #[test]
     fn param_parser_empty() {
-        let _ = param_parser("");
+        let _ = param_parser("",0);
     }
 
     #[test]
     fn param_parser_variable() {
         assert_eq!(
-            param_parser("$name"),
+            param_parser("$name",0),
             Ok(Param::Variable("name".to_string()))
         );
     }
@@ -81,7 +81,7 @@ mod tests {
     #[test]
     fn param_parser_tag() {
         assert_eq!(
-            param_parser("@name"),
+            param_parser("@name",0),
             Ok(Param::Tag("name".to_string()))
         );
     }
@@ -89,46 +89,46 @@ mod tests {
     #[test]
     fn param_parser_string() {
         assert_eq!(
-            param_parser("\"name\""),
+            param_parser("\"name\"",1),
             Ok(Param::Value(DataType::String("name".to_string())))
         );
 
         assert_eq!(
-            param_parser("\"name"),
-            Err(ChapError::syntax_with_msg(0, "string should ends with \"".to_string()))
+            param_parser("\"name",1),
+            Err(ChapError::syntax_with_msg(1, "string should ends with \"".to_string()))
         );
     }
 
     #[test]
     fn param_parser_integer() {
         assert_eq!(
-            param_parser("2"),
+            param_parser("2",1),
             Ok(Param::Value(DataType::Int(2)))
         );
 
         assert_eq!(
-            param_parser("2h"),
-            Err(ChapError::syntax_with_msg(0, "parsing int".to_string()))
+            param_parser("2h",1),
+            Err(ChapError::syntax_with_msg(1, "parsing int".to_string()))
         );
     }
 
     #[test]
     fn param_parser_float() {
         assert_eq!(
-            param_parser("3.14"),
+            param_parser("3.14",1),
             Ok(Param::Value(DataType::Float(3.14)))
         );
 
         assert_eq!(
-            param_parser(".3.14"),
-            Err(ChapError::syntax_with_msg(0, "parsing float".to_string()))
+            param_parser(".3.14",1),
+            Err(ChapError::syntax_with_msg(1, "parsing float".to_string()))
         );
     }
 
     #[test]
     fn params_test(){
         assert_eq!(
-            params_parser("  $n1,\"s1\"   ,2,3.14  "),
+            params_parser("  $n1,\"s1\"   ,2,3.14  ",0),
             Ok(vec![ 
                 Param::Variable("n1".to_string()),
                 Param::Value(DataType::String("s1".to_string())),
@@ -141,7 +141,7 @@ mod tests {
     #[test]
     fn chunck_detector_test(){
         assert_eq!(
-            chunk_detector("println".to_string()),
+            chunk_detector("println".to_string(),0),
             Ok(Chunk::Function { name: "println".to_string() })
         );
     }

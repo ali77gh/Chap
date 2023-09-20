@@ -1,4 +1,4 @@
-use crate::common::line_of_code::LineOfCode;
+use crate::common::{line_of_code::LineOfCode, executable::ExecutableLine};
 
 struct Parser {}
 
@@ -7,7 +7,7 @@ impl Parser {
         Parser {}
     }
 
-    fn on_new_line(&self, new_line: LineOfCode) {
+    fn on_new_line(&self, new_line: LineOfCode) -> ExecutableLine{
         let mut it = new_line.code.split("->").into_iter();
         
         match (it.next(), it.next(), it.next()) {

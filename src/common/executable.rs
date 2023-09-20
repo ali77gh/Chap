@@ -1,7 +1,22 @@
 
 use super::param::Param;
 
-pub enum ExecutableLine {
-    Tag,
-    FunctionCall{ function_name: String, params: Vec<Param>, output_var: Option<String>}
+#[derive(PartialEq, Debug)]
+pub struct ExecutableLine{
+    pub line_number: u32, // for error throw information
+    pub function_name: String,
+    pub params: Vec<Param>,
+    pub output_var: Option<String>
+}
+
+impl ExecutableLine {
+    
+    pub fn new(
+        line_number: u32,
+        function_name:String,
+        params:Vec<Param>,
+        output_var:Option<String>
+    ) -> Self{
+        Self { line_number, function_name, params, output_var }
+    }
 }
