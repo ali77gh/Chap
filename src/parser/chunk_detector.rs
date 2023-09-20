@@ -12,7 +12,7 @@ pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
             if c.is_digit(10){
                 Chunk::Params(params_parser(&chunk_str, line_number)?)
             }else{
-                Chunk::Function { name: chunk_str.to_string() }
+                Chunk::Function(chunk_str.to_string())
             }
         }
     };
@@ -142,7 +142,7 @@ mod tests {
     fn chunck_detector_test(){
         assert_eq!(
             chunk_detector("println".to_string(),0),
-            Ok(Chunk::Function { name: "println".to_string() })
+            Ok(Chunk::Function("println".to_string()))
         );
     }
 }

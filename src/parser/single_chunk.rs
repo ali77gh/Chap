@@ -18,7 +18,7 @@ fn single_chunk_parser(ch1: String, line_number: u32) -> Result<ExecutableLine>{
                 _ => ExecutableLine::new(line_number, "println".to_string(), params, None),
             }
         },
-        Chunk::Function { name } => 
+        Chunk::Function(name) => 
             ExecutableLine::new(line_number,name,vec![], None),
     };
     Ok(a)
