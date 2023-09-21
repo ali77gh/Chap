@@ -5,7 +5,7 @@ use super::chunk_detector::chunk_detector as cd;
 use super::get_single_var::get_single_var;
 use crate::common::errors::{Result, ChapError};
 
-fn triplet_chunk_parser(ch1: String, ch2: String, ch3: String, line_number: u32) -> Result<ExecutableLine>{
+pub fn triplet_chunk_parser(ch1: String, ch2: String, ch3: String, line_number: u32) -> Result<ExecutableLine>{
 
     let a: ExecutableLine = match (cd(ch1, line_number)?, cd(ch2, line_number)?, cd(ch3, line_number)?) {
         (Chunk::Params(left), Chunk::Function(fname), Chunk::Params(right)) => {

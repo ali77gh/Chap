@@ -5,7 +5,7 @@ use crate::common::param::Param;
 use super::chunk_detector::chunk_detector;
 use crate::common::errors::{Result, ChapError};
 
-fn single_chunk_parser(ch1: String, line_number: u32) -> Result<ExecutableLine>{
+pub fn single_chunk_parser(ch1: String, line_number: u32) -> Result<ExecutableLine>{
 
     let a: ExecutableLine = match chunk_detector(ch1, line_number)? {
         Chunk::Params(params) => {

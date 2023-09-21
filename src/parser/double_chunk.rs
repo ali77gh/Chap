@@ -6,7 +6,7 @@ use crate::common::errors::{Result, ChapError};
 use crate::parser::get_single_var::get_single_var;
 
 
-fn double_chunk_parser(ch1: String, ch2: String, line_number: u32) -> Result<ExecutableLine>{
+pub fn double_chunk_parser(ch1: String, ch2: String, line_number: u32) -> Result<ExecutableLine>{
 
     let a: ExecutableLine = match (cd(ch1, line_number)?, cd(ch2, line_number)?) {
         (Chunk::Params(left), Chunk::Params(right)) => {
