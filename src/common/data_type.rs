@@ -1,10 +1,9 @@
 
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub enum DataType {
     String(String),
     Int(isize),
-    Tag(String),
     Float(f64),
-    List(Vec<DataType>)
+    // List(Vec<DataType>)
 }

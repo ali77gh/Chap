@@ -1,7 +1,7 @@
 
 use super::param::Param;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct ExecutableLine{
     pub line_number: u32, // for error throw information
     pub function_name: String,
