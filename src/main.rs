@@ -19,6 +19,7 @@ use crate::common::{
     errors::Result
 };
 use crate::file_executor::file_executor;
+use crate::repl::start_rpel;
 use crate::arg_paresr::{arg_parser,InputType};
 
 fn main() -> Result<()> {
@@ -29,7 +30,7 @@ fn main() -> Result<()> {
         },
         InputType::Help => show_help(),
         InputType::Version => show_version(),
-        InputType::Repl => panic!("repl not supported yet"),
+        InputType::Repl => start_rpel(),
     }
 
     Ok(())

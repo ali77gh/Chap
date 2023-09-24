@@ -6,6 +6,7 @@ pub enum ErrorType {
     StaticAnalyzer,
     Runtime,
     NothingToExecute,
+    Stop,
 }
 
 impl ErrorType {
@@ -15,6 +16,7 @@ impl ErrorType {
             ErrorType::StaticAnalyzer => "static analyzer",
             ErrorType::Runtime => "runtime",
             ErrorType::NothingToExecute => "no more lines to execute",
+            ErrorType::Stop => "stop",
         }
     }
 }
@@ -52,6 +54,9 @@ impl ChapError {
     }
     pub fn no_more_line() -> Self{
         Self { line_number: 0, msg: None, err_type: ErrorType::NothingToExecute }
+    }
+    pub fn stop() -> Self{
+        Self { line_number: 0, msg: None, err_type: ErrorType::Stop }
     }
 
     pub fn exit_with_error(&self){

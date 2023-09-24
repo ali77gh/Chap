@@ -43,10 +43,12 @@ pub fn file_executor(file_name: &str) -> Result<()>{
 
     loop {
         if let Err(err) = runtime.execution_cycle(){
-            if err.err_type == ErrorType::NothingToExecute{
-                exit(0);
-            } 
-            err.exit_with_error();
+            match err.err_type {
+                ErrorType::NothingToExecute | ErrorType::Stop => exit(0),
+                _=> {
+                    err.exit_with_error();
+                }
+            }
         }
     }
 
