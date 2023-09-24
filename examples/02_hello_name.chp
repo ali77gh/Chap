@@ -1,5 +1,5 @@
 
-"enter your name: " -> print
+"enter your name: " -> println
 input -> $name
 
 "Hello " , $name -> concat -> $msg

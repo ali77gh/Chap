@@ -1,5 +1,5 @@
 "hello world" -> $msg
-$msg
+$msg -> println
 
 // or simpler
 
