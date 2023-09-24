@@ -36,8 +36,8 @@ impl Runtime{
         match self.executables.get((&self).current_line) {
             Some(l) => {
                 let l = l.clone();
-                execute(self, &l)?;
                 self.current_line+=1;
+                execute(self, &l)?;
             },
             None => {
                 return Err(ChapError::no_more_line());
