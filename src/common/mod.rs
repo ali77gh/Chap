@@ -5,3 +5,5 @@ pub mod param;
 pub mod data_type;
 pub mod executable;
 pub mod errors;
+pub mod help;
+pub mod version;

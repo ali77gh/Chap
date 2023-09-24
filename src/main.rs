@@ -11,45 +11,26 @@ mod runtime;         // phase 5
 // execution phase 5
 mod repl;
 mod file_executor; 
+mod arg_paresr;
 
-use std::env;
-use crate::common::errors::Result;
+use crate::common::{
+    help::show_help,
+    version::show_version,
+    errors::Result
+};
 use crate::file_executor::file_executor;
+use crate::arg_paresr::{arg_parser,InputType};
 
-fn main() ->Result<()> {
+fn main() -> Result<()> {
 
-    let args: Vec<String> = env::args().collect();
-    match args.len() {
-        1 => {
-            // TODO repl
+    match arg_parser() {
+        InputType::ExecuteFile(file_name) => {
+            file_executor(&file_name)?;
         },
-        2 => {
-            file_executor(args.get(1).unwrap())?;
-        },
-        _ => {
-            show_help();
-        }
+        InputType::Help => show_help(),
+        InputType::Version => show_version(),
+        InputType::Repl => panic!("repl not supported yet"),
     }
+
     Ok(())
 }
-
-pub fn show_help(){
-    println!("┌───────────────────────────────────────────────┐");
-    println!("│                Chap Language                  │");
-    println!("│                                               │");
-    println!("│ https://github.com/ali77gh/Chap               │");
-    println!("│                                               │");
-    println!("│ How to:                                       │");
-    println!("│     run script file:                          │");
-    println!("│         $ chap <file_name>                    │");
-    println!("│     run repl mode:                            │");
-    println!("│         $ chap                                │");
-    println!("│                                               │");
-    println!("│ Options:                                      │");
-    println!("│  -h, --help                                   │");
-    println!("│  -v, --version                                │");
-    println!("│  -u, --update                                 │");
-    println!("│                                               │");
-    println!("└───────────────────────────────────────────────┘");
-              
- }
