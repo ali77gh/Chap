@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use crate::common::{data_type::DataType, executable::ExecutableLine};
-use crate::common::errors::Result;
+use crate::common::errors::{Result, ChapError};
 
 use super::builtin_function::execute;
 
@@ -16,7 +16,7 @@ pub struct Runtime{
 
 impl Runtime{
     
-    fn new(std_out: fn(&str), std_in: fn() -> String) -> Self{
+    pub fn new(std_out: fn(&str), std_in: fn() -> String) -> Self{
         Self {
             executables: vec![],
             variables: HashMap::new(),
@@ -27,11 +27,11 @@ impl Runtime{
         }
     }
 
-    fn on_new_line(&mut self, line: ExecutableLine){
+    pub fn on_new_line(&mut self, line: ExecutableLine){
         self.executables.push(line);
     }
 
-    fn execution_cycle(&mut self) -> Result<()>{
+    pub fn execution_cycle(&mut self) -> Result<()>{
 
         match self.executables.get((&self).current_line) {
             Some(l) => {
@@ -40,7 +40,7 @@ impl Runtime{
                 self.current_line+=1;
             },
             None => {
-                //do nothing and wait for more executables
+                return Err(ChapError::no_more_line());
             },
         }
         Ok(())

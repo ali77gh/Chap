@@ -5,14 +5,14 @@ use super::single_chunk::single_chunk_parser;
 use super::double_chunk::double_chunk_parser;
 use super::triplet_chunk::triplet_chunk_parser;
 
-struct Parser {}
+pub struct Parser;
 
 impl Parser {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Parser {}
     }
 
-    fn on_new_line(&self, new_line: LineOfCode) -> Result<ExecutableLine>{
+    pub fn on_new_line(&self, new_line: LineOfCode) -> Result<ExecutableLine>{
         let mut it = new_line.code.split("->").into_iter();
         
         match (it.next(), it.next(), it.next()) {

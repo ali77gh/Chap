@@ -1,0 +1,53 @@
+
+use std::io;
+use std::fs::read_to_string;
+use std::process::exit;
+
+use crate::common::errors::{Result, ErrorType};
+use crate::preprocessor::preprocessor::Preprocessor;
+use crate::parser::parser::Parser;
+use crate::runtime::runtime::Runtime;
+
+pub fn file_executor(file_name: &str) -> Result<()>{
+
+    // initialize
+    let mut preprocessor = Preprocessor::new();
+
+    let parser = Parser::new();
+
+    let mut runtime = Runtime::new(|msg|{
+        println!("{}", msg);
+    },||{
+        let mut buffer = String::new();
+        let stdin = io::stdin(); // We get `Stdin` here.
+        stdin.read_line(&mut buffer).unwrap();
+        buffer
+    });
+
+
+    for line in read_to_string(file_name).unwrap().lines() {
+        let ls = preprocessor.on_new_line(line.to_string());
+        for line in ls{
+            let e = parser.on_new_line(line);
+            match e {
+                Ok(el) => {
+                    runtime.on_new_line(el);
+                },
+                Err(err) => {
+                    err.exit_with_error();
+                },
+            }
+            
+        }
+    }
+
+    loop {
+        if let Err(err) = runtime.execution_cycle(){
+            if err.err_type == ErrorType::NothingToExecute{
+                exit(0);
+            } 
+            err.exit_with_error();
+        }
+    }
+
+}

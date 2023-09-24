@@ -1,18 +1,18 @@
 use crate::common::line_of_code::LineOfCode;
 
 
-struct Preprocessor{
+pub struct Preprocessor{
     current_line: u32
 }
 
 // Preprocessor converts users code to parsable code
 impl Preprocessor {
     
-    fn new() -> Self{
+    pub fn new() -> Self{
         Preprocessor{current_line:0}
     }
 
-    fn on_new_line(&mut self, actual_line: String) -> Vec<LineOfCode>{
+    pub fn on_new_line(&mut self, actual_line: String) -> Vec<LineOfCode>{
 
         self.current_line+=1;
         let line = actual_line.split("//").nth(0).unwrap_or(&actual_line); //remove all comments

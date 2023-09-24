@@ -1,8 +1,7 @@
 use crate::{runtime::runtime::Runtime, common::executable::ExecutableLine};
-use crate::common::errors::Result;
+use crate::common::errors::{Result, ChapError};
 
 pub fn exit(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
 
-    // TODO
-    Ok(())
+    Err(ChapError::no_more_line())
 }

@@ -1,4 +1,4 @@
 
-mod runtime;
+pub mod runtime;
 
 mod builtin_function;

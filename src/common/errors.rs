@@ -1,8 +1,11 @@
+#![allow(dead_code)]
+
 #[derive(PartialEq, Debug)]
 pub enum ErrorType {
     Syntax,
     StaticAnalyzer,
     Runtime,
+    NothingToExecute,
 }
 
 impl ErrorType {
@@ -11,6 +14,7 @@ impl ErrorType {
             ErrorType::Syntax => "syntax",
             ErrorType::StaticAnalyzer => "static analyzer",
             ErrorType::Runtime => "runtime",
+            ErrorType::NothingToExecute => "no more lines to execute",
         }
     }
 }
@@ -19,7 +23,7 @@ impl ErrorType {
 pub struct ChapError{
     line_number: u32,
     msg: Option<String>,
-    err_type: ErrorType
+    pub err_type: ErrorType
 }
 
 pub type Result<T> = core::result::Result<T, ChapError>;
@@ -45,6 +49,9 @@ impl ChapError {
     }
     pub fn runtime(line_number: u32) -> Self {
         Self { line_number, msg: None, err_type: ErrorType::Runtime }
+    }
+    pub fn no_more_line() -> Self{
+        Self { line_number: 0, msg: None, err_type: ErrorType::NothingToExecute }
     }
 
     pub fn exit_with_error(&self){
