@@ -8,7 +8,7 @@ use super::builtin_function::execute;
 pub struct Runtime{
     pub executables: Vec<ExecutableLine>, 
     pub variables: HashMap<String,DataType>, // <variable name, variable value>
-    pub tags: HashMap<String, u32>, // <tag name, index in executables vector>
+    pub tags: HashMap<String, usize>, // <tag name, index in executables vector>
     pub current_line: usize,
     pub std_out: fn(&str),
     pub std_in: fn() -> String,
