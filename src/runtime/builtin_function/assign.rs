@@ -31,3 +31,48 @@ fn assign_validator(executable: &ExecutableLine) -> Result<()>{
     }
     Ok(())
 }
+
+
+#[cfg(test)]
+mod tests{
+    use crate::{
+        runtime::runtime::Runtime,
+        common::{param::Param, data_type::DataType}
+    };
+
+    use super::*;
+
+    #[test]
+    fn assign_value_and_variable(){
+        let mut runtime = Runtime::new(|_|{}, ||{ "".to_string() });
+
+        assign(
+            &mut runtime,
+            &ExecutableLine::new(
+                1,
+                "".to_string(),
+                vec![Param::Value(DataType::Int(2))],
+                Some("var".to_string())
+            )
+        ).unwrap();
+        assert_eq!(
+            runtime.variables.get("var").unwrap().clone(),
+            DataType::Int(2)
+        );
+
+        assign(
+            &mut runtime,
+            &ExecutableLine::new(
+                1,
+                "".to_string(),
+                vec![Param::Variable("var".to_string())],
+                Some("var2".to_string())
+            )
+        ).unwrap();
+
+        assert_eq!(
+            runtime.variables.get("var2").unwrap().clone(),
+            DataType::Int(2)
+        );
+    }
+}
