@@ -16,6 +16,7 @@ pub fn execute(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>
     // try to store closure in ExecutableLine
     match executable.function_name.as_str() {
         "jump" => control_flow::jump::jump(runtime, executable),
+        "jump_if" => control_flow::jump_if::jump_if(runtime, executable),
         "assign" => assign::assign(runtime, executable),
         "println" => println::println(runtime, executable),
         "new_tag" => control_flow::new_tag::new_tag(runtime, executable),
