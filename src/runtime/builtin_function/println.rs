@@ -26,6 +26,7 @@ pub fn println(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
                     DataType::String(m) => m.clone(),
                     DataType::Int(i) => i.to_string(),
                     DataType::Float(f) => f.to_string(),
+                    DataType::Bool(b) => b.to_string(),
                 },
                 None => return Err(
                     ChapError::runtime_with_msg(executable.line_number, format!("variable {} is undefind",var))
@@ -35,7 +36,8 @@ pub fn println(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
         Param::Value(val) => match val {
             DataType::String(m) => m.clone(),
             DataType::Int(i) => i.to_string(),
-            DataType::Float(f) => f.to_string(), 
+            DataType::Float(f) => f.to_string(),
+            DataType::Bool(b) => b.to_string(), 
         }, 
         
     };

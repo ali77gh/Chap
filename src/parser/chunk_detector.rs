@@ -6,6 +6,10 @@ pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
     
     let chunk_str = chunk_str.trim();
 
+    if chunk_str.starts_with("true") || chunk_str.starts_with("false"){
+        return Ok(Chunk::Params(params_parser(&chunk_str, line_number)?));
+    }
+
     let r= match chunk_str.chars().nth(0).unwrap_or(' ') {
         '$' | '@' | '"' => Chunk::Params(params_parser(&chunk_str, line_number)?),
         c => {
@@ -32,6 +36,10 @@ fn params_parser(chunk_str: &str,line_number: u32) -> Result<Vec<Param>>{
 }
 
 fn param_parser(param: &str, line_number: u32) -> Result<Param>{
+
+        if param == "true" { return Ok(Param::Value(DataType::Bool(true))); }
+        if param == "false" { return Ok(Param::Value(DataType::Bool(false))); }
+
         let parsed_param = match param.chars().nth(0).unwrap_or(' ') {
             '$' => Param::Variable((&param[1..]).to_string()),
             '@' => Param::Tag((&param[1..]).to_string()),
@@ -182,6 +190,19 @@ mod tests {
         assert_eq!(
             comma_spliter("\"ali,hasan\",majid"),
             vec!["\"ali,hasan\"","majid"]
+        );
+    }
+
+
+    #[test]
+    fn bool_parser(){
+        assert_eq!(
+            chunk_detector("true".to_string(), 1),
+            Ok(Chunk::Params(vec![Param::Value(DataType::Bool(true))]) )
+        );
+        assert_eq!(
+            chunk_detector("false".to_string(), 1),
+            Ok(Chunk::Params(vec![Param::Value(DataType::Bool(false))]) )
         );
     }
 }
