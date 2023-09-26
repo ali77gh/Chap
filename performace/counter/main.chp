@@ -1,0 +1,9 @@
+
+0 -> $counter
+10000000 -> $end
+@loop
+    $counter, 1 -> add -> $counter
+    $counter, $end -> not_equal -> $contnue
+@loop , $contnue -> jump_if
+
+$counter
