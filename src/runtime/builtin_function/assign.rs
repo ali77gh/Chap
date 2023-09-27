@@ -1,9 +1,9 @@
 use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError}};
 use crate::common::errors::Result;
 
-pub fn assign(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>{
+pub fn assign(runtime: &mut Runtime, executable: ExecutableLine) -> Result<()>{
 
-    assign_validator(executable)?;
+    assign_validator(&executable)?;
 
     let value = match executable.params.get(0).unwrap() {
         crate::common::param::Param::Tag(tag_name) => 
@@ -48,7 +48,7 @@ mod tests{
 
         assign(
             &mut runtime,
-            &ExecutableLine::new(
+            ExecutableLine::new(
                 1,
                 "".to_string(),
                 vec![Param::Value(DataType::Int(2))],
@@ -62,7 +62,7 @@ mod tests{
 
         assign(
             &mut runtime,
-            &ExecutableLine::new(
+            ExecutableLine::new(
                 1,
                 "".to_string(),
                 vec![Param::Variable("var".to_string())],

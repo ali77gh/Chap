@@ -3,7 +3,7 @@ use crate::{runtime::runtime::Runtime, common::executable::ExecutableLine};
 use crate::common::errors::{Result, ChapError};
 
 
-pub fn input(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
+pub fn input(runtime: &mut Runtime, executable: ExecutableLine)-> Result<()>{
 
     let inp = runtime.std_in();
 
@@ -31,7 +31,7 @@ mod tests{
 
         input(
             &mut runtime,
-            &ExecutableLine::new(
+            ExecutableLine::new(
                 1,
                 "".to_string(),
                 vec![],

@@ -3,7 +3,7 @@ use crate::common::param::Param;
 use crate::{runtime::runtime::Runtime, common::executable::ExecutableLine};
 use crate::common::errors::{Result, ChapError};
 
-pub fn equal(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
+pub fn equal(runtime: &mut Runtime, executable: ExecutableLine)-> Result<()>{
 
     let r = match (executable.params.get(0) , executable.params.get(1)){
         (Some(Param::Value(DataType::Int(x1))), Some(Param::Value(DataType::Int(x2)))) => {

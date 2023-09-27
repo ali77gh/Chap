@@ -1,4 +1,4 @@
 
 pub mod runtime;
 
-mod builtin_function;
+pub mod builtin_function;

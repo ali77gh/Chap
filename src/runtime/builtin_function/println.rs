@@ -7,7 +7,7 @@ use crate::common::{
     data_type::DataType,
 };
 
-pub fn println(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
+pub fn println(runtime: &mut Runtime, executable: ExecutableLine)-> Result<()>{
 
 
     if executable.params.len() != 1{
@@ -62,7 +62,7 @@ mod tests{
 
         println(
             &mut runtime,
-            &ExecutableLine::new(1,
+            ExecutableLine::new(1,
                 "".to_string(),
                 vec![Param::Value(DataType::String("test".to_string()))],
                 None
@@ -78,7 +78,7 @@ mod tests{
 
         println(
             &mut runtime,
-            &ExecutableLine::new(1,
+            ExecutableLine::new(1,
                 "".to_string(),
                 vec![Param::Value(DataType::Int(2))],
                 None

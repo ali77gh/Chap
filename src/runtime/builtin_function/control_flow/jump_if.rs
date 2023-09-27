@@ -5,7 +5,7 @@ use crate::common::data_type::DataType;
 use crate::runtime::builtin_function::control_flow::jump::jump;
 
 // this function can't jump to a tag that is not added to runtime.executables
-pub fn jump_if(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
+pub fn jump_if(runtime: &mut Runtime, executable: ExecutableLine)-> Result<()>{
 
     let dt = match executable.params.get(1){
         Some(v) => match v {

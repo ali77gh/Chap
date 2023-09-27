@@ -2,8 +2,6 @@ use std::collections::HashMap;
 use crate::common::{data_type::DataType, executable::ExecutableLine};
 use crate::common::errors::{Result, ChapError};
 
-use super::builtin_function::execute;
-
 
 pub struct Runtime{
     pub executables: Vec<ExecutableLine>, 
@@ -27,17 +25,20 @@ impl Runtime{
         }
     }
 
-    pub fn on_new_line(&mut self, line: ExecutableLine){
+    pub fn on_new_line(&mut self, mut line: ExecutableLine) -> Result<()>{
+        line.bind_closure()?;
         self.executables.push(line);
+        Ok(())
     }
 
     pub fn execution_cycle(&mut self) -> Result<()>{
 
         match self.executables.get((&self).current_line) {
             Some(l) => {
-                let l = l.clone();
-                self.current_line+=1;
-                execute(self, &l)?;
+                let l = l.clone();// TODO consider not clone here
+                self.current_line += 1;
+                (l.closure)(self,l)?;
+                // execute(self, &l)?;
             },
             None => {
                 return Err(ChapError::no_more_line());
@@ -95,20 +96,20 @@ mod tests{
             "the text".to_string()
         });
 
-        rt.on_new_line(ExecutableLine { 
-            line_number: 1,
-            function_name: "input".to_string(),
-            params: vec![],
-            output_var: Some("name".to_string()) 
-        });
+        rt.on_new_line(ExecutableLine::new( 
+            1,
+            "input".to_string(),
+            vec![],
+            Some("name".to_string()) 
+        ));
         rt.execution_cycle().unwrap();
 
-        rt.on_new_line(ExecutableLine { 
-            line_number: 2,
-            function_name: "println".to_string(),
-            params: vec![Param::Variable("name".to_string())],
-            output_var: None
-        });
+        rt.on_new_line(ExecutableLine::new(  
+            2,
+            "println".to_string(),
+            vec![Param::Variable("name".to_string())],
+            None
+        ));
         rt.execution_cycle().unwrap();
 
     }

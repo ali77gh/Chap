@@ -3,7 +3,7 @@ use crate::{runtime::runtime::Runtime, common::executable::ExecutableLine};
 use crate::common::errors::{Result, ChapError};
 use crate::common::param::Param;
 
-pub fn add(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
+pub fn add(runtime: &mut Runtime, executable: ExecutableLine)-> Result<()>{
 
     let sum = match (executable.params.get(0) , executable.params.get(1)){
         (Some(Param::Value(v1)), Some(Param::Value(v2))) => 

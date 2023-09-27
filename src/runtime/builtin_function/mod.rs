@@ -1,8 +1,6 @@
 
-use crate::common::{executable::ExecutableLine, errors::ChapError};
-use self::math::{add::add, equal::equal, not_equal::not_equal};
+use crate::common::{executable::{BuiltinFunction, ExecutableLine}, errors::ChapError};
 
-use super::runtime::Runtime;
 use crate::common::errors::Result;
 
 mod exit;
@@ -12,26 +10,29 @@ mod assign;
 
 mod control_flow;
 mod math;
+mod utils;
 
-pub fn execute(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>{
+pub fn closure_gen(executable:&ExecutableLine) -> Result<BuiltinFunction>{
 
-    // this is not good idea
-    // try to store closure in ExecutableLine
-    match executable.function_name.as_str() {
-        "jump" => control_flow::jump::jump(runtime, executable),
-        "jump_if" => control_flow::jump_if::jump_if(runtime, executable),
-        "assign" => assign::assign(runtime, executable),
-        "add" => add(runtime, executable),
-        "equal" => equal(runtime, executable),
-        "not_equal" => not_equal(runtime, executable),
+    //TODO normilize functions names
 
-        "println" => println::println(runtime, executable),
-        "new_tag" => control_flow::new_tag::new_tag(runtime, executable),
-        "input" => input::input(runtime, executable),
-        "exit" => exit::exit(runtime, executable),
-        _ => Err(ChapError::static_analyzer_with_msg(
+    Ok(match executable.function_name.as_str() {
+        "jump" => control_flow::jump::jump,
+        "jump_if" => control_flow::jump_if::jump_if,
+        "assign" => assign::assign,
+        "add" => math::add::add,
+        "equal" => math::equal::equal,
+        "not_equal" => math::not_equal::not_equal,
+
+        "println" => println::println,
+        "new_tag" => control_flow::new_tag::new_tag,
+        "input" => input::input,
+        "exit" => exit::exit,
+        _ => return Err(ChapError::static_analyzer_with_msg(
                 executable.line_number,
                 format!("there is no '{}' builtin function",executable.function_name)
             ))
-    }
+    })
 }
+
+
