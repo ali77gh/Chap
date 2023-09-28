@@ -31,7 +31,9 @@ pub fn file_executor(file_name: &str) -> Result<()>{
             let e = parser.on_new_line(line);
             match e {
                 Ok(el) => {
-                    runtime.on_new_line(el);
+                    if let Err(e)=runtime.on_new_line(el){
+                        e.exit_with_error();
+                    }
                 },
                 Err(err) => {
                     err.exit_with_error();

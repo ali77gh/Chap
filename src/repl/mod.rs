@@ -30,7 +30,9 @@ pub fn start_rpel(){
             match el {
                 Err(err) => err.show_warning(),
                 Ok(el) => {
-                    runtime.on_new_line(el);
+                    if let Err(e)=runtime.on_new_line(el){
+                        e.exit_with_error();
+                    }
                     'inner: loop {
                         if let Err(err) = runtime.execution_cycle(){
                             match err.err_type {

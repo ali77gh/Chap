@@ -37,7 +37,7 @@ impl Runtime{
             Some(l) => {
                 let l = l.clone();// TODO consider not clone here
                 self.current_line += 1;
-                (l.closure)(self,l)?;
+                (l.closure)(self, &l)?;
                 // execute(self, &l)?;
             },
             None => {
@@ -75,7 +75,7 @@ mod tests{
             "assign".to_string(),
             vec![Param::Value(DataType::Int(2))],
             Some("my_variable".to_string())
-        ));
+        )).unwrap();
         assert_eq!(rt.current_line, 0);
 
         rt.execution_cycle().unwrap();
@@ -101,7 +101,7 @@ mod tests{
             "input".to_string(),
             vec![],
             Some("name".to_string()) 
-        ));
+        )).unwrap();
         rt.execution_cycle().unwrap();
 
         rt.on_new_line(ExecutableLine::new(  
@@ -109,7 +109,7 @@ mod tests{
             "println".to_string(),
             vec![Param::Variable("name".to_string())],
             None
-        ));
+        )).unwrap();
         rt.execution_cycle().unwrap();
 
     }

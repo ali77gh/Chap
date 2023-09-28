@@ -4,7 +4,7 @@ use crate::runtime::builtin_function::closure_gen;
 use crate::common::errors::Result;
 use super::param::Param;
 
-pub type BuiltinFunction = fn(&mut Runtime, ExecutableLine) -> Result<()>;
+pub type BuiltinFunction = fn(&mut Runtime, &ExecutableLine) -> Result<()>;
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct ExecutableLine{

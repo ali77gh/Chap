@@ -2,7 +2,7 @@ use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, erro
 use crate::common::errors::Result;
 use crate::common::param::Param;
 
-pub fn new_tag(runtime: &mut Runtime, executable: ExecutableLine)-> Result<()>{
+pub fn new_tag(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
 
     if let Some(Param::Tag(tag)) = executable.params.get(0){
         runtime.tags.insert(tag.clone(), runtime.current_line);
@@ -25,7 +25,7 @@ mod tests{
 
         new_tag(
             &mut runtime,
-            ExecutableLine::new(
+            &ExecutableLine::new(
                 6,
                 "".to_string(),
                 vec![Param::Tag("new_tag".to_string())],

@@ -2,7 +2,7 @@ use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, erro
 use crate::common::errors::Result;
 
 // this function can't jump to a tag that is not added to runtime.executables
-pub fn jump(runtime: &mut Runtime, executable: ExecutableLine)-> Result<()>{
+pub fn jump(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
 
     if let Some(Param::Tag(tag)) = executable.params.get(0){
 
