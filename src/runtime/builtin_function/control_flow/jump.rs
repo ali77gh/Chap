@@ -32,7 +32,7 @@ pub fn jump(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
         }
 
     }else{
-        return Err(ChapError::runtime_with_msg(executable.line_number, "error while creating a tag".to_string()));
+        return Err(ChapError::runtime_with_msg(executable.line_number, "function jump needs a tag for first params".to_string()));
     }
     Ok(())
 }

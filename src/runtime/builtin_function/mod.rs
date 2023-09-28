@@ -19,11 +19,14 @@ pub fn closure_gen(executable:&ExecutableLine) -> Result<BuiltinFunction>{
     Ok(match executable.function_name.as_str() {
         "jump" => control_flow::jump::jump,
         "jump_if" => control_flow::jump_if::jump_if,
+        "jump_if_equal" => control_flow::jump_if_equal::jump_if_equal,
+        "jump_if_not_equal" => control_flow::jump_if_not_equal::jump_if_equal,
         "assign" => assign::assign,
         "add" => math::add::add,
+        "increase" => math::increase::increase,
+        "decrease" => math::decrease::decrease,
         "equal" => math::equal::equal,
         "not_equal" => math::not_equal::not_equal,
-
         "println" => println::println,
         "new_tag" => control_flow::new_tag::new_tag,
         "input" => input::input,

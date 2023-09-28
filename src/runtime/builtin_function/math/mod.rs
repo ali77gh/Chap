@@ -11,8 +11,8 @@ pub mod add;
 // pub mod power;
 // pub mod sqrt;
 // pub mod random;
-// pub mod increase;
-// pub mod decrease;
+pub mod increase;
+pub mod decrease;
 
 
 // returns bool
