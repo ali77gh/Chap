@@ -9,7 +9,7 @@ pub fn input(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
 
     let o_var = match &executable.output_var {
         Some(v) => v.clone(),
-        None => return Err(ChapError::runtime_with_msg(executable.line_number, "".to_string())),
+        None => return Err(ChapError::runtime_with_msg(executable.line_number, "input function needs output variable".to_string())),
     };
 
     runtime.variables.insert(o_var, DataType::String(inp));

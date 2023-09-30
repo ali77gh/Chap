@@ -13,7 +13,7 @@ pub fn assign(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>{
         Ok(())
     }else{
         Err(
-            ChapError::runtime_with_msg(executable.line_number, "equal function needs output variable".to_string())
+            ChapError::runtime_with_msg(executable.line_number, "assign function needs output variable".to_string())
         )
     }
 }
@@ -21,7 +21,7 @@ pub fn assign(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>{
 fn assign_validator(executable: &ExecutableLine) -> Result<()>{
 
     if executable.params.len() != 1{
-        return Err(ChapError::static_analyzer_with_msg(executable.line_number, "".to_string()));
+        return Err(ChapError::static_analyzer_with_msg(executable.line_number, "assign function needs one input param".to_string()));
     }
     Ok(())
 }

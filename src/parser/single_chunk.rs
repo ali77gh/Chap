@@ -10,9 +10,6 @@ pub fn single_chunk_parser(ch1: String, line_number: u32) -> Result<ExecutableLi
     let a: ExecutableLine = match chunk_detector(ch1, line_number)? {
         Chunk::Params(params) => {
 
-            if params.len() != 1{
-                return Err(ChapError::syntax_with_msg(line_number, "multiple params alone in a line means nothing".to_string()));
-            }
             match params.get(0).unwrap(){
                 Param::Tag(_) => ExecutableLine::new(line_number,"new_tag".to_string(), params, None),
                 _ => ExecutableLine::new(line_number, "println".to_string(), params, None),

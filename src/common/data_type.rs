@@ -9,6 +9,17 @@ pub enum DataType {
     // List(Vec<DataType>)
 }
 
+impl ToString for DataType {
+    fn to_string(&self) -> String {
+        match self {
+            Self::String(m) => m.clone(),
+            Self::Int(i) => i.to_string(),
+            Self::Float(f) => f.to_string(),
+            Self::Bool(b) => b.to_string(),
+        }
+    }
+}
+
 
 #[cfg(test)]
 mod tests{
