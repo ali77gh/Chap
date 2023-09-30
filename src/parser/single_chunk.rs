@@ -23,9 +23,7 @@ pub fn single_chunk_parser(ch1: String, line_number: u32) -> Result<ExecutableLi
 
 #[cfg(test)]
 mod tests{
-    use crate::common::{
-        data_type::DataType
-    };
+    use crate::common::data_type::DataType;
 
     use super::*;
 

@@ -11,7 +11,7 @@ pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
     }
 
     let r= match chunk_str.chars().next().unwrap_or(' ') {
-        '$' | '@' | '"' => Chunk::Params(params_parser(chunk_str, line_number)?),
+        '$' | '@' | '"' | '-' | '+' => Chunk::Params(params_parser(chunk_str, line_number)?),
         c => {
             if c.is_ascii_digit(){
                 Chunk::Params(params_parser(chunk_str, line_number)?)
@@ -149,6 +149,18 @@ mod tests {
         assert_eq!(
             param_parser(".3.14",1),
             Err(ChapError::syntax_with_msg(1, "parsing float".to_string()))
+        );
+    }
+
+    #[test]
+    fn chunk_parser_negetive_number() {
+        assert_eq!(
+            chunk_detector("-3.14".to_string(),1),
+            Ok(Chunk::Params(vec![Param::Value(DataType::Float(-3.14))]))
+        );
+        assert_eq!(
+            chunk_detector("-3".to_string(),1),
+            Ok(Chunk::Params(vec![Param::Value(DataType::Int(-3))]))
         );
     }
 
