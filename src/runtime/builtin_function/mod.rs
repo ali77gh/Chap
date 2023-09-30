@@ -20,7 +20,7 @@ pub fn closure_gen(executable:&ExecutableLine) -> Result<BuiltinFunction>{
         "jump" => control_flow::jump::jump,
         "jump_if" => control_flow::jump_if::jump_if,
         "jump_if_equal" => control_flow::jump_if_equal::jump_if_equal,
-        "jump_if_not_equal" => control_flow::jump_if_not_equal::jump_if_equal,
+        "jump_if_not_equal" => control_flow::jump_if_not_equal::jump_if_not_equal,
         "assign" => assign::assign,
         "add" => math::add::add,
         "increase" => math::increase::increase,

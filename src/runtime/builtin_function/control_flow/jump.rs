@@ -36,6 +36,3 @@ pub fn jump(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
     }
     Ok(())
 }
-
-
-// TODO tests

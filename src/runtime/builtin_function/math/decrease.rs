@@ -12,13 +12,13 @@ pub fn decrease(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>
                     runtime.variables.insert(name.to_string(), DataType::Int(x-1));
                 },
                 _ => {
-                    return Err(ChapError::runtime_with_msg(executable.line_number, format!("")));
+                    return Err(ChapError::runtime_with_msg(executable.line_number, format!("decrease function needs one integer variable as input param")));
                 }
             },
             None => return Err(ChapError::runtime_with_msg(executable.line_number, format!("variable {} is not defind",name))),
         }
     }else {
-        return Err(ChapError::runtime_with_msg(executable.line_number, "increase function need one variable".to_string()));
+        return Err(ChapError::runtime_with_msg(executable.line_number, "decrease function need one variable".to_string()));
     }
     Ok(())
 }
