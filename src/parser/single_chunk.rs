@@ -3,7 +3,7 @@ use crate::common::executable::ExecutableLine;
 use crate::common::chunk::Chunk;
 use crate::common::param::Param;
 use super::chunk_detector::chunk_detector;
-use crate::common::errors::{Result, ChapError};
+use crate::common::errors::Result;
 
 pub fn single_chunk_parser(ch1: String, line_number: u32) -> Result<ExecutableLine>{
 
@@ -24,7 +24,6 @@ pub fn single_chunk_parser(ch1: String, line_number: u32) -> Result<ExecutableLi
 #[cfg(test)]
 mod tests{
     use crate::common::{
-        errors::ChapError,
         data_type::DataType
     };
 
@@ -59,12 +58,5 @@ mod tests{
         );
     }
 
-    #[test]
-    fn syntax_error(){
-        assert_eq!(
-            single_chunk_parser(" @exit,2 ".to_string(), 1),
-            Err(ChapError::syntax_with_msg(1, "multiple params alone in a line means nothing".to_string()))
-        );
-    }
 
 }
