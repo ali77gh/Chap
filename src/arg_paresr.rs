@@ -7,8 +7,8 @@ pub fn arg_parser() -> InputType{
     match args.get(1) {
         None => InputType::Repl,
         Some(param) => match param.as_str() {
-            "--help"=> InputType::Help,
-            "--version"=> InputType::Version,
+            "--help" | "-h" => InputType::Help,
+            "--version" | "-v"=> InputType::Version,
             file_name => {
                 InputType::ExecuteFile(file_name.to_string())
             }   
