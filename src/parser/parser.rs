@@ -13,7 +13,7 @@ impl Parser {
     }
 
     pub fn on_new_line(&self, new_line: LineOfCode) -> Result<ExecutableLine>{
-        let mut it = new_line.code.split("->").into_iter();
+        let mut it = new_line.code.split("->");
         
         match (it.next(), it.next(), it.next()) {
             (Some(chunk1), None, None) => 

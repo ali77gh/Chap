@@ -10,15 +10,15 @@ pub fn decrease(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>
             Some(x) => match x {
                 DataType::Int(x) => {
                     runtime.variables.insert(name.to_string(), DataType::Int(x-1));
+                    Ok(())
                 },
                 _ => {
-                    return Err(ChapError::runtime_with_msg(executable.line_number, format!("decrease function needs one integer variable as input param")));
+                    Err(ChapError::runtime_with_msg(executable.line_number, "decrease function needs one integer variable as input param".to_string()))
                 }
             },
-            None => return Err(ChapError::runtime_with_msg(executable.line_number, format!("variable {} is not defind",name))),
+            None => Err(ChapError::runtime_with_msg(executable.line_number, format!("variable {} is not defind",name))),
         }
     }else {
-        return Err(ChapError::runtime_with_msg(executable.line_number, "decrease function need one variable".to_string()));
+        Err(ChapError::runtime_with_msg(executable.line_number, "decrease function need one variable".to_string()))
     }
-    Ok(())
 }

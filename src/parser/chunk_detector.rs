@@ -7,14 +7,14 @@ pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
     let chunk_str = chunk_str.trim();
 
     if chunk_str.starts_with("true") || chunk_str.starts_with("false"){
-        return Ok(Chunk::Params(params_parser(&chunk_str, line_number)?));
+        return Ok(Chunk::Params(params_parser(chunk_str, line_number)?));
     }
 
-    let r= match chunk_str.chars().nth(0).unwrap_or(' ') {
-        '$' | '@' | '"' => Chunk::Params(params_parser(&chunk_str, line_number)?),
+    let r= match chunk_str.chars().next().unwrap_or(' ') {
+        '$' | '@' | '"' => Chunk::Params(params_parser(chunk_str, line_number)?),
         c => {
-            if c.is_digit(10){
-                Chunk::Params(params_parser(&chunk_str, line_number)?)
+            if c.is_ascii_digit(){
+                Chunk::Params(params_parser(chunk_str, line_number)?)
             }else{
                 Chunk::Function(chunk_str.to_string())
             }
@@ -29,7 +29,7 @@ fn params_parser(chunk_str: &str,line_number: u32) -> Result<Vec<Param>>{
 
     let mut result:Vec<Param> = Vec::new();
     for param_str in params_str {
-        result.push(param_parser(&param_str,line_number)?)
+        result.push(param_parser(param_str,line_number)?)
     }
 
     Ok(result)
@@ -40,18 +40,18 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param>{
         if param == "true" { return Ok(Param::Value(DataType::Bool(true))); }
         if param == "false" { return Ok(Param::Value(DataType::Bool(false))); }
 
-        let parsed_param = match param.chars().nth(0).unwrap_or(' ') {
-            '$' => Param::Variable((&param[1..]).to_string()),
-            '@' => Param::Tag((&param[1..]).to_string()),
+        let parsed_param = match param.chars().next().unwrap_or(' ') {
+            '$' => Param::Variable((param[1..]).to_string()),
+            '@' => Param::Tag((param[1..]).to_string()),
             '"' => {
                 let len = param.len();
-                if !(&param.ends_with("\"")){
+                if !(&param.ends_with('\"')){
                     return Err(ChapError::syntax_with_msg(line_number, "string should ends with \"".to_string()));
                 } 
-                Param::Value( DataType::String((&param[1..len-1]).to_string()))
+                Param::Value( DataType::String((param[1..len-1]).to_string()))
             },
             _=> {
-                if param.contains("."){
+                if param.contains('.'){
                     if let Ok(float_value) = param.parse() {
                         Param::Value(DataType::Float(float_value))
                     } else {

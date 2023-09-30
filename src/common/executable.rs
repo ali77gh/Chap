@@ -33,7 +33,7 @@ impl ExecutableLine {
     }
 
     pub fn bind_closure(&mut self) -> Result<()>{
-        self.closure = closure_gen(&self)?; 
+        self.closure = closure_gen(self)?; 
         Ok(())
     }
 }

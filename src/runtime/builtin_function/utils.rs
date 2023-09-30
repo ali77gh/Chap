@@ -6,7 +6,7 @@ pub fn get_var(runtime: &Runtime, name: &str, line_number: u32) -> Result<DataTy
 
     match runtime.variables.get(name){
         Some(x) => Ok(x.clone()),
-        None => return Err(
+        None => Err(
             ChapError::runtime_with_msg(line_number, format!("variable {} is not defind",name))
         ),
     }
@@ -20,11 +20,11 @@ pub fn param_to_datatype<'a>(runtime: &'a Runtime, param: Option<&'a Param>, lin
     };
 
     match param {
-        Param::Tag(_) => return Err(ChapError::runtime_with_msg(line_number, "can not convert a tag to datatype".to_string())),
-        Param::Value(value) => return Ok(value),
+        Param::Tag(_) => Err(ChapError::runtime_with_msg(line_number, "can not convert a tag to datatype".to_string())),
+        Param::Value(value) => Ok(value),
         Param::Variable(name) => match runtime.variables.get(name){
-            Some(x) => return Ok(x),
-            None => return Err(
+            Some(x) => Ok(x),
+            None => Err(
                 ChapError::runtime_with_msg(line_number, format!("variable {} is not defind", name))
             ),
         },

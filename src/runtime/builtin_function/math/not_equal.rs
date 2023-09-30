@@ -11,10 +11,10 @@ pub fn not_equal(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()
 
     if let Some(var_name) = &executable.output_var{
         runtime.variables.insert(var_name.clone(), DataType::Bool(p1 != p2)); //Datatype impelements PartialEq
+        Ok(())
     }else{
-        return Err(
+        Err(
             ChapError::runtime_with_msg(executable.line_number, "equal function needs output variable".to_string())
-        );
+        )
     }
-    Ok(())
 }

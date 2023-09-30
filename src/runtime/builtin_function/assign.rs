@@ -1,28 +1,22 @@
 use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError}};
 use crate::common::errors::Result;
+use crate::runtime::builtin_function::utils::param_to_datatype;
 
 pub fn assign(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>{
 
-    assign_validator(&executable)?;
+    assign_validator(executable)?;
 
-    let value = match executable.params.get(0).unwrap() {
-        crate::common::param::Param::Tag(tag_name) => 
-            return Err(ChapError::static_analyzer_with_msg(executable.line_number, format!("can't put a tag @{} to a variable", tag_name))),
-        crate::common::param::Param::Variable(var_name) => {
-            match runtime.variables.get(var_name) {
-                Some(data) => data.clone(),
-                None => return Err(ChapError::runtime_with_msg(executable.line_number, format!("variable {} is not defind", var_name))),
-            }
-        },
-        crate::common::param::Param::Value(v) => v.clone(),
-    };
+    let p1 = param_to_datatype(runtime, executable.params.get(0), executable.line_number)?;
 
-    (*runtime).variables.insert(executable.output_var.clone().unwrap(), value);
-
-    Ok(())
+    if let Some(var_name) = &executable.output_var{
+        runtime.variables.insert(var_name.clone(), p1.clone()); //Datatype impelements PartialEq
+        Ok(())
+    }else{
+        Err(
+            ChapError::runtime_with_msg(executable.line_number, "equal function needs output variable".to_string())
+        )
+    }
 }
-
-
 
 fn assign_validator(executable: &ExecutableLine) -> Result<()>{
 

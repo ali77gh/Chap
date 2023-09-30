@@ -19,6 +19,7 @@ pub fn closure_gen(executable:&ExecutableLine) -> Result<BuiltinFunction>{
     Ok(match executable.function_name.as_str() {
         "jump" => control_flow::jump::jump,
         "jump_if" => control_flow::jump_if::jump_if,
+        "jump_if_not" => control_flow::jump_if_not::jump_if_not,
         "jump_if_equal" => control_flow::jump_if_equal::jump_if_equal,
         "jump_if_not_equal" => control_flow::jump_if_not_equal::jump_if_not_equal,
         "assign" => assign::assign,

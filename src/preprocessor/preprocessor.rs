@@ -18,7 +18,7 @@ impl Preprocessor {
         let line = actual_line.split("//").nth(0).unwrap_or(&actual_line); //remove all comments
 
 
-        line.split(";").into_iter()
+        line.split(';')
             .map(|line|{ line.trim() })
             .filter(|x|{ !x.is_empty()})
             .map(|x|{ LineOfCode::new(self.current_line,x.to_string()) })

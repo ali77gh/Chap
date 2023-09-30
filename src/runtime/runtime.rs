@@ -33,7 +33,7 @@ impl Runtime{
 
     pub fn execution_cycle(&mut self) -> Result<()>{
 
-        match self.executables.get((&self).current_line) {
+        match self.executables.get(self.current_line) {
             Some(l) => {
                 let l = l.clone();// TODO consider not clone here
                 self.current_line += 1;
