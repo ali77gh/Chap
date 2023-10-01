@@ -13,10 +13,3 @@ pub mod sqrt;
 pub mod increase;
 pub mod decrease;
 pub mod add_many;
-
-
-// returns bool
-pub mod equal;
-pub mod not_equal;
-// pub mod more;
-// pub mod less;

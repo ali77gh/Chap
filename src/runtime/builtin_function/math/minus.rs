@@ -17,7 +17,7 @@ pub fn minus(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
             Ok(())
         },
         None => Err(
-            ChapError::runtime_with_msg(executable.line_number, "add function needs output variable".to_string())
+            ChapError::runtime_with_msg(executable.line_number, "minus function needs output variable".to_string())
         ),
     }
 }
@@ -30,7 +30,7 @@ fn minus_data_types(dt1: &DataType, dt2: &DataType) -> Result<DataType>{
         (DataType::Float(x1), DataType::Float(x2)) => Ok(DataType::Float(x1-x2)),
         _=> {
             Err(
-                ChapError::runtime_with_msg(0, "add function works only with numbers int and float".to_string())
+                ChapError::runtime_with_msg(0, "minus function works only with numbers int and float".to_string())
             )
         }
     }

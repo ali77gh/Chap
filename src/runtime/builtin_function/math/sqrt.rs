@@ -16,7 +16,7 @@ pub fn sqrt(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
             Ok(())
         },
         None => Err(
-            ChapError::runtime_with_msg(executable.line_number, "add function needs output variable".to_string())
+            ChapError::runtime_with_msg(executable.line_number, "sqrt function needs output variable".to_string())
         ),
     }
 }
@@ -27,7 +27,7 @@ fn sqrt_data_type(dt: &DataType) -> Result<DataType>{
         DataType::Float(x) => Ok(DataType::Float(f64::sqrt(*x))),
         _=>{
             Err(
-                ChapError::runtime_with_msg(0, "add function works only with numbers int and float".to_string())
+                ChapError::runtime_with_msg(0, "sqrt function works only with numbers int and float".to_string())
             )
         }
     }

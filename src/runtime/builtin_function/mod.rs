@@ -9,6 +9,15 @@ mod control_flow;
 mod math;
 mod utils;
 mod std;
+mod bools;
+mod strings;
+mod random;
+mod type_of;
+mod type_conversion;
+mod date_time;
+mod delay;
+mod debug;
+mod error_handling;
 
 pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
@@ -37,8 +46,8 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "increase" | "inc" => math::increase::increase,
         "decrease" | "dec" => math::decrease::decrease,
 
-        "equal" | "eq" => math::equal::equal,
-        "not_equal" | "neq" => math::not_equal::not_equal,
+        "equal" | "eq" => bools::equal::equal,
+        "not_equal" | "neq" => bools::not_equal::not_equal,
 
         "print" | "println" | "printline" | "stdout" => std::println::println,
         "input" | "stdin" => std::input::input,

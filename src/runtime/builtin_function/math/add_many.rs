@@ -19,7 +19,7 @@ pub fn add_many(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>
             Ok(())
         },
         None => Err(
-            ChapError::runtime_with_msg(executable.line_number, "add function needs output variable".to_string())
+            ChapError::runtime_with_msg(executable.line_number, "add_many function needs output variable".to_string())
         ),
     }
 }

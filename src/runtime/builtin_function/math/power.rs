@@ -17,7 +17,7 @@ pub fn power(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
             Ok(())
         },
         None => Err(
-            ChapError::runtime_with_msg(executable.line_number, "add function needs output variable".to_string())
+            ChapError::runtime_with_msg(executable.line_number, "power function needs output variable".to_string())
         ),
     }
 }
@@ -30,7 +30,7 @@ fn power_data_types(dt1: &DataType, dt2: &DataType) -> Result<DataType>{
         },
         _=> {
             Err(
-                ChapError::runtime_with_msg(0, "add function works only with numbers int and float".to_string())
+                ChapError::runtime_with_msg(0, "power function works only with numbers int and float".to_string())
             )
         }
     }
