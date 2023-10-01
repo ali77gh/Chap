@@ -4,9 +4,9 @@ use std::fs::read_to_string;
 use std::process::exit;
 
 use crate::common::errors::{Result, ErrorType};
-use crate::preprocessor::preprocessor::Preprocessor;
-use crate::parser::parser::Parser;
-use crate::runtime::runtime::Runtime;
+use crate::preprocessor::Preprocessor;
+use crate::parser::Parser;
+use crate::runtime::Runtime;
 
 pub fn file_executor(file_name: &str) -> Result<()>{
 

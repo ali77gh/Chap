@@ -1,4 +1,4 @@
-use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError}};
+use crate::{runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError}};
 use crate::common::errors::Result;
 use crate::runtime::builtin_function::utils::param_to_datatype;
 
@@ -30,7 +30,7 @@ fn assign_validator(executable: &ExecutableLine) -> Result<()>{
 #[cfg(test)]
 mod tests{
     use crate::{
-        runtime::runtime::Runtime,
+        runtime::Runtime,
         common::{param::Param, data_type::DataType}
     };
 

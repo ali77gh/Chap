@@ -1,5 +1,5 @@
 
-use crate::runtime::runtime::Runtime;
+use crate::runtime::Runtime;
 use crate::runtime::builtin_function::closure_gen;
 use crate::common::errors::Result;
 use super::param::Param;

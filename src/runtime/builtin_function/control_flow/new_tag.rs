@@ -1,4 +1,4 @@
-use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError}};
+use crate::{runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError}};
 use crate::common::errors::Result;
 use crate::common::param::Param;
 
@@ -15,7 +15,7 @@ pub fn new_tag(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
 
 #[cfg(test)]
 mod tests{
-    use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, param::Param}};
+    use crate::{runtime::Runtime, common::{executable::ExecutableLine, param::Param}};
 
     use super::new_tag;
 

@@ -3,22 +3,19 @@ use crate::common::{executable::{BuiltinFunction, ExecutableLine}, errors::ChapE
 
 use crate::common::errors::Result;
 
-mod exit;
-mod println;
-mod input;
 mod assign;
 
 mod control_flow;
 mod math;
 mod utils;
+mod std;
 
 pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
     let function_name = executable.function_name
         .clone()
         .to_lowercase()
-        .replace(" ", "")
-        .replace("_", "");
+        .replace([' ', '_'], "");
 
     Ok(match function_name.as_str() {
         "assign" => assign::assign,
@@ -43,9 +40,9 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "equal" | "eq" => math::equal::equal,
         "not_equal" | "neq" => math::not_equal::not_equal,
 
-        "print" | "println" | "printline" | "stdout" => println::println,
-        "input" | "stdin" => input::input,
-        "exit" | "quit" | "kill" | "terminate" | "close" | "end" => exit::exit,
+        "print" | "println" | "printline" | "stdout" => std::println::println,
+        "input" | "stdin" => std::input::input,
+        "exit" | "quit" | "kill" | "terminate" | "close" | "end" => std::exit::exit,
         _ => return Err(ChapError::static_analyzer_with_msg(
                 executable.line_number,
                 format!("there is no '{}' builtin function",executable.function_name)

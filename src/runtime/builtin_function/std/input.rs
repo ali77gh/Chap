@@ -1,5 +1,5 @@
 use crate::common::data_type::DataType;
-use crate::{runtime::runtime::Runtime, common::executable::ExecutableLine};
+use crate::{runtime::Runtime, common::executable::ExecutableLine};
 use crate::common::errors::{Result, ChapError};
 
 
@@ -19,7 +19,7 @@ pub fn input(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
 
 #[cfg(test)]
 mod tests{
-    use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, data_type::DataType}};
+    use crate::{runtime::Runtime, common::{executable::ExecutableLine, data_type::DataType}};
 
     use super::input;
 

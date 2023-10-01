@@ -1,9 +1,9 @@
 use std::{io::{self, Write}, process::exit};
 
 use crate::{
-    parser::parser::Parser,
-    preprocessor::preprocessor::Preprocessor,
-    runtime::runtime::Runtime, common::errors::ErrorType
+    parser::Parser,
+    preprocessor::Preprocessor,
+    runtime::Runtime, common::errors::ErrorType
 };
 
 

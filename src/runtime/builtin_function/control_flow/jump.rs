@@ -1,4 +1,4 @@
-use crate::{runtime::runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError, param::Param}};
+use crate::{runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError, param::Param}};
 use crate::common::errors::Result;
 
 // this function can't jump to a tag that is not added to runtime.executables

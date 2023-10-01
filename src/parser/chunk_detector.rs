@@ -57,12 +57,10 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param>{
                     } else {
                         Err(ChapError::syntax_with_msg(line_number, "parsing float".to_string()))?
                     }
+                } else if let Ok(float_value) = param.parse() {
+                    Param::Value(DataType::Int(float_value))
                 } else {
-                    if let Ok(float_value) = param.parse() {
-                        Param::Value(DataType::Int(float_value))
-                    } else {
-                        Err(ChapError::syntax_with_msg(line_number, "parsing int".to_string()))?
-                    }
+                    Err(ChapError::syntax_with_msg(line_number, "parsing int".to_string()))?
                 }
             }
         };

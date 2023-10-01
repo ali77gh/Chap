@@ -27,13 +27,11 @@ mod tests{
 
     #[test]
     fn data_type_equal_test(){
-        assert_eq!(
-            DataType::String("abcd".to_string()) == DataType::String("abcd".to_string()),
-            true
+        assert!(
+            DataType::String("abcd".to_string()) == DataType::String("abcd".to_string())
         );
-        assert_eq!(
-            DataType::String("abce".to_string()) == DataType::String("abcd".to_string()),
-            false
+        assert!(
+            DataType::String("abce".to_string()) != DataType::String("abcd".to_string())
         );
     }
 }

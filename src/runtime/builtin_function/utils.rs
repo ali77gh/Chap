@@ -1,7 +1,7 @@
-use crate::{runtime::runtime::Runtime, common::{data_type::DataType, errors::ChapError, param::Param}};
+use crate::{runtime::Runtime, common::{data_type::DataType, errors::ChapError, param::Param}};
 use crate::common::errors::Result;
 
-
+#[allow(dead_code)]
 pub fn get_var(runtime: &Runtime, name: &str, line_number: u32) -> Result<DataType>{
 
     match runtime.variables.get(name){
