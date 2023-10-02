@@ -48,6 +48,11 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
         "equal" | "eq" => bools::equal::equal,
         "not_equal" | "neq" => bools::not_equal::not_equal,
+        "and" => bools::and::and,
+        "or" => bools::or::or,
+        "not" => bools::not::not,
+        "gt" | "greaterthan" => bools::greater_than::greater_than,
+        "lt" | "lessthan" => bools::less_than::less_than,
 
         "print" | "println" | "printline" | "stdout" => std::println::println,
         "input" | "stdin" => std::input::input,
