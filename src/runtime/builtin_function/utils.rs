@@ -36,10 +36,8 @@ pub fn returns(runtime: &mut Runtime, executable: &ExecutableLine, result: DataT
 
     if let Some(var_name) = &executable.output_var{
         runtime.variables.insert(var_name.clone(), result);
-        Ok(())
     }else{
-        Err(
-            ChapError::runtime_with_msg(executable.line_number, format!("{} function needs output variable", executable.function_name))
-        )
+        runtime.std_out(result.to_string().as_str());
     }
+    Ok(())
 }
