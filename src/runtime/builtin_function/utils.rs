@@ -1,4 +1,4 @@
-use crate::{runtime::Runtime, common::{data_type::DataType, errors::ChapError, param::Param}};
+use crate::{runtime::Runtime, common::{data_type::DataType, errors::ChapError, param::Param, executable::ExecutableLine}};
 use crate::common::errors::Result;
 
 #[allow(dead_code)]
@@ -30,4 +30,16 @@ pub fn param_to_datatype<'a>(runtime: &'a Runtime, param: Option<&'a Param>, lin
         },
     }
     
+}
+
+pub fn returns(runtime: &mut Runtime, executable: &ExecutableLine, result: DataType) -> Result<()>{
+
+    if let Some(var_name) = &executable.output_var{
+        runtime.variables.insert(var_name.clone(), result);
+        Ok(())
+    }else{
+        Err(
+            ChapError::runtime_with_msg(executable.line_number, format!("{} function needs output variable", executable.function_name))
+        )
+    }
 }

@@ -140,12 +140,12 @@ mod tests {
     #[test]
     fn param_parser_float() {
         assert_eq!(
-            param_parser("3.14",1),
-            Ok(Param::Value(DataType::Float(3.14)))
+            param_parser("1.5",1),
+            Ok(Param::Value(DataType::Float(1.5)))
         );
 
         assert_eq!(
-            param_parser(".3.14",1),
+            param_parser(".1.5",1),
             Err(ChapError::syntax_with_msg(1, "parsing float".to_string()))
         );
     }
@@ -153,8 +153,8 @@ mod tests {
     #[test]
     fn chunk_parser_negetive_number() {
         assert_eq!(
-            chunk_detector("-3.14".to_string(),1),
-            Ok(Chunk::Params(vec![Param::Value(DataType::Float(-3.14))]))
+            chunk_detector("-1.5".to_string(),1),
+            Ok(Chunk::Params(vec![Param::Value(DataType::Float(-1.5))]))
         );
         assert_eq!(
             chunk_detector("-3".to_string(),1),
@@ -165,12 +165,12 @@ mod tests {
     #[test]
     fn params_test(){
         assert_eq!(
-            params_parser("  $n1,\"s1\"   ,2,3.14  ",0),
+            params_parser("  $n1,\"s1\"   ,2,1.5  ",0),
             Ok(vec![ 
                 Param::Variable("n1".to_string()),
                 Param::Value(DataType::String("s1".to_string())),
                 Param::Value(DataType::Int(2)),
-                Param::Value(DataType::Float(3.14)),
+                Param::Value(DataType::Float(1.5)),
             ])
         );
     }

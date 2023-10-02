@@ -1,19 +1,13 @@
 use crate::common::data_type::DataType;
+use crate::runtime::builtin_function::utils::returns;
 use crate::{runtime::Runtime, common::executable::ExecutableLine};
-use crate::common::errors::{Result, ChapError};
+use crate::common::errors::Result;
 
 
 pub fn input(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
 
     let inp = runtime.std_in();
-
-    let o_var = match &executable.output_var {
-        Some(v) => v.clone(),
-        None => return Err(ChapError::runtime_with_msg(executable.line_number, "input function needs output variable".to_string())),
-    };
-
-    runtime.variables.insert(o_var, DataType::String(inp));
-    Ok(())
+    returns(runtime, executable, DataType::String(inp))
 }
 
 

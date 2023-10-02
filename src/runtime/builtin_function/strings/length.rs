@@ -1,7 +1,7 @@
-use crate::runtime::builtin_function::utils::param_to_datatype;
+use crate::runtime::builtin_function::utils::{param_to_datatype, returns};
 use crate::common::data_type::DataType;
 use crate::{runtime::Runtime, common::executable::ExecutableLine};
-use crate::common::errors::{Result, ChapError};
+use crate::common::errors::Result;
 
 
 pub fn length(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
@@ -11,15 +11,5 @@ pub fn length(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
     let p1 = p1.to_string();
     let result = DataType::Int(p1.len().try_into().unwrap());
 
-    match &executable.output_var{
-        Some(x) => {
-            runtime.variables.insert(x.clone(), result);
-            Ok(())
-        },
-        None => Err(
-            ChapError::runtime_with_msg(executable.line_number, "length function needs output variable".to_string())
-        ),
-    }
+    returns(runtime, executable, result)
 }
-
-

@@ -1,4 +1,4 @@
-use crate::runtime::builtin_function::utils::param_to_datatype;
+use crate::runtime::builtin_function::utils::{param_to_datatype, returns};
 use crate::common::data_type::DataType;
 use crate::{runtime::Runtime, common::executable::ExecutableLine};
 use crate::common::errors::{Result, ChapError};
@@ -9,17 +9,9 @@ pub fn less_than(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()
     let p1 = param_to_datatype(runtime, executable.params.get(0), executable.line_number)?;
     let p2 = param_to_datatype(runtime, executable.params.get(1), executable.line_number)?;
 
-    let sum = less_than_data_types(p1,p2)?;
+    let result = less_than_data_types(p1,p2)?;
     
-    match &executable.output_var{
-        Some(x) => {
-            runtime.variables.insert(x.clone(), sum);
-            Ok(())
-        },
-        None => Err(
-            ChapError::runtime_with_msg(executable.line_number, "less_than function needs output variable".to_string())
-        ),
-    }
+    returns(runtime, executable, result)
 }
 
 pub fn less_than_data_types(dt1: &DataType, dt2: &DataType) -> Result<DataType>{

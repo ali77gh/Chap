@@ -1,6 +1,6 @@
 use crate::{runtime::Runtime, common::{executable::ExecutableLine, errors::ChapError}};
 use crate::common::errors::Result;
-use crate::runtime::builtin_function::utils::param_to_datatype;
+use crate::runtime::builtin_function::utils::{param_to_datatype, returns};
 
 pub fn assign(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>{
 
@@ -8,14 +8,7 @@ pub fn assign(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>{
 
     let p1 = param_to_datatype(runtime, executable.params.get(0), executable.line_number)?;
 
-    if let Some(var_name) = &executable.output_var{
-        runtime.variables.insert(var_name.clone(), p1.clone()); //Datatype impelements PartialEq
-        Ok(())
-    }else{
-        Err(
-            ChapError::runtime_with_msg(executable.line_number, "assign function needs output variable".to_string())
-        )
-    }
+    returns(runtime, executable, p1.clone())
 }
 
 fn assign_validator(executable: &ExecutableLine) -> Result<()>{
