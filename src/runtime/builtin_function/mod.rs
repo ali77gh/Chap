@@ -53,6 +53,12 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "not" => bools::not::not,
         "gt" | "greaterthan" => bools::greater_than::greater_than,
         "lt" | "lessthan" => bools::less_than::less_than,
+        
+        "concat" | "cat" => strings::contact::concat,
+        "repeat"  => strings::repeat::repeat,
+        "length" | "len"  => strings::length::length,
+        "contains" | "has"  => strings::contains::contains,
+        "slice" | "substring"  => strings::slice::slice,
 
         "print" | "println" | "printline" | "stdout" => std::println::println,
         "input" | "stdin" => std::input::input,
