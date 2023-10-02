@@ -21,17 +21,32 @@ impl Parser {
     }
 
     pub fn on_new_line(&self, new_line: LineOfCode) -> Result<ExecutableLine>{
-        let mut it = new_line.code.split("->");
+
+        let mut debug_mode = false;
+        let line = if new_line.code.ends_with('?'){
+            debug_mode = true;
+            let mut temp = new_line.code.clone();
+            temp.pop();
+            temp
+        }else{
+            new_line.code
+        };
+
+        let mut it = line.split("->");
         
-        match (it.next(), it.next(), it.next()) {
+        let mut el = match (it.next(), it.next(), it.next()) {
             (Some(chunk1), None, None) => 
-                single_chunk_parser(chunk1.to_string(), new_line.line_number),
+                single_chunk_parser(chunk1.to_string(), new_line.line_number)?,
             (Some(chunk1), Some(chunk2), None) => 
-                double_chunk_parser(chunk1.to_string(),chunk2.to_string(), new_line.line_number),
+                double_chunk_parser(chunk1.to_string(),chunk2.to_string(), new_line.line_number)?,
             (Some(chunk1), Some(chunk2), Some(chunk3)) => 
-                triplet_chunk_parser(chunk1.to_string(), chunk2.to_string(), chunk3.to_string(), new_line.line_number),
+                triplet_chunk_parser(chunk1.to_string(), chunk2.to_string(), chunk3.to_string(), new_line.line_number)?,
             _ => 
-                Err(ChapError::syntax_with_msg(new_line.line_number, "nothing to parse".to_string())), // will never happen
-        }
+                return Err(
+                    ChapError::syntax_with_msg(new_line.line_number, "nothing to parse".to_string())
+                ), // will never happen
+        };
+        el.debug_mode = debug_mode;
+        Ok(el)
     }
 }

@@ -1,6 +1,4 @@
-
 use crate::common::{executable::{BuiltinFunction, ExecutableLine}, errors::ChapError};
-
 use crate::common::errors::Result;
 
 mod assign;
@@ -26,7 +24,7 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         .to_lowercase()
         .replace([' ', '_'], "");
 
-    Ok(match function_name.as_str() {
+    let function = match function_name.as_str() {
         "assign" => assign::assign,
         "jump" => control_flow::jump::jump,
         "jumpif" => control_flow::jump_if::jump_if,
@@ -60,6 +58,8 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "contains" | "has"  => strings::contains::contains,
         "slice" | "substring"  => strings::slice::slice,
 
+        "dump" | "dumpmemory" | "showeverything"  => debug::dump::dump,
+
         "print" | "println" | "printline" | "stdout" => std::println::println,
         "input" | "stdin" => std::input::input,
         "exit" | "quit" | "kill" | "terminate" | "close" | "end" => std::exit::exit,
@@ -67,6 +67,11 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
                 executable.line_number,
                 format!("there is no '{}' builtin function",executable.function_name)
             ))
-    })
-}
+    };
 
+    if executable.debug_mode{
+        Ok(debug::debugger::debugger)
+    }else {
+        Ok(function)
+    }
+}
