@@ -60,6 +60,11 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
         "dump" | "dumpmemory" | "showeverything"  => debug::dump::dump,
 
+        "randomnumber" | "randnum" => random::random_number::random_number,
+        "randomstring" | "randstr" => random::random_string::random_string,
+        "randombool" | "randbool" => random::random_bool::random_bool,
+        "randomchoice" | "randchoice" => random::random_choice::random_choice,
+
         "print" | "println" | "printline" | "stdout" => std::println::println,
         "input" | "stdin" => std::input::input,
         "exit" | "quit" | "kill" | "terminate" | "close" | "end" => std::exit::exit,
