@@ -20,6 +20,18 @@ impl ToString for DataType {
     }
 }
 
+impl DataType {
+    
+    pub fn type_name(&self) -> String{
+        match self {
+            DataType::String(_) => "string".to_string(),
+            DataType::Int(_) => "int".to_string(),
+            DataType::Float(_) => "float".to_string(),
+            DataType::Bool(_) => "boolean".to_string(),
+        }
+    }
+}
+
 
 #[cfg(test)]
 mod tests{
