@@ -2,16 +2,13 @@
 use crate::common::line_of_code::LineOfCode;
 
 
+#[derive(Default)]
 pub struct Preprocessor{
     current_line: u32
 }
 
 // Preprocessor converts users code to parsable code
 impl Preprocessor {
-    
-    pub fn new() -> Self{
-        Preprocessor{current_line:0}
-    }
 
     pub fn on_new_line(&mut self, actual_line: String) -> Vec<LineOfCode>{
 
@@ -24,8 +21,6 @@ impl Preprocessor {
             .filter(|x|{ !x.is_empty()})
             .map(|x|{ LineOfCode::new(self.current_line,x.to_string()) })
             .collect()
-        // TODO normilize function names
-        // TODO expand one line to many on chaining
     }
 }
 

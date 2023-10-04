@@ -11,9 +11,9 @@ use crate::runtime::Runtime;
 pub fn file_executor(file_name: &str) -> Result<()>{
 
     // initialize
-    let mut preprocessor = Preprocessor::new();
+    let mut preprocessor = Preprocessor::default();
 
-    let parser = Parser::new();
+    let parser= Parser;
 
     let mut runtime = Runtime::new(|msg|{
         println!("{}", msg);

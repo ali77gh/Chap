@@ -72,7 +72,6 @@ impl ChapError {
     fn error_message(&self) -> String{
         let mut result = String::new();
         result.push_str(&format!("\t{} Error on line: {}", self.err_type.to_string(), self.line_number));
-        // result.push_str(&format!("\tyour code: '{}' ",""));//TODO
         if let Some(msg) = &self.msg{
             result.push_str(&format!("\terror message: {} ",msg));
         }

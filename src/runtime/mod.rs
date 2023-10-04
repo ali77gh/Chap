@@ -38,7 +38,7 @@ impl Runtime{
 
         match self.executables.get(self.current_line) {
             Some(l) => {
-                let l = l.clone();// TODO consider not clone here
+                let l = l.clone();
                 self.current_line += 1;
                 (l.closure)(self, &l)?;
                 // execute(self, &l)?;

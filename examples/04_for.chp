@@ -1,9 +1,0 @@
-
-// again will move back execution line to the specified tag
-
-10 -> $counter
-@myForLoop
-
-    $counter
-    $counter, 1 -> minus -> $counter
-$counter, 0, @myForLoop -> jump_neq

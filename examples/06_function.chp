@@ -1,7 +1,0 @@
-(@ print_hello_world
-    "Hello World" -> print
-    return
-)
-
-print_hello_world
-

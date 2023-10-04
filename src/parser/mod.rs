@@ -13,12 +13,10 @@ use single_chunk::single_chunk_parser;
 use double_chunk::double_chunk_parser;
 use triplet_chunk::triplet_chunk_parser;
 
+#[derive(Default)]
 pub struct Parser;
-
+    
 impl Parser {
-    pub fn new() -> Self {
-        Parser {}
-    }
 
     pub fn on_new_line(&self, new_line: LineOfCode) -> Result<ExecutableLine>{
 
