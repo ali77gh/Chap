@@ -14,7 +14,7 @@ mod type_of;
 mod type_conversion;
 mod date_time;
 mod delay;
-mod debug;
+mod debugger;
 mod error_handling;
 
 pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
@@ -58,7 +58,7 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "contains" | "has"  => strings::contains::contains,
         "slice" | "substring"  => strings::slice::slice,
 
-        "dump" | "dumpmemory" | "showeverything"  => debug::dump::dump,
+        "dump" | "dumpmemory" | "showeverything"  => debugger::dump::dump,
 
         "randomnumber" | "randnum" => random::random_number::random_number,
         "randomstring" | "randstr" => random::random_string::random_string,
@@ -88,7 +88,7 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
     };
 
     if executable.debug_mode{
-        Ok(debug::debugger::debugger)
+        Ok(debugger::debugger)
     }else {
         Ok(function)
     }
