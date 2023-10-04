@@ -71,6 +71,8 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "tofloat"  => type_conversion::to_float::to_float,
         "toint"  => type_conversion::to_int::to_int,
 
+        "now" | "nowsec" | "unixtime"  => date_time::now::now_sec,
+
         "print" | "println" | "printline" | "stdout" => std::println::println,
         "input" | "stdin" => std::input::input,
         "exit" | "quit" | "kill" | "terminate" | "close" | "end" => std::exit::exit,
