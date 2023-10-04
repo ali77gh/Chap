@@ -73,6 +73,11 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
         "now" | "nowsec" | "unixtime"  => date_time::now::now_sec,
 
+        "waitmil" | "delaymil" | "waitmillis" | "delaymillis"  => delay::wait_millis::wait_millis,
+        "waitsec" | "delaysec" | "waitseconds" | "delaysecond"  => delay::wait_second::wait_second,
+        "waitmin" | "delaymin" | "waitminutes" | "delayminutes"  => delay::wait_minute::wait_minute,
+        "waithour" | "delayhour" => delay::wait_hour::wait_hour,
+
         "print" | "println" | "printline" | "stdout" => std::println::println,
         "input" | "stdin" => std::input::input,
         "exit" | "quit" | "kill" | "terminate" | "close" | "end" => std::exit::exit,
