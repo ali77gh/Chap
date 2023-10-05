@@ -13,11 +13,11 @@ Chap is an Easy to learn dynamic interpretive isolated keywordless scripting lan
 1. [Keywords](#keywords)
 1. [Syntax](#syntax)
 1. [Operators](#operators)
-1. [ControlFlow](#controlflow)
+1. [ControlFlow](#control-flow)
 1. [Samples](#samples)
 1. [Data Types](#datatypes)
 1. [Installation](#installation)
-1. [How to use](#howtouse)
+1. [How to use](#how-to-use)
 1. [TODOs for version 2.0.0](#todos)
 1. [Builtin function](#builtin-functions)
 
@@ -95,14 +95,14 @@ wrong:
 // c base languages:
 result = send(sqrt(1 + 2).toString());
    ↑       ↑    ↑     ↑       ↑
-   5       4    2     1      3
+   5       4    2     1       3
 ```
 
 ```chp
 // chap
 1,2 -> add -> sqrt -> to_string -> send -> $result
         ↑       ↑         ↑          ↑        ↑
-        1       2         3         4        5
+        1       2         3          4        5
 ```
 This is acctually left to right like normal english.
 
@@ -179,8 +179,7 @@ If a function have no input param you can remove chunk1:
 nothing      function    output
 ```
 
-You can assign value to variable:
-
+removing chunk2 (function name) means assign:
 ```chp
 1 -> $variable
 // its actually short form of:
@@ -197,14 +196,16 @@ If function has output var but you removed chunk3 the result of function will ge
 
 ```chp
 1, 2 -> add
-// result: 3
+// its short for of:
+1, 2 -> add -> $temp
+$temp -> print
 ```
 
 If you just write some params. chap will print them:
 
 ```chp
 1, 2
-// result 1, 2
+// result: 1, 2
 
 // or
 $a
@@ -217,7 +218,7 @@ We have worlds smallest hello world:
 "Hello World"
 ```
 
-I wish I could remove double quotes :)
+I wish I could remove double quotes too :)
 
 
 # Operators
@@ -229,7 +230,7 @@ look at this python example:
 
 ```python
 number = input("Enter a number:")
-result = number * 5 // multiply number to 5
+result = number * 5 # multiply number to 5
 print(number, "* 5 =", result)
 ```
 
@@ -291,7 +292,7 @@ $a, $b -> add -> $c?
 
 Chap also has a function called "dump" which prints every variable you have.
 
-# ControlFlow
+# Control Flow
 
 You can create tag like this:
 ```chp
@@ -301,8 +302,11 @@ You can create tag like this:
 And you can jump to it:
 ```chp
 @tag_name -> jump
+// or
 @tag_name, true -> jump_if
+// or
 @tag_name, 1, 1 -> jump_if_equal
+// or
 @tag_name, 1, 0 -> jump_if_not_equal
 ```
 
@@ -311,7 +315,7 @@ And you can jump to it:
 jumping backward makes loops
 ```chp
 @l
-    "hello util your battry dies"
+    "Hello util your battery dies"
 @l -> jump
 ```
 
@@ -372,7 +376,7 @@ wrong
 you win
 ```
 
-## chrismas_tree.chp
+## christmas_tree.chp
 
 ```chp
 0 -> $counter
@@ -427,7 +431,7 @@ cargo build --release
 sudo cp ./target/release/chap /usr/bin
 ```
 
-# HowToUse
+# How To Use
 
 ## REPL
 [./repl/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/repl/mod.rs)
@@ -472,7 +476,7 @@ Version 2.0.0:
 - [ ] WASM lib
 - [ ] [ChapApp](https://github.com/ali77gh/ChapApp)
 
-# Builtin-Functions
+# Builtin Functions
 [runtime/builtin_function](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function) <br>
 Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
 
@@ -481,15 +485,13 @@ Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
 | assign                  | any               | any      | put a value or variable in other variable  1 -> $a          |
 | std_out, print, show    | any, any, any,... | any      | prints params to console                                    |
 | std_in, input           | nothing           | string   | read user input from console                                |
-| exit, quit, kill, end   | nothing           | nothing  |  ends execution                              |
-|-------------------------|-------------------|----------|-------------------------------------------------------------|
+| exit, quit, kill, end   | nothing           | nothing  |  ends execution                                             |
 | jump                    | @tag              | nothing  | moves executor curser to closest tag with specfied name     |
 | jump_if                 | @tag, bool        | nothing  | jumps to tag if 1st param is true                           |
 | jump_if_not             | @tag, bool        | nothing  | jumps to tag if 1st param is false                          |
 | jump_if_equal, jeq      | @tag, any, any    | nothing  | jumps to tag if 2th and 3th params are equal                |
 | jump_if_not_equal, jneq | @tag, any, any    | nothing  | jumps to tag if 2th and 3th params are not equal            |
 | new_tag                 | @tag              | nothing  | creates tag (you can call this just by writing tag name     |
-|-------------------------|-------------------|----------|-------------------------------------------------------------|
 | add                     | num, num          | num      | adds two numbers     1 + 2 = 3 or 1.5 + 1 = 2.5             |
 | add_many, add_all       | num, num, num,... | num      | adds many numbers    1 + 2 + 3 = 6                          |
 | minus                   | num, num          | num      | minus two numbers    3 - 2  = 1                             |
@@ -500,7 +502,6 @@ Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
 | square_root, sqrt       | num               | num      | square root          9 -> sqrt -> 3                         |
 | increase, inc           | $num              | nothing  | adds one to variable short form of: $a,1 -> add -> $a       |
 | decrease, dec           | $num              | nothing  | minus one from variable short form of: $a,1 -> minus -> $a  |
-|-------------------------|-------------------|----------|-------------------------------------------------------------|
 | equal, eq               | any, any          | bool     | true if 1st and 2nd are equal and false if they are not     |
 | not_equal, neq          | any, any          | bool     | true if 1st and 2nd are not equal and false if they are     |
 | and                     | bool, bool        | bool     | and logical gate                                            |
@@ -508,20 +509,16 @@ Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
 | not                     | bool              | bool     | not logical gate                                            |
 | greater_than, gt        | num, num          | bool     | true if 1st param is bigger than 2nd param 3,2 -> true      |
 | less_than, lt           | num, num          | bool     | true if 1st param is less than 2nd param   3,2 -> false     |
-|-------------------------|-------------------|----------|-------------------------------------------------------------|
 | concat, cat             | any, any          | string   | convert inputs to string and concat them "al","i" -> "ali"  |
 | repeat                  | any, int          | string   | convert inputs to string and repeat "a",3 -> "aaa"          |
 | length, len             | any               | int      | convert input to string and returns length 456 -> 3         |
 | contains, has           | any               | bool     | convert inputs to string and returns 1st contains 2nd 11,1->true |
 | slice, sub_string       | any, int, int     | string   | "hello", 1, 3 -> "el"                                       |
-|-------------------------|-------------------|----------|-------------------------------------------------------------|
 | to_string               | any               | string   | convert input to string        1 -> "1"                     |
 | to_float                | string            | float    | convert input to float  "1.5" -> 1.5 ; "a"->error           |
 | to_int                  | string            | int      | convert input to int    "1" -> 1 ; "a"->error               |
-|-------------------------|-------------------|----------|-------------------------------------------------------------|
 | dump, dump_memory       | nothing           | nothing  | prints all variables with values                            |
 | type_of, type           | any               | str      | prints type of param   1 -> int; "s" -> string              |
-|-------------------------|-------------------|----------|-------------------------------------------------------------|
 | now_sec, now, unixtime  | nothing           | float    | unix time standard in seconds                               |
 | wait_mil, wait_millis   | int               | nothing  | delay code execution for 1st milliseconds                   |
 | wait_sec, wait_sec      | int               | nothing  | delay code execution for 1st seconds                        |
