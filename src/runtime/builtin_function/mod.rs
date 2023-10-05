@@ -29,8 +29,8 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "jump" => control_flow::jump::jump,
         "jumpif" => control_flow::jump_if::jump_if,
         "jumpifnot" => control_flow::jump_if_not::jump_if_not,
-        "jumpifequal" | "jumpeq" => control_flow::jump_if_equal::jump_if_equal,
-        "jumpifnotequal" | "jumpneq"=> control_flow::jump_if_not_equal::jump_if_not_equal,
+        "jumpifequal" | "jeq" => control_flow::jump_if_equal::jump_if_equal,
+        "jumpifnotequal" | "jneq" => control_flow::jump_if_not_equal::jump_if_not_equal,
         "newtag" => control_flow::new_tag::new_tag,
 
         "add" => math::add::add,
@@ -45,7 +45,7 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "decrease" | "dec" => math::decrease::decrease,
 
         "equal" | "eq" => bools::equal::equal,
-        "not_equal" | "neq" => bools::not_equal::not_equal,
+        "notequal" | "neq" => bools::not_equal::not_equal,
         "and" => bools::and::and,
         "or" => bools::or::or,
         "not" => bools::not::not,
@@ -58,7 +58,7 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         "contains" | "has"  => strings::contains::contains,
         "slice" | "substring"  => strings::slice::slice,
 
-        "dump" | "dumpmemory" | "showeverything"  => debugger::dump::dump,
+        "dump" | "dumpmemory" => debugger::dump::dump,
 
         "randomnumber" | "randnum" => random::random_number::random_number,
         "randomstring" | "randstr" => random::random_string::random_string,
@@ -73,14 +73,14 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
         "now" | "nowsec" | "unixtime"  => date_time::now::now_sec,
 
-        "waitmil" | "delaymil" | "waitmillis" | "delaymillis"  => delay::wait_millis::wait_millis,
-        "waitsec" | "delaysec" | "waitseconds" | "delaysecond"  => delay::wait_second::wait_second,
-        "waitmin" | "delaymin" | "waitminutes" | "delayminutes"  => delay::wait_minute::wait_minute,
+        "waitmil" | "waitmillis" => delay::wait_millis::wait_millis,
+        "waitsec" | "waitseconds" => delay::wait_second::wait_second,
+        "waitmin" | "waitminutes" => delay::wait_minute::wait_minute,
         "waithour" | "delayhour" => delay::wait_hour::wait_hour,
 
-        "print" | "println" | "printline" | "stdout" => std::println::println,
+        "print" | "show" | "stdout" => std::println::println,
         "input" | "stdin" => std::input::input,
-        "exit" | "quit" | "kill" | "terminate" | "close" | "end" => std::exit::exit,
+        "exit" | "quit" | "kill" | "end" => std::exit::exit,
         _ => return Err(ChapError::static_analyzer_with_msg(
                 executable.line_number,
                 format!("there is no '{}' builtin function",executable.function_name)
