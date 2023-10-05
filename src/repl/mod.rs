@@ -54,5 +54,6 @@ fn input() -> String{
         let mut buffer = String::new();
         let stdin = io::stdin(); // We get `Stdin` here.
         stdin.read_line(&mut buffer).unwrap();
+        buffer = buffer.replace("\n", "").trim().to_string();
         buffer
 }
