@@ -36,7 +36,7 @@ mod tests {
     #[test]
     fn remove_comments() {
     
-        let mut pp = Preprocessor::new();
+        let mut pp = Preprocessor::default();
 
         let mut all_lines: Vec<LineOfCode> = Vec::new();
 
@@ -56,7 +56,7 @@ mod tests {
     #[test]
     fn semicolon_split() {
 
-        let mut pp = Preprocessor::new();
+        let mut pp = Preprocessor::default();
         
         assert_eq!(0 , pp.on_new_line("//comment".to_string()).len() );
         assert_eq!(0 , pp.on_new_line("".to_string()).len() );
@@ -72,7 +72,7 @@ mod tests {
     #[test]
     fn currect_line_numbers(){
 
-        let mut pp = Preprocessor::new();
+        let mut pp = Preprocessor::default();
 
         assert_eq!(0 , pp.on_new_line("//comment1".to_string()).len() );
         assert_eq!(0 , pp.on_new_line("//comment2".to_string()).len() );
@@ -85,7 +85,7 @@ mod tests {
     #[test]
     fn currect_actual_line(){
 
-        let mut pp = Preprocessor::new();
+        let mut pp = Preprocessor::default();
 
         let pped = pp.on_new_line(";  command1 ;  ; command2 ;;//comment;".to_string());
 
