@@ -48,7 +48,7 @@ mod tests{
             "params".to_string()
         );
         assert_eq!(
-            get_type_string(&Chunk::Function("println".to_string())),
+            get_type_string(&Chunk::Function("print".to_string())),
             "function".to_string()
         );
     }

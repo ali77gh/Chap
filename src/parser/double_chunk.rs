@@ -61,8 +61,8 @@ mod tests{
     #[test]
     fn param_function_test(){
         assert_eq!(
-            double_chunk_parser("$the_name".to_string(), "println".to_string(), 1),
-            Ok(ExecutableLine::new(1, "println".to_string(), vec![Param::Variable("the_name".to_string())], None))
+            double_chunk_parser("$the_name".to_string(), "print".to_string(), 1),
+            Ok(ExecutableLine::new(1, "print".to_string(), vec![Param::Variable("the_name".to_string())], None))
         );
     }
 
@@ -77,7 +77,7 @@ mod tests{
     #[test]
     fn function_function_test(){
         assert_eq!(
-            double_chunk_parser("exit".to_string(), "println".to_string(), 1),
+            double_chunk_parser("exit".to_string(), "print".to_string(), 1),
             Err(ChapError::syntax_with_msg(1, "assign a function to another function is not possible".to_string()))
         );
 

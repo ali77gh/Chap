@@ -12,7 +12,7 @@ pub fn single_chunk_parser(ch1: String, line_number: u32) -> Result<ExecutableLi
 
             match params.get(0).unwrap(){
                 Param::Tag(_) => ExecutableLine::new(line_number,"new_tag".to_string(), params, None),
-                _ => ExecutableLine::new(line_number, "println".to_string(), params, None),
+                _ => ExecutableLine::new(line_number, "print".to_string(), params, None),
             }
         },
         Chunk::Function(name) => 
@@ -39,12 +39,12 @@ mod tests{
     fn print_detector_parser(){
         assert_eq!(
             single_chunk_parser(" $myVar ".to_string(), 1),
-            Ok(ExecutableLine::new(1,"println".to_string(),vec![Param::Variable("myVar".to_string())],None))
+            Ok(ExecutableLine::new(1,"print".to_string(),vec![Param::Variable("myVar".to_string())],None))
         );
 
         assert_eq!(
             single_chunk_parser(" \"hello\" ".to_string(), 1),
-            Ok(ExecutableLine::new(1,"println".to_string(),vec![Param::Value(DataType::String("hello".to_string()))],None))
+            Ok(ExecutableLine::new(1,"print".to_string(),vec![Param::Value(DataType::String("hello".to_string()))],None))
         );
     }
 

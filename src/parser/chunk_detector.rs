@@ -178,8 +178,8 @@ mod tests {
     #[test]
     fn chunk_detector_test(){
         assert_eq!(
-            chunk_detector("println".to_string(),0),
-            Ok(Chunk::Function("println".to_string()))
+            chunk_detector("print".to_string(),0),
+            Ok(Chunk::Function("print".to_string()))
         );
     }
 

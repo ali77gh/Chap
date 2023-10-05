@@ -109,7 +109,7 @@ mod tests{
 
         rt.on_new_line(ExecutableLine::new(  
             2,
-            "println".to_string(),
+            "print".to_string(),
             vec![Param::Variable("name".to_string())],
             None
         )).unwrap();
