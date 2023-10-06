@@ -2,7 +2,7 @@
 
 <img src="./Logo.png" width="300"></img>
 
-Chap is an Easy to learn dynamic interpretive isolated keywordless scripting language written in Rust. and it is useful when you want your user dynamically control some stuff and done some custom calculations in a safe sandbox.
+Chap is an Easy to learn, dynamic, interpretive, isolated, and keywordless scripting language written in Rust. It is useful when you want your user to control some stuff dynamically and perform some custom calculations in a safe sandbox.
 
 <br>
 
@@ -65,7 +65,7 @@ A normal line of code in chap has 3 chunks separated with -> operator:
 chunk1 -> chunk2 -> chunk3
 ```
 
-| Chank 1      | Chunk2        | Chunk 3         |
+| Chunk 1      | Chunk 2        | Chunk 3         |
 |--------------|---------------|-----------------|
 | input params | function name | output variable |
 
