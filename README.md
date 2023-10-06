@@ -2,6 +2,8 @@
 
 <img src="./Logo.png" width="300"></img>
 
+[![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
+
 Chap is an Easy to learn dynamic interpretive isolated keywordless scripting language written in Rust. and it is useful when you want your user dynamically control some stuff and done some custom calculations in a safe sandbox.
 
 <br>
