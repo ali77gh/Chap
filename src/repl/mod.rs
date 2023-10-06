@@ -1,10 +1,12 @@
-use std::{io::{self, Write}, process::exit};
+use std::process::exit;
 
 use crate::{
     parser::Parser,
     preprocessor::Preprocessor,
     runtime::Runtime, common::errors::ErrorType
 };
+
+use rustyline::DefaultEditor;
 
 
 pub fn start_rpel(){
@@ -14,16 +16,23 @@ pub fn start_rpel(){
 
     let parser = Parser;
 
+    let mut reader = DefaultEditor::new().unwrap(); // TODO: handle error
+
     let mut runtime = Runtime::new(|msg|{
         println!("{}", msg);
     },||{
-        input()
+        String::from("")
     });
 
     loop {
-        print!("-> ");
-        let _ = io::stdout().flush();
-        let source = input(); 
+        // let source: String;
+        let source = match reader.readline("-> ") {
+            Ok(line) => {
+                let _ = reader.add_history_entry(line.clone());
+                line
+            },
+            Err(_) => break,
+        };
         let lines = preprocessor.on_new_line(source);
         for line in lines{
             let el = parser.on_new_line(line);
@@ -48,12 +57,4 @@ pub fn start_rpel(){
             }
         }
     }
-}
-
-fn input() -> String{
-        let mut buffer = String::new();
-        let stdin = io::stdin(); // We get `Stdin` here.
-        stdin.read_line(&mut buffer).unwrap();
-        buffer = buffer.replace("\n", "").trim().to_string();
-        buffer
 }
