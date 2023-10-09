@@ -2,7 +2,9 @@
 
 <img src="./Logo.png" width="300"></img>
 
+[![forthebadge made-with-rust](http://ForTheBadge.com/images/badges/made-with-rust.svg)](https://www.rust-lang.org/) <br>
 [![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
+[![GitHub license](https://badgen.net/github/license/ali77gh/chap)](https://github.com/ali77gh/chap/blob/master/LICENSE)
 
 Chap is an Easy to learn dynamic interpretive isolated keywordless scripting language written in Rust. and it is useful when you want your user dynamically control some stuff and done some custom calculations in a safe sandbox.
 
@@ -478,6 +480,11 @@ Version 2.0.0:
 - [ ] WASM lib
 - [ ] [ChapApp](https://github.com/ali77gh/ChapApp)
 
+
+# Stars
+
+[![Stargazers over time](https://starchart.cc/ali77gh/chap.svg)](https://starchart.cc/ali77gh/chap)
+
 # Builtin Functions
 [runtime/builtin_function](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function) <br>
 Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
@@ -526,3 +533,4 @@ Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
 | wait_sec, wait_sec      | int               | nothing  | delay code execution for 1st seconds                        |
 | wait_min, wait_minute   | int               | nothing  | delay code execution for 1st minutes                        |
 | wait_hour,wait_hour     | int               | nothing  | delay code execution for 1st hours                          |
+
