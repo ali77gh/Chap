@@ -1,9 +1,9 @@
-use crate::common::errors::{Result, ErrorType};
+use crate::common::errors::ErrorType;
 use crate::preprocessor::Preprocessor;
 use crate::parser::Parser;
 use crate::runtime::Runtime;
 
-pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn(), on_error: fn(&str)) -> Result<()>{
+pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn(), on_error: fn(&str)) {
 
     // initialize
     let mut preprocessor = Preprocessor::default();
@@ -31,7 +31,7 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn
     loop {
         if let Err(e) = runtime.execution_cycle(){
             match e.err_type {
-                ErrorType::NothingToExecute | ErrorType::Stop => on_exit(),
+                ErrorType::NothingToExecute | ErrorType::Stop => {on_exit();return;},
                 _=> {
                     on_error(e.error_message().as_str());
                 }
@@ -39,4 +39,16 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn
         }
     }
 
+}
+
+
+#[cfg(test)]
+mod tests{
+    use super::eval;
+
+    #[test]
+    fn test_eval(){
+        eval(
+            "3".to_string(), |x|{}, ||{"".to_string()}, ||{}, |e|{});
+    }
 }
