@@ -2,15 +2,14 @@ use crate::common::{executable::{BuiltinFunction, ExecutableLine}, errors::ChapE
 use crate::common::errors::Result;
 
 mod assign;
+mod utils;
+mod type_of;
 
 mod control_flow;
 mod math;
-mod utils;
 mod std;
 mod bools;
 mod strings;
-mod random;
-mod type_of;
 mod type_conversion;
 mod date_time;
 mod delay;
@@ -24,72 +23,121 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         .to_lowercase()
         .replace([' ', '_'], "");
 
-    let function = match function_name.as_str() {
-        "assign" => assign::assign,
-        "jump" => control_flow::jump::jump,
-        "jumpif" => control_flow::jump_if::jump_if,
-        "jumpifnot" => control_flow::jump_if_not::jump_if_not,
-        "jumpifequal" | "jeq" => control_flow::jump_if_equal::jump_if_equal,
-        "jumpifnotequal" | "jneq" => control_flow::jump_if_not_equal::jump_if_not_equal,
-        "newtag" => control_flow::new_tag::new_tag,
-
-        "add" => math::add::add,
-        "addmany" | "addall" => math::add_many::add_many,
-        "minus" => math::minus::minus,
-        "multiply" => math::multiply::multiply,
-        "divide" => math::divide::divide,
-        "modulus" | "mod" => math::modulus::modulus,
-        "power" | "pow" => math::power::power,
-        "sqrt" | "squareroot" => math::sqrt::sqrt,
-        "increase" | "inc" => math::increase::increase,
-        "decrease" | "dec" => math::decrease::decrease,
-
-        "equal" | "eq" => bools::equal::equal,
-        "notequal" | "neq" => bools::not_equal::not_equal,
-        "and" => bools::and::and,
-        "or" => bools::or::or,
-        "not" => bools::not::not,
-        "gt" | "greaterthan" => bools::greater_than::greater_than,
-        "lt" | "lessthan" => bools::less_than::less_than,
-        
-        "concat" | "cat" => strings::contact::concat,
-        "repeat"  => strings::repeat::repeat,
-        "length" | "len"  => strings::length::length,
-        "contains" | "has"  => strings::contains::contains,
-        "slice" | "substring"  => strings::slice::slice,
-
-        "dump" | "dumpmemory" => debugger::dump::dump,
-
-        "randomnumber" | "randnum" => random::random_number::random_number,
-        "randomstring" | "randstr" => random::random_string::random_string,
-        "randombool" | "randbool" => random::random_bool::random_bool,
-        "randomchoice" | "randchoice" => random::random_choice::random_choice,
-
-        "typeof" | "type" => type_of::type_of,
-
-        "tostring" | "tostr" => type_conversion::to_string::to_string,
-        "tofloat"  => type_conversion::to_float::to_float,
-        "toint"  => type_conversion::to_int::to_int,
-
-        "now" | "nowsec" | "unixtime"  => date_time::now::now_sec,
-
-        "waitmil" | "waitmillis" => delay::wait_millis::wait_millis,
-        "waitsec" | "waitseconds" => delay::wait_second::wait_second,
-        "waitmin" | "waitminutes" => delay::wait_minute::wait_minute,
-        "waithour" | "delayhour" => delay::wait_hour::wait_hour,
-
-        "print" | "show" | "stdout" => std::println::println,
-        "input" | "stdin" => std::input::input,
-        "exit" | "quit" | "kill" | "end" => std::exit::exit,
-        _ => return Err(ChapError::static_analyzer_with_msg(
+    
+    let function = match function_match(&function_name){
+        Some(f) => f,
+        None => return Err(
+            ChapError::static_analyzer_with_msg(
                 executable.line_number,
-                format!("there is no '{}' builtin function",executable.function_name)
-            ))
+                format!("there is no function with name: {}", executable.function_name)
+            )
+        )
     };
 
     if executable.debug_mode{
         Ok(debugger::debugger)
     }else {
         Ok(function)
+    }
+}
+
+
+#[cfg(target_family = "unix")]
+pub fn function_match(function_name: &str) -> Option<BuiltinFunction>{
+    if let Some(f) = common_functions(function_name){
+        return Some(f);
+    }else if let Some(f) = random_functions(function_name) {
+        return Some(f);
+    }else{
+        None
+    }
+}
+
+#[cfg(target_family = "windows")]
+pub fn function_match(function_name: &str) -> Option<BuiltinFunction>{
+    if let Some(f) = common_functions(function_name){
+        return Some(f);
+    }else if let Some(f) = random_functions(function_name) {
+        return Some(f);
+    }else{
+        None
+    }
+}
+
+#[cfg(target_family = "wasm")]
+pub fn function_match(function_name: &str) -> Option<BuiltinFunction>{
+    if let Some(f) = common_functions(function_name){
+        return Some(f);
+    }else{
+        None
+    }
+}
+
+
+pub fn common_functions(function_name: &str) -> Option<BuiltinFunction>{
+
+    match function_name {
+        "assign" => Some(assign::assign),
+        "jump" =>Some( control_flow::jump::jump),
+        "jumpif" =>Some( control_flow::jump_if::jump_if),
+        "jumpifnot" =>Some( control_flow::jump_if_not::jump_if_not),
+        "jumpifequal" | "jeq" => Some(control_flow::jump_if_equal::jump_if_equal),
+        "jumpifnotequal" | "jneq" => Some(control_flow::jump_if_not_equal::jump_if_not_equal),
+        "newtag" => Some(control_flow::new_tag::new_tag),
+        "add" => Some(math::add::add),
+        "addmany" | "addall" => Some(math::add_many::add_many),
+        "minus" => Some(math::minus::minus),
+        "multiply" => Some(math::multiply::multiply),
+        "divide" => Some(math::divide::divide),
+        "modulus" | "mod" => Some(math::modulus::modulus),
+        "power" | "pow" => Some(math::power::power),
+        "sqrt" | "squareroot" => Some(math::sqrt::sqrt),
+        "increase" | "inc" => Some(math::increase::increase),
+        "decrease" | "dec" => Some(math::decrease::decrease),
+        "equal" | "eq" => Some(bools::equal::equal),
+        "notequal" | "neq" => Some(bools::not_equal::not_equal),
+        "and" => Some(bools::and::and),
+        "or" => Some(bools::or::or),
+        "not" => Some(bools::not::not),
+        "gt" | "greaterthan" => Some(bools::greater_than::greater_than),
+        "lt" | "lessthan" => Some(bools::less_than::less_than),
+        "concat" | "cat" => Some(strings::contact::concat),
+        "repeat"  => Some(strings::repeat::repeat),
+        "length" | "len"  => Some(strings::length::length),
+        "contains" | "has"  => Some(strings::contains::contains),
+        "slice" | "substring"  => Some(strings::slice::slice),
+        "dump" | "dumpmemory" => Some(debugger::dump::dump),
+        "typeof" | "type" => Some(type_of::type_of),
+        "tostring" | "tostr" => Some(type_conversion::to_string::to_string),
+        "tofloat"  => Some(type_conversion::to_float::to_float),
+        "toint"  => Some(type_conversion::to_int::to_int),
+        "now" | "nowsec" | "unixtime"  => Some(date_time::now::now_sec),
+        "waitmil" | "waitmillis" => Some(delay::wait_millis::wait_millis),
+        "waitsec" | "waitseconds" => Some(delay::wait_second::wait_second),
+        "waitmin" | "waitminutes" => Some(delay::wait_minute::wait_minute),
+        "waithour" | "delayhour" => Some(delay::wait_hour::wait_hour),
+        "print" | "show" | "stdout" => Some(std::println::println),
+        "input" | "stdin" => Some(std::input::input),
+        "exit" | "quit" | "kill" | "end" => Some(std::exit::exit),
+        _=>{
+            return None;
+        }
+    }
+}
+
+// platform specific functions
+#[cfg(not(target_family = "wasm"))]
+mod random;
+#[cfg(not(target_family = "wasm"))]
+pub fn random_functions(function_name: &str) -> Option<BuiltinFunction>{
+
+    match function_name {
+        "randomnumber" | "randnum" => Some(random::random_number::random_number),
+        "randomstring" | "randstr" => Some(random::random_string::random_string),
+        "randombool" | "randbool" => Some(random::random_bool::random_bool),
+        "randomchoice" | "randchoice" => Some(random::random_choice::random_choice),
+        _=>{
+            return None;
+        }
     }
 }

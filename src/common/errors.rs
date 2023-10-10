@@ -69,7 +69,7 @@ impl ChapError {
         println!("{}", self.error_message());
     }
 
-    fn error_message(&self) -> String{
+    pub fn error_message(&self) -> String{
         let mut result = String::new();
         result.push_str(&format!("\t{} Error on line: {}", self.err_type.to_string(), self.line_number));
         if let Some(msg) = &self.msg{
