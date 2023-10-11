@@ -8,6 +8,11 @@
 
 Chap is an Easy to learn, dynamic, interpretive, isolated, and keywordless scripting language written in Rust. It is useful when you want your user to control some stuff dynamically and perform some custom calculations in a safe sandbox.
 
+Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Assembly](https://en.wikipedia.org/wiki/Assembly_language) and [Bash](https://www.php.net/).
+
+[ChapApp](https://github.com/ali77gh/chapAPP) is a Chap Editor/Compiler on Broswer (Powerd by WASM). ChapApp is written in Rust([Dioxus](https://dioxuslabs.com/)) as well.
+<a href="https://ali77gh.github.io/ChapApp/" target="_blank">Open ChapApp in new tab</a>.
+
 <br>
 
 # Table of content
@@ -39,7 +44,7 @@ If you code in rust(right) too much you gradually became capitalist after a whil
 
 1. Its so easy to learn, (your grandma can learn it in 15 minutes max).
 2. Cross platform (chap runs on Linux, MacOS, Web(WASM) and even Windows!)
-3. OOP or FP? Chap does not gives a sh*t about other programming languages and do the thing in its own way (aka Gigachap paradaim) .
+3. OOP or FP? Chap does not gives a sh*t about other programming languages and do the thing in its own way (aka Gigachap paradaim).
 
 <br>
 
@@ -50,6 +55,7 @@ What makes a programming language hard to learn?
 ```chp
 "Keywords"
 ```
+
 | Language | Keywords  | Difficulty level |
 |----------|-----------|------------------|
 | C#       | 102       | 5/5              |
@@ -59,7 +65,6 @@ What makes a programming language hard to learn?
 | Chap     | 0         | 0/5              |
 
 <br>
-
 
 # Syntax
 
@@ -108,10 +113,10 @@ result = send(sqrt(1 + 2).toString());
         ↑       ↑         ↑          ↑        ↑
         1       2         3          4        5
 ```
+
 This is acctually left to right like normal english.
 
-
-TODO: "Chaining" is not supported in version 1.0.0. and every chap line can have 3 chunk max.
+TODO: "Piping" is not supported in version 1.0.0. and every chap line can have 3 chunk max.
 
 <br>
 
@@ -147,12 +152,14 @@ $a, "hello", 5, 3.14, false -> function_name -> $output_var
 Function names are not case sensitive. <br>
 
 Function names are not sensitive about anything else:<br>
+
 ```chp
 // to_string = ToString = TOSTRING = to string = t o s t r_i_n_g
 ```
 
 variables should starts with $ which known as most loved feature of PHP. <br>
 variable name rules:
+
 ```chp
 $12 // Ok
 $sp a ce // OK
@@ -184,6 +191,7 @@ nothing      function    output
 ```
 
 removing chunk2 (function name) means assign:
+
 ```chp
 1 -> $variable
 // its actually short form of:
@@ -224,7 +232,6 @@ We have worlds smallest hello world:
 
 I wish I could remove double quotes too :)
 
-
 # Operators
 
 There is one operator -> which moves data from left to right and it is language logo.
@@ -251,6 +258,7 @@ Why? because python use same operator for math.multiply and strings.repeat.
 So * operator <b>is not a type safe</b> operator and it will <b>do unexpected things</b> when your forget to pass right type to it and it will happen without throwing runtime errors (which is bad).
 
 Same code in chap:
+
 ```chp
 input -> $number
 $number, 5 -> multiply -> $result 
@@ -259,12 +267,14 @@ $result
 ```
 
 Runtime errors are much better than logical error. and in chap we have repeat function:
+
 ```chp
 "foo ", 3 -> repeat
 // foo foo foo 
 ```
 
 In many languges "+" operator has same problem:
+
 ```python
 # python
 def add(a, b):
@@ -285,6 +295,7 @@ add(1, 2) # 3
 <br>
 
 ## debugger
+
 You can put a ? end of line to debug that line:
 
 ```chp
@@ -299,11 +310,13 @@ Chap also has a function called "dump" which prints every variable you have.
 # Control Flow
 
 You can create tag like this:
+
 ```chp
 @tag_name
 ```
 
 And you can jump to it:
+
 ```chp
 @tag_name -> jump
 // or
@@ -317,6 +330,7 @@ And you can jump to it:
 ## loop
 
 jumping backward makes loops
+
 ```chp
 @l
     "Hello util your battery dies"
@@ -342,11 +356,13 @@ Note: Indenation is not nessessery
 ```chp
 "Hello world"
 ```
+
 ```sh
 Hello world
 ```
 
 ## couter.chp
+
 ```chp
 0 -> $counter
 @l
@@ -354,11 +370,13 @@ Hello world
 @l, $counter, 100 -> jump_if_not_equal
 $counter
 ```
+
 ```sh
 100
 ```
 
 ## number_guess_game.chp
+
 ```chp
 1,10 -> random_number -> $answer
 @loop
@@ -371,6 +389,7 @@ $counter
 @win
 "you win"
 ```
+
 ```sh
 1
 wrong
@@ -383,33 +402,39 @@ you win
 ## christmas_tree.chp
 
 ```chp
+
 0 -> $counter
 @loop
     $counter -> increase
 
-    "*", $counter -> repeat -> $stars
+    $counter, 2 -> multiply -> $stars_size
     10, $counter -> minus -> $space_size
+
+    "*", $stars_size -> repeat -> $stars
     " ", $space_size -> repeat -> $spaces
 
     $spaces, $stars -> cat
 @loop, $counter, 10 -> jump if not equal
+
 ```
+
 ```sh
-         *
-        **
-       ***
-      ****
-     *****
-    ******
-   *******
-  ********
- *********
-**********
+         **
+        ****
+       ******
+      ********
+     **********
+    ************
+   **************
+  ****************
+ ******************
+********************
 ```
 
 <br>
 
 # DataTypes
+
 ```chp
 // REPL log
 -> 1 -> type_of
@@ -421,14 +446,17 @@ string
 -> true -> type      
 boolean
 ```
+
 // TODO arrays
 
 # Installation
 
 ## Download release
+
 [link](https://github.com/ali77gh/Chap/releases)
 
 ## Build
+
 ```bash
 git clone https://github.com/ali77gh/Chap
 cargo build --release
@@ -438,15 +466,20 @@ sudo cp ./target/release/chap /usr/bin
 # How To Use
 
 ## REPL
+
 [./repl/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/repl/mod.rs)
+
 ```bash
 ❯ chap
 -> "hello world"
 hello world
 -> 
 ```
+
 ## File_executor
+
 [./file_executor/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/file_executor/mod.rs)
+
 ```bash
 ❯ chap number_guess_game.chp 
 1
@@ -456,36 +489,46 @@ wrong
 3
 you win answer was: 3
 ```
+
 ## Library
+
 [./lib.rs](https://github.com/ali77gh/Chap/blob/master/src/lib.rs)
+
 ## As lib
+
 ```bash
 cargo build --release --lib
 ```
 
-## As Wasm module 
- TODO
+## As Wasm module
 
+ TODO
 
 # TODOs
 
-Version 2.0.0:
-- [ ] Arrays
-- [ ] Chaining syntax (1,2->add->toString->print)
-- [ ] tests for builtin functions
-- [ ] static analyzer
-- [ ] fix: 'random' module will not work on WASM
-- [ ] eval function
-- [ ] function name autocompelete (maybe a simple LSP)
-- [ ] WASM lib
-- [ ] [ChapApp](https://github.com/ali77gh/ChapApp)
+## Version 2.0.0:
 
+- [ ] Arrays
+- [ ] Piping syntax (1,2->add->toString->print)
+- [x] fix: 'random' module will not work on WASM
+- [x] eval function
+- [x] [ChapApp](https://github.com/ali77gh/ChapApp)
+
+## Version 3.0.0:
+
+- [ ] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var
+- [ ] Static analyzer
+- [ ] Performace improvement
+- [ ] Chap to C compiler (C has jumps BTW)
+- [ ] Update [is_prime](https://github.com/ali77gh/language_performance_prime_algorithm) results
+- [ ] WASM lib
 
 # Stars
 
 [![Stargazers over time](https://starchart.cc/ali77gh/chap.svg)](https://starchart.cc/ali77gh/chap)
 
 # Builtin Functions
+
 [runtime/builtin_function](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function) <br>
 Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
 
@@ -533,4 +576,3 @@ Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
 | wait_sec, wait_sec      | int               | nothing  | delay code execution for 1st seconds                        |
 | wait_min, wait_minute   | int               | nothing  | delay code execution for 1st minutes                        |
 | wait_hour,wait_hour     | int               | nothing  | delay code execution for 1st hours                          |
-
