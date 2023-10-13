@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub enum ErrorType {
     Syntax,
     StaticAnalyzer,
@@ -21,7 +21,7 @@ impl ErrorType {
     }
 }
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct ChapError{
     line_number: u32,
     msg: Option<String>,

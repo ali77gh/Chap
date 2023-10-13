@@ -1,9 +1,9 @@
-use crate::common::errors::ErrorType;
+use crate::common::errors::{ErrorType, ChapError};
 use crate::preprocessor::Preprocessor;
 use crate::parser::Parser;
 use crate::runtime::Runtime;
 
-pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn(), on_error: fn(&str)) {
+pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn(), on_error: fn(ChapError)) {
 
     // initialize
     let mut preprocessor = Preprocessor::default();
@@ -16,12 +16,14 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn
             let e = parser.on_new_line(line);
             match e {
                 Ok(el) => {
-                    if let Err(e)=runtime.on_new_line(el){
-                        on_error(e.error_message().as_str());
+                    if let Err(e) = runtime.on_new_line(el){
+                        on_error(e);
+                        return;
                     }
                 },
                 Err(e) => {
-                    on_error(e.error_message().as_str());
+                    on_error(e);
+                    return;
                 },
             }
             
@@ -31,9 +33,13 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn
     loop {
         if let Err(e) = runtime.execution_cycle(){
             match e.err_type {
-                ErrorType::NothingToExecute | ErrorType::Stop => {on_exit();return;},
+                ErrorType::NothingToExecute | ErrorType::Stop => {
+                    on_exit();
+                    return;
+                },
                 _=> {
-                    on_error(e.error_message().as_str());
+                    on_error(e);
+                    return;
                 }
             }
         }
