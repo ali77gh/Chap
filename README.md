@@ -287,7 +287,7 @@ add(1, 2) # 3
 ```chp
 // Chap:
 "1", "2" -> concat // 12
-1, 2 -> concat // 12 // you can concat integers safly
+1, 2 -> concat // 12 // you can concat integers safely
 1, 2 -> add // 3
 "1", "2" -> add // runtime error
 ```
