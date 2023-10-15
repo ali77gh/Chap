@@ -1,5 +1,6 @@
 
 use crate::common::line_of_code::LineOfCode;
+use crate::common::splitter::string_safe_split;
 
 
 #[derive(Default)]
@@ -13,8 +14,9 @@ impl Preprocessor {
     pub fn on_new_line(&mut self, actual_line: String) -> Vec<LineOfCode>{
 
         self.current_line+=1;
-        let line = actual_line.split("//").nth(0).unwrap_or(&actual_line); //remove all comments
 
+        let binding = string_safe_split(actual_line.as_str(), "//".to_string());
+        let line = binding.get(0).unwrap();
 
         line.split(';')
             .map(|line|{ line.trim() })
@@ -91,6 +93,16 @@ mod tests {
 
         assert_eq!("command1", pped.get(0).unwrap().code);
         assert_eq!("command2", pped.get(1).unwrap().code);
+    }
+
+    #[test]
+    fn string_includes_comment(){
+        let mut p = Preprocessor::default();
+        let result = p.on_new_line("\"hello // world\"".to_string());
+        assert_eq!(
+            result.get(0).unwrap().code,
+            "\"hello // world\"".to_string()
+        );
     }
 
 }

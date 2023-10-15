@@ -1,6 +1,7 @@
 
 use crate::common::{chunk::Chunk, param::Param, data_type::DataType};
 use crate::common::errors::{Result, ChapError};
+use crate::common::splitter::string_safe_split;
 
 pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
     
@@ -24,7 +25,7 @@ pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
 }
 
 fn params_parser(chunk_str: &str,line_number: u32) -> Result<Vec<Param>>{
-    let temp = comma_spliter(chunk_str);
+    let temp = string_safe_split(chunk_str, ",".to_string());
     let params_str = temp.iter().map(|x|{x.trim()});
 
     let mut result:Vec<Param> = Vec::new();
@@ -67,24 +68,6 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param>{
         Ok(parsed_param)
 }
 
-fn comma_spliter(inp: &str) -> Vec<&str>{
-    let mut result: Vec<&str> = vec![];
-
-    let mut quotations_on_left=0;
-    let mut last_seen = 0;
-    for (i,ch) in inp.chars().enumerate(){
-        if ch == '\"'{
-            quotations_on_left+=1;
-        }
-        if ch == ',' && quotations_on_left%2==0{
-            result.push(&inp[last_seen..i]);
-            last_seen=i+1
-        }
-    }
-    result.push(&inp[last_seen..]);
-
-    result
-}
 
 #[cfg(test)]
 mod tests {
@@ -190,18 +173,6 @@ mod tests {
             Ok(Chunk::Params(vec![Param::Value(DataType::String("ali, majid".to_string()))])) 
         )//this is single string param 
     } 
-
-    #[test]
-    fn comma_spliter_test(){
-        assert_eq!(
-            comma_spliter("ali,hasan,majid"),
-            vec!["ali","hasan","majid"]
-        );
-        assert_eq!(
-            comma_spliter("\"ali,hasan\",majid"),
-            vec!["\"ali,hasan\"","majid"]
-        );
-    }
 
 
     #[test]
