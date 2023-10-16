@@ -432,6 +432,75 @@ you win
 ```
 
 <br>
+## christmas_tree_with_trunk.chp
+
+```chp
+
+ // Editable
+0 -> $counter
+@loop
+    $counter -> increase
+
+    $counter, 1 -> multiply -> $stars_size
+    19, $counter -> minus -> $space_size
+
+    " * ", $stars_size -> repeat -> $stars
+    " ", $space_size -> repeat -> $spaces
+
+    $spaces, $stars -> cat
+
+    "`*-", $stars_size -> repeat -> $stars
+    " ", $space_size -> repeat -> $spaces
+
+    $spaces, $stars -> cat
+@loop, $counter, 10 -> jump if not equal
+
+3 -> $c
+@loop
+    $c-> increase
+
+    $c, 2 -> multiply -> $stars_size
+    22, $c-> minus -> $space_size
+
+
+    "*", $stars_size -> repeat -> $stars
+    " ", $space_size -> repeat -> $spaces
+
+    $spaces, $stars -> cat
+
+@loop, $c, 7 -> jump if not equal
+
+```
+```sh
+
+                   * 
+                  `*-
+                  *  * 
+                 `*-`*-
+                 *  *  * 
+                `*-`*-`*-
+                *  *  *  * 
+               `*-`*-`*-`*-
+               *  *  *  *  * 
+              `*-`*-`*-`*-`*-
+              *  *  *  *  *  * 
+             `*-`*-`*-`*-`*-`*-
+             *  *  *  *  *  *  * 
+            `*-`*-`*-`*-`*-`*-`*-
+            *  *  *  *  *  *  *  * 
+           `*-`*-`*-`*-`*-`*-`*-`*-
+           *  *  *  *  *  *  *  *  * 
+          `*-`*-`*-`*-`*-`*-`*-`*-`*-
+          *  *  *  *  *  *  *  *  *  * 
+         `*-`*-`*-`*-`*-`*-`*-`*-`*-`*-
+                  ********
+                 **********
+                ************
+               **************
+
+```
+
+<br>
 
 # DataTypes
 
