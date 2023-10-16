@@ -432,6 +432,7 @@ you win
 ```
 
 <br>
+
 ## christmas_tree_with_trunk.chp
 
 ```chp
