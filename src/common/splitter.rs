@@ -11,7 +11,7 @@ pub fn string_safe_split(inp: &str, pattern: String) -> Vec<&str>{
         let token = &inp[i..];
         if token.starts_with(&pattern) && quotations_on_left%2==0{
             result.push(&inp[last_seen..i]);
-            last_seen=i+1
+            last_seen = i + pattern.len();
         }
     }
     result.push(&inp[last_seen..]);
@@ -33,6 +33,14 @@ mod tests{
         assert_eq!(
             string_safe_split("\"ali,hasan\",majid", ",".to_string()),
             vec!["\"ali,hasan\"","majid"]
+        );
+    }
+
+    #[test]
+    fn split_longer_pattern(){
+        assert_eq!(
+            string_safe_split("1 -> print -> $a ", "->".to_string()),
+            vec!["1 "," print ", " $a "]
         );
     }
 }
