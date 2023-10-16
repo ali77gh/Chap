@@ -12,7 +12,7 @@ pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
     }
 
     let r= match chunk_str.chars().next().unwrap_or(' ') {
-        '$' | '@' | '"' | '-' | '+' => Chunk::Params(params_parser(chunk_str, line_number)?),
+        '$' | '@' | '"' | '-' | '+' | '[' => Chunk::Params(params_parser(chunk_str, line_number)?),
         c => {
             if c.is_ascii_digit(){
                 Chunk::Params(params_parser(chunk_str, line_number)?)
@@ -26,7 +26,7 @@ pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk>{
 
 fn params_parser(chunk_str: &str,line_number: u32) -> Result<Vec<Param>>{
     let temp = string_safe_split(chunk_str, ",".to_string());
-    let params_str = temp.iter().map(|x|{x.trim()});
+    let params_str: Vec<&str> = temp.iter().map(|x|{x.trim()}).collect();
 
     let mut result:Vec<Param> = Vec::new();
     for param_str in params_str {
@@ -51,6 +51,23 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param>{
                 } 
                 Param::Value( DataType::String((param[1..len-1]).to_string()))
             },
+            '[' => {
+                let mut list: Vec<DataType> = vec![];
+                if !(&param.ends_with(']')){
+                    return Err(ChapError::syntax_with_msg(line_number, "list should ends with ]".to_string()));
+                }
+                let param = &param[1..param.len()-1];
+                let items = param.split(' ').map(|token| param_parser(token, line_number));
+                for item in items{
+                    let item = item?;
+                    match item {
+                        Param::Tag(_) => return Err(ChapError::syntax_with_msg(line_number,"tags cant be in list".to_string())),
+                        Param::Variable(_) => return Err(ChapError::syntax_with_msg(line_number,"variables cant be in list".to_string())),
+                        Param::Value(v) => list.push(v),
+                    }
+                }
+                Param::Value(DataType::List(list))
+            }
             _=> {
                 if param.contains('.'){
                     if let Ok(float_value) = param.parse() {
@@ -184,6 +201,17 @@ mod tests {
         assert_eq!(
             chunk_detector("false".to_string(), 1),
             Ok(Chunk::Params(vec![Param::Value(DataType::Bool(false))]) )
+        );
+    }
+
+    #[test]
+    fn list_parser(){
+        assert_eq!(
+            params_parser("[1 2 3], 3", 1),
+            Ok(vec![
+                Param::Value(DataType::List(vec![DataType::Int(1), DataType::Int(2),DataType::Int(3)])),
+                Param::Value(DataType::Int(3)),
+            ])
         );
     }
 }

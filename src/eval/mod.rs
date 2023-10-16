@@ -55,6 +55,6 @@ mod tests{
     #[test]
     fn test_eval(){
         eval(
-            "3".to_string(), |x|{}, ||{"".to_string()}, ||{}, |e|{});
+            "3".to_string(), |_|{}, ||{"".to_string()}, ||{}, |_|{});
     }
 }
