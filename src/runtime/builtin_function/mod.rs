@@ -15,6 +15,7 @@ mod date_time;
 mod delay;
 mod debugger;
 mod error_handling;
+mod list;
 
 pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
