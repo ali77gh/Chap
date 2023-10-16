@@ -57,15 +57,16 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param>{
                     return Err(ChapError::syntax_with_msg(line_number, "list should ends with ]".to_string()));
                 }
                 let param = &param[1..param.len()-1];
-                let items = param.split(' ').map(|token| param_parser(token, line_number));
-                for item in items{
-                    let item = item?;
-                    match item {
-                        Param::Tag(_) => return Err(ChapError::syntax_with_msg(line_number,"tags cant be in list".to_string())),
-                        Param::Variable(_) => return Err(ChapError::syntax_with_msg(line_number,"variables cant be in list".to_string())),
-                        Param::Value(v) => list.push(v),
+                if !param.trim().is_empty(){
+                    let items = param.split(' ').map(|token| param_parser(token, line_number));
+                        for item in items{
+                            match item? {
+                                Param::Tag(_) => return Err(ChapError::syntax_with_msg(line_number,"tags cant be in list".to_string())),
+                                Param::Variable(_) => return Err(ChapError::syntax_with_msg(line_number,"variables cant be in list".to_string())),
+                                Param::Value(v) => list.push(v),
+                            }
+                        }
                     }
-                }
                 Param::Value(DataType::List(list))
             }
             _=> {
@@ -211,6 +212,15 @@ mod tests {
             Ok(vec![
                 Param::Value(DataType::List(vec![DataType::Int(1), DataType::Int(2),DataType::Int(3)])),
                 Param::Value(DataType::Int(3)),
+            ])
+        );
+        // empty array
+        assert_eq!(
+            params_parser("[], [ ], [   ]", 1),
+            Ok(vec![
+                Param::Value(DataType::List(vec![])),
+                Param::Value(DataType::List(vec![])),
+                Param::Value(DataType::List(vec![])),
             ])
         );
     }

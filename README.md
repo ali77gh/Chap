@@ -436,18 +436,21 @@ you win
 # DataTypes
 
 ```chp
-// REPL log
--> 1 -> type_of
+1 -> type_of
 int
--> 3.14 -> type of
-float
--> "ali" -> TypeOf
-string
--> true -> type      
-boolean
-```
 
-// TODO arrays
+3.14 -> type of
+float
+
+"ali" -> TypeOf
+string
+
+true -> type      
+boolean
+
+-> [1 2 3] -> type      
+list
+```
 
 # Installation
 
@@ -518,7 +521,7 @@ cargo build --release --lib
 
 - [ ] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var
 - [ ] Static analyzer
-- [ ] Performace improvement
+- [ ] Performance improvement
 - [ ] Chap to C compiler (C has jumps BTW)
 - [ ] Update [is_prime](https://github.com/ali77gh/language_performance_prime_algorithm) results
 - [ ] WASM lib
