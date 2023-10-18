@@ -4,7 +4,7 @@ use crate::{runtime::Runtime, common::executable::ExecutableLine};
 use crate::common::errors::{Result, ChapError};
 
 
-pub fn pop(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
+pub fn last(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
 
     let p1 = param_to_datatype_mut(&mut (*runtime), executable.params.get(0), executable.line_number)?;
 
@@ -13,7 +13,6 @@ pub fn pop(runtime: &mut Runtime, executable: &ExecutableLine)-> Result<()>{
         let last = x.last();
         if let Some(last) = last{
             result = last.clone();
-            x.pop();
         }else{
             return Err(ChapError::runtime_with_msg(executable.line_number, "list is empty".to_string()));
         }
