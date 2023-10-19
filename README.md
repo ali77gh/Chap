@@ -584,19 +584,19 @@ cargo build --release --lib
 
 ## Version 2.0.0
 
-- [ ] Arrays
-- [ ] Piping syntax (1,2->add->toString->print)
+- [x] Arrays
 - [x] fix: 'random' module will not work on WASM
 - [x] eval function
 - [x] [ChapApp](https://github.com/ali77gh/ChapApp)
+- [ ] Piping syntax (1, 2 -> add -> toString -> print)
+- [ ] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
 
 ## Version 3.0.0
 
-- [ ] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var
-- [ ] Fix floating point 0.2, 0.1 -> add -> $a //(0.3)
-- [ ] Performance improvement
+- [ ] Fix floating point 0.2, 0.1 -> add -> $a // 0.3
+- [ ] Better Closure gen for:
     - [ ] Static analyzer
-    - [ ] RC RefCell
+    - [ ] Performance improvement
 - [ ] Chap to C compiler (C has jumps BTW)
 - [ ] Update [is_prime](https://github.com/ali77gh/language_performance_prime_algorithm) results
 - [ ] WASM lib

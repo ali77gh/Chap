@@ -46,11 +46,9 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 #[cfg(target_family = "unix")]
 pub fn function_match(function_name: &str) -> Option<BuiltinFunction>{
     if let Some(f) = common_functions(function_name){
-        return Some(f);
-    }else if let Some(f) = random_functions(function_name) {
-        return Some(f);
-    }else{
-        None
+        Some(f)
+    }else {
+        random_functions(function_name)
     }
 }
 
@@ -129,7 +127,7 @@ pub fn common_functions(function_name: &str) -> Option<BuiltinFunction>{
         "input" | "stdin" => Some(std::input::input),
         "exit" | "quit" | "kill" | "end" => Some(std::exit::exit),
         _=>{
-            return None;
+            None
         }
     }
 }
@@ -146,7 +144,7 @@ pub fn random_functions(function_name: &str) -> Option<BuiltinFunction>{
         "randombool" | "randbool" => Some(random::random_bool::random_bool),
         "randomchoice" | "randchoice" => Some(random::random_choice::random_choice),
         _=>{
-            return None;
+            None
         }
     }
 }

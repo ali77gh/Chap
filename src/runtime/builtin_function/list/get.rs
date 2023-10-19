@@ -17,15 +17,15 @@ pub fn get(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>{
             let x = x - 1;
             let value = list.get(x);
             if let Some(value) = value{
-                return returns(runtime, executable, value.clone());
+                returns(runtime, executable, value.clone())
             }else{
-                return Err(ChapError::runtime_with_msg(executable.line_number, "index out of bound".to_string()));
+                Err(ChapError::runtime_with_msg(executable.line_number, "index out of bound".to_string()))
             }
         }else{
-            return Err(ChapError::runtime_with_msg(executable.line_number, "negative index".to_string()));
+            Err(ChapError::runtime_with_msg(executable.line_number, "negative index".to_string()))
         }
     }else{
-        return Err(ChapError::runtime_with_msg(executable.line_number, "correct form of 'get' function: <list>, <index> -> get -> $item".to_string()));
+        Err(ChapError::runtime_with_msg(executable.line_number, "correct form of 'get' function: <list>, <index> -> get -> $item".to_string()))
     }
     
 }

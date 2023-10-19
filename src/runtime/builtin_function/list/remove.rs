@@ -1,4 +1,4 @@
-use crate::runtime::builtin_function::utils::{param_to_datatype_mut, returns, param_to_datatype};
+use crate::runtime::builtin_function::utils::{param_to_datatype_mut, param_to_datatype};
 use crate::common::data_type::DataType;
 use crate::{runtime::Runtime, common::executable::ExecutableLine};
 use crate::common::errors::{Result, ChapError};

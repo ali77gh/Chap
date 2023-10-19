@@ -16,7 +16,7 @@ impl Preprocessor {
         self.current_line+=1;
 
         let binding = string_safe_split(actual_line.as_str(), "//".to_string());
-        let line = binding.get(0).unwrap();
+        let line = binding.first().unwrap();
 
         line.split(';')
             .map(|line|{ line.trim() })

@@ -33,7 +33,7 @@ impl Parser {
 
         let it = string_safe_split(&line, "->".to_string());
         
-        let mut el = match (it.get(0), it.get(1), it.get(2)) {
+        let mut el = match (it.first(), it.get(1), it.get(2)) {
             (Some(chunk1), None, None) => 
                 single_chunk_parser(chunk1.to_string(), new_line.line_number)?,
             (Some(chunk1), Some(chunk2), None) => 
