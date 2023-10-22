@@ -28,19 +28,23 @@ pub fn file_executor(file_name: &str) -> Result<()>{
 
     for line in read_to_string(file_name).unwrap().lines() {
         let ls = preprocessor.on_new_line(line.to_string());
-        for line in ls{
-            let e = parser.on_new_line(line);
-            match e {
-                Ok(el) => {
-                    if let Err(e)=runtime.on_new_line(el){
-                        e.exit_with_error();
+        match ls{
+            Ok(ls) => {
+                for line in ls{
+                    let e = parser.on_new_line(line);
+                    match e {
+                        Ok(el) => {
+                            if let Err(e)=runtime.on_new_line(el){
+                                e.exit_with_error();
+                            }
+                        },
+                        Err(err) => {
+                            err.exit_with_error();
+                        },
                     }
-                },
-                Err(err) => {
-                    err.exit_with_error();
-                },
-            }
-            
+                }
+            },
+            Err(e) => e.exit_with_error(),
         }
     }
 

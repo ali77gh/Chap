@@ -34,27 +34,35 @@ pub fn start_rpel(){
             Err(_) => break,
         };
         let lines = preprocessor.on_new_line(source);
-        for line in lines{
-            let el = parser.on_new_line(line);
-            match el {
-                Err(err) => err.show_warning(),
-                Ok(el) => {
-                    if let Err(e)=runtime.on_new_line(el){
-                        e.show_warning();
-                    }
-                    'inner: loop {
-                        if let Err(err) = runtime.execution_cycle(){
-                            match err.err_type {
-                                ErrorType::NothingToExecute => break 'inner,
-                                ErrorType::Stop => exit(0),
-                                _=> {
-                                    err.show_warning();
+        match lines{
+            Ok(lines) => {
+                for t in lines{
+                    let el = parser.on_new_line(t);
+                    match el {
+                        Err(err) => err.show_warning(),
+                        Ok(el) => {
+                            if let Err(e)=runtime.on_new_line(el){
+                                e.show_warning();
+                            }
+                            'inner: loop {
+                                if let Err(err) = runtime.execution_cycle(){
+                                    match err.err_type {
+                                        ErrorType::NothingToExecute => break 'inner,
+                                        ErrorType::Stop => exit(0),
+                                        _=> {
+                                            err.show_warning();
+                                        }
+                                    }
                                 }
                             }
-                        }
+                        },
                     }
-                },
-            }
+                }
+            },
+            Err(e) => {
+                e.show_warning();
+            },
         }
+            
     }
 }
