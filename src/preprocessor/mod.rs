@@ -1,5 +1,5 @@
 
-use crate::common::errors::Result;
+use crate::common::errors::{Result, ChapError};
 use crate::common::line_of_code::LineOfCode;
 use crate::common::splitter::string_safe_split;
 
@@ -8,6 +8,7 @@ use crate::common::splitter::string_safe_split;
 pub struct Preprocessor{
     current_line: u32,
     buffer: String,
+    temp_vars: u32
 }
 
 // Preprocessor converts users code to parsable code
@@ -27,22 +28,23 @@ impl Preprocessor {
             .map(|line|{ line.trim() })
             .filter(|x|{ !x.is_empty()});
 
-        let mut lines: Vec<&str> = lines.collect();
+        let mut lines: Vec<String> = lines.map(|x|x.to_string()).collect();
 
         let line = self.current_line;
 
         lines = self.multiline_expresion(lines);
-        // let lines = self.parentheses(lines)?;
+        
+        let lines = self.parentheses(lines)?;
 
         Ok(lines.iter().map(|x|{ LineOfCode::new(line,x.to_string()) })
             .collect())
     }
 
-    fn multiline_expresion<'a>(&'a mut self, mut inp: Vec<&'a str>) -> Vec<&str>{
+    fn multiline_expresion(&mut self, mut inp: Vec<String>) -> Vec<String>{
         if let Some(x) = inp.last(){
             if x.ends_with("->"){
                 let halfline = inp.pop().unwrap();
-                self.buffer.push_str(halfline);
+                self.buffer.push_str(halfline.as_str());
                 inp
             }else{
                 inp
@@ -50,6 +52,32 @@ impl Preprocessor {
         }else{
             vec![]
         }
+    }
+
+    fn parentheses(&mut self, inp: Vec<String>) -> Result<Vec<String>>{
+        let mut result: Vec<String> = vec![];
+        for l in inp{
+
+            let start = l.chars().position(|c| c=='(');
+            let end = l.chars().position(|c| c==')');
+            match (start, end) {
+                (None, None) => result.push(l.to_string()),
+                (None, Some(_)) => 
+                    return Err(ChapError::syntax_with_msg(0, "parenthese ends without an start".to_string())),
+                (Some(_), None) => 
+                    return Err(ChapError::syntax_with_msg(0, "parenthese starts without an end".to_string())),
+                (Some(start), Some(end)) => {
+                    let exp = &l[start+1..end];
+                    let gen = format!("{}->$TMP_{}", exp, self.temp_vars);
+                    result.push(gen);
+                    let rest = format!("{}$TMP_{}{}", &l[..start], self.temp_vars, &l[end+1..]);
+                    self.temp_vars+=1;
+                    let mut rest = self.parentheses(vec![rest])?;
+                    result.append(&mut rest);
+                },
+            }
+            }
+        Ok(result)
     }
 }
 
@@ -140,4 +168,24 @@ mod tests {
         assert_eq!(result2.get(0).unwrap().code, "1,2->add".to_string());
     }
 
+    #[test]
+    fn parentheses(){
+        let mut p = Preprocessor::default();
+        let result = p.on_new_line("(1,2->add),2->add".to_string()).unwrap();
+
+        assert_eq!(result.len(), 2);
+        assert_eq!(result.get(0).unwrap().code, "1,2->add->$TMP_0".to_string());
+        assert_eq!(result.get(1).unwrap().code, "$TMP_0,2->add".to_string());
+    }
+
+    #[test]
+    fn multi_parentheses(){
+        let mut p = Preprocessor::default();
+        let result = p.on_new_line("(1,2->add),(3,4->add)->add".to_string()).unwrap();
+        assert_eq!(result.len(), 3);
+        assert_eq!(result.get(0).unwrap().code, "1,2->add->$TMP_0".to_string());
+        assert_eq!(result.get(1).unwrap().code, "3,4->add->$TMP_1".to_string());
+        assert_eq!(result.get(2).unwrap().code, "$TMP_0,$TMP_1->add".to_string());
+    }
+    
 }
