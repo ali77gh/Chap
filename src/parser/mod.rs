@@ -19,7 +19,7 @@ pub struct Parser;
     
 impl Parser {
 
-    pub fn on_new_line(&self, new_line: LineOfCode) -> Result<ExecutableLine>{
+    pub fn on_new_line(&self, new_line: LineOfCode) -> Result<Vec<ExecutableLine>>{
 
         let mut debug_mode = false;
         let line = if new_line.code.ends_with('?'){
@@ -46,7 +46,7 @@ impl Parser {
                 ), // will never happen
         };
         el.debug_mode = debug_mode;
-        Ok(el)
+        Ok(vec![el])
     }
 }
 
@@ -63,12 +63,12 @@ mod tests{
         let p = Parser::default();
         assert_eq!(
             p.on_new_line(LineOfCode::new(1, "\"hello -> world\"".to_string())),
-            Ok(ExecutableLine::new(
+            Ok(vec![ExecutableLine::new(
                 1,
                 "print".to_string(),
                 vec![Param::Value(DataType::String("hello -> world".to_string()))],
                 None
-            ))
+            )])
         );
     }
 
@@ -77,12 +77,12 @@ mod tests{
         let p = Parser::default();
         assert_eq!(
             p.on_new_line(LineOfCode::new(1, "\"hello // world\"".to_string())),
-            Ok(ExecutableLine::new(
+            Ok(vec![ExecutableLine::new(
                 1,
                 "print".to_string(),
                 vec![Param::Value(DataType::String("hello // world".to_string()))],
                 None
-            ))
+            )])
         );
     }
 }

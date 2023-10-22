@@ -17,10 +17,12 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn
                 for line in ls{
                     let e = parser.on_new_line(line);
                     match e {
-                        Ok(el) => {
-                            if let Err(e) = runtime.on_new_line(el){
-                                on_error(e);
-                                return;
+                        Ok(els) => {
+                            for el in els{
+                                if let Err(e) = runtime.on_new_line(el){
+                                    on_error(e);
+                                    return;
+                                }
                             }
                         },
                         Err(e) => {

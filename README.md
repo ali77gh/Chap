@@ -589,7 +589,7 @@ cargo build --release --lib
 - [x] eval function
 - [x] [ChapApp](https://github.com/ali77gh/ChapApp)
 - [ ] Piping syntax (1, 2 -> add -> toString -> print)
-- [ ] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
+- [x] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
 
 ## Version 3.0.0
 

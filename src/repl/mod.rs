@@ -40,17 +40,19 @@ pub fn start_rpel(){
                     let el = parser.on_new_line(t);
                     match el {
                         Err(err) => err.show_warning(),
-                        Ok(el) => {
-                            if let Err(e)=runtime.on_new_line(el){
-                                e.show_warning();
-                            }
-                            'inner: loop {
-                                if let Err(err) = runtime.execution_cycle(){
-                                    match err.err_type {
-                                        ErrorType::NothingToExecute => break 'inner,
-                                        ErrorType::Stop => exit(0),
-                                        _=> {
-                                            err.show_warning();
+                        Ok(els) => {
+                            for el in els{
+                                if let Err(e)=runtime.on_new_line(el){
+                                    e.show_warning();
+                                }
+                                'inner: loop {
+                                    if let Err(err) = runtime.execution_cycle(){
+                                        match err.err_type {
+                                            ErrorType::NothingToExecute => break 'inner,
+                                            ErrorType::Stop => exit(0),
+                                            _=> {
+                                                err.show_warning();
+                                            }
                                         }
                                     }
                                 }

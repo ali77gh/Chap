@@ -187,5 +187,16 @@ mod tests {
         assert_eq!(result.get(1).unwrap().code, "3,4->add->$TMP_1".to_string());
         assert_eq!(result.get(2).unwrap().code, "$TMP_0,$TMP_1->add".to_string());
     }
+
+    // #[test]
+    // fn nest_parentheses(){
+    //     let mut p = Preprocessor::default();
+    //     let result = p.on_new_line("((1,2->add),2->add),(3,4->add)->add".to_string()).unwrap();
+    //     assert_eq!(result.len(), 3);
+    //     assert_eq!(result.get(0).unwrap().code, "1,2->add->$TMP_0".to_string());
+    //     assert_eq!(result.get(0).unwrap().code, "$TMP_0,2->add->$TMP_1".to_string());
+    //     assert_eq!(result.get(1).unwrap().code, "3,4->add->$TMP_2".to_string());
+    //     assert_eq!(result.get(2).unwrap().code, "$TMP_1,$TMP_2->add".to_string());
+    // }
     
 }

@@ -33,9 +33,11 @@ pub fn file_executor(file_name: &str) -> Result<()>{
                 for line in ls{
                     let e = parser.on_new_line(line);
                     match e {
-                        Ok(el) => {
-                            if let Err(e)=runtime.on_new_line(el){
-                                e.exit_with_error();
+                        Ok(els) => {
+                            for el in els{
+                                if let Err(e)=runtime.on_new_line(el){
+                                    e.exit_with_error();
+                                }
                             }
                         },
                         Err(err) => {
