@@ -41,8 +41,9 @@ impl Preprocessor {
     }
 
     fn multiline_expresion(&mut self, mut inp: Vec<String>) -> Vec<String>{
+        // TODO parentheses when we have more '(' then ')' so the line is not finished
         if let Some(x) = inp.last(){
-            if x.ends_with("->"){
+            if x.ends_with("->") || x.ends_with(','){
                 let halfline = inp.pop().unwrap();
                 self.buffer.push_str(halfline.as_str());
                 inp
@@ -58,26 +59,47 @@ impl Preprocessor {
         let mut result: Vec<String> = vec![];
         for l in inp{
 
-            let start = l.chars().position(|c| c=='(');
             let end = l.chars().position(|c| c==')');
-            match (start, end) {
-                (None, None) => result.push(l.to_string()),
-                (None, Some(_)) => 
-                    return Err(ChapError::syntax_with_msg(0, "parenthese ends without an start".to_string())),
-                (Some(_), None) => 
-                    return Err(ChapError::syntax_with_msg(0, "parenthese starts without an end".to_string())),
-                (Some(start), Some(end)) => {
-                    let exp = &l[start+1..end];
-                    let gen = format!("{}->$TMP_{}", exp, self.temp_vars);
-                    result.push(gen);
-                    let rest = format!("{}$TMP_{}{}", &l[..start], self.temp_vars, &l[end+1..]);
-                    self.temp_vars+=1;
-                    let mut rest = self.parentheses(vec![rest])?;
-                    result.append(&mut rest);
+            match end {
+                Some(end) => {
+                    let start: Option<usize> = Self::find_backward(&l, end);
+                    match start{
+                        Some(start) => {
+                            let exp = &l[start+1..end];
+                            let gen = format!("{}->$TMP_{}", exp, self.temp_vars);
+                            result.push(gen);
+                            let rest = format!("{}$TMP_{}{}", &l[..start], self.temp_vars, &l[end+1..]);
+                            self.temp_vars+=1;
+                            let mut rest = self.parentheses(vec![rest])?;
+                            result.append(&mut rest);
+                        },
+                        None => {
+                            return Err(ChapError::syntax_with_msg(self.current_line, "parenthese ends without an start".to_string()))
+                        },
+                    }
+                },
+                None => {
+                    let start = l.chars().position(|c| c=='(');
+                    match start {
+                        Some(_) => 
+                            return Err(ChapError::syntax_with_msg(self.current_line, "parenthese starts without an end".to_string())),
+                        None => {
+                            result.push(l.to_string());
+                        },
+                    }
                 },
             }
-            }
+        }
         Ok(result)
+    }
+
+    fn find_backward(s: &str, from: usize) -> Option<usize>{
+        for i in (0..from).rev(){
+            if s.chars().nth(i).unwrap() == '('{
+                return Some(i);
+            }
+        }
+        None
     }
 }
 
@@ -161,11 +183,13 @@ mod tests {
     #[test]
     fn multiline_expresion(){
         let mut p = Preprocessor::default();
-        let result1 = p.on_new_line("1,2->".to_string()).unwrap();
-        let result2 = p.on_new_line("add".to_string()).unwrap();
+        let result1 = p.on_new_line("1,".to_string()).unwrap();
+        let result2 = p.on_new_line("2->".to_string()).unwrap();
+        let result3 = p.on_new_line("add".to_string()).unwrap();
 
         assert_eq!(result1.len(), 0);
-        assert_eq!(result2.get(0).unwrap().code, "1,2->add".to_string());
+        assert_eq!(result2.len(), 0);
+        assert_eq!(result3.get(0).unwrap().code, "1,2->add".to_string());
     }
 
     #[test]
@@ -188,15 +212,15 @@ mod tests {
         assert_eq!(result.get(2).unwrap().code, "$TMP_0,$TMP_1->add".to_string());
     }
 
-    // #[test]
-    // fn nest_parentheses(){
-    //     let mut p = Preprocessor::default();
-    //     let result = p.on_new_line("((1,2->add),2->add),(3,4->add)->add".to_string()).unwrap();
-    //     assert_eq!(result.len(), 3);
-    //     assert_eq!(result.get(0).unwrap().code, "1,2->add->$TMP_0".to_string());
-    //     assert_eq!(result.get(0).unwrap().code, "$TMP_0,2->add->$TMP_1".to_string());
-    //     assert_eq!(result.get(1).unwrap().code, "3,4->add->$TMP_2".to_string());
-    //     assert_eq!(result.get(2).unwrap().code, "$TMP_1,$TMP_2->add".to_string());
-    // }
+    #[test]
+    fn nest_parentheses(){
+        let mut p = Preprocessor::default();
+        let result = p.on_new_line("((1,2->add),2->add),(3,4->add)->add".to_string()).unwrap();
+        assert_eq!(result.len(), 4);
+        assert_eq!(result.get(0).unwrap().code, "1,2->add->$TMP_0".to_string());
+        assert_eq!(result.get(1).unwrap().code, "$TMP_0,2->add->$TMP_1".to_string());
+        assert_eq!(result.get(2).unwrap().code, "3,4->add->$TMP_2".to_string());
+        assert_eq!(result.get(3).unwrap().code, "$TMP_1,$TMP_2->add".to_string());
+    }
     
 }
