@@ -43,7 +43,7 @@ impl Preprocessor {
     fn multiline_expresion(&mut self, mut inp: Vec<String>) -> Vec<String>{
         // TODO parentheses when we have more '(' then ')' so the line is not finished
         if let Some(x) = inp.last(){
-            if x.ends_with("->") || x.ends_with(','){
+            if x.ends_with("->") || x.ends_with(',') || x.matches('(').count() > x.matches(')').count(){
                 let halfline = inp.pop().unwrap();
                 self.buffer.push_str(halfline.as_str());
                 inp
@@ -223,4 +223,15 @@ mod tests {
         assert_eq!(result.get(3).unwrap().code, "$TMP_1,$TMP_2->add".to_string());
     }
     
+    #[test]
+    fn multiline_expresion_parentheses(){
+        let mut p = Preprocessor::default();
+        let result1 = p.on_new_line("(".to_string()).unwrap();
+        let result2 = p.on_new_line("(1,2->add),2->add".to_string()).unwrap();
+        let result3 = p.on_new_line("),(3,4->add)->add".to_string()).unwrap();
+
+        assert_eq!(result1.len(), 0);
+        assert_eq!(result2.len(), 0);
+        assert_eq!(result3.len(), 4);
+    }
 }
