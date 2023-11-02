@@ -588,8 +588,9 @@ cargo build --release --lib
 - [x] fix: 'random' module will not work on WASM
 - [x] eval function
 - [x] [ChapApp](https://github.com/ali77gh/ChapApp)
-- [ ] Piping syntax (1, 2 -> add -> toString -> print)
+- [x] Piping syntax (1, 2 -> add -> toString -> print)
 - [x] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
+- [ ] Fix clusure problem and unsafe eval
 
 ## Version 3.0.0
 
