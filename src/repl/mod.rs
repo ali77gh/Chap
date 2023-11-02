@@ -14,7 +14,7 @@ pub fn start_rpel(){
     // initialize
     let mut preprocessor = Preprocessor::default();
 
-    let parser = Parser;
+    let mut parser = Parser::default();
 
     let mut reader = DefaultEditor::new().unwrap(); // TODO: handle error
 

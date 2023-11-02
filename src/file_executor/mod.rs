@@ -13,7 +13,7 @@ pub fn file_executor(file_name: &str) -> Result<()>{
     // initialize
     let mut preprocessor = Preprocessor::default();
 
-    let parser= Parser;
+    let mut parser= Parser::default();
 
     let mut runtime = Runtime::new(|msg|{
         println!("{}", msg);

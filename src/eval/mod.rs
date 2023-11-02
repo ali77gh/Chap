@@ -7,7 +7,7 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn
 
     // initialize
     let mut preprocessor = Preprocessor::default();
-    let parser= Parser;
+    let mut parser= Parser::default();
     let mut runtime = Runtime::new(std_out, std_in);
 
     for line in code.split('\n') {

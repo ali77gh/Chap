@@ -582,7 +582,7 @@ cargo build --release --lib
 
 # TODOs
 
-## Version 2.0.0
+## Release Note version 2.0.0
 
 - [x] Arrays
 - [x] fix: 'random' module will not work on WASM
@@ -595,11 +595,11 @@ cargo build --release --lib
 
 - [ ] Fix floating point 0.2, 0.1 -> add -> $a // 0.3
 - [ ] Better Closure gen for:
-    - [ ] Static analyzer
-    - [ ] Performance improvement
-- [ ] Chap to C compiler (C has jumps BTW)
+  - [ ] Static analyzer
+  - [ ] Performance improvement
+- [ ] Chap to C compiler (C has jumps BTW) + (executable or standard lib(dll|so|wasm) with extern)
 - [ ] Update [is_prime](https://github.com/ali77gh/language_performance_prime_algorithm) results
-- [ ] WASM lib
+- [ ] chap library for other programming lanuages
 
 # Stars
 

@@ -41,7 +41,6 @@ impl Preprocessor {
     }
 
     fn multiline_expresion(&mut self, mut inp: Vec<String>) -> Vec<String>{
-        // TODO parentheses when we have more '(' then ')' so the line is not finished
         if let Some(x) = inp.last(){
             if x.ends_with("->") || x.ends_with(',') || x.matches('(').count() > x.matches(')').count(){
                 let halfline = inp.pop().unwrap();
