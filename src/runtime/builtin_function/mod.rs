@@ -19,10 +19,11 @@ mod list;
 
 pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
+    let debug_mode = executable.function_name.ends_with("?");
     let function_name = executable.function_name
         .clone()
         .to_lowercase()
-        .replace([' ', '_'], "");
+        .replace([' ', '_', '?'], "");
 
     
     let function = match function_match(&function_name){
@@ -35,7 +36,7 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         )
     };
 
-    if executable.debug_mode{
+    if debug_mode{
         Ok(debugger::debugger)
     }else {
         Ok(function)

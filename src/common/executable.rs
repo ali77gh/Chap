@@ -13,7 +13,6 @@ pub struct ExecutableLine{
     pub params: Vec<Param>,
     pub output_var: Option<String>,
     pub closure: BuiltinFunction,
-    pub debug_mode: bool,
 }
 
 impl ExecutableLine {
@@ -30,7 +29,6 @@ impl ExecutableLine {
             params,
             output_var, 
             closure: |_,_|{Ok(())},
-            debug_mode: false
         }
     }
 

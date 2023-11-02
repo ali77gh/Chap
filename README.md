@@ -590,6 +590,7 @@ cargo build --release --lib
 - [x] [ChapApp](https://github.com/ali77gh/ChapApp)
 - [x] Piping syntax (1, 2 -> add -> toString -> print)
 - [x] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
+- [x] New debugger syntax 1,2 -> add? -> $sum
 - [ ] Fix clusure problem and unsafe eval
 
 ## Version 3.0.0
