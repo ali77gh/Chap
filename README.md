@@ -407,7 +407,7 @@ Initialize:
 Insert:
 
 ```chp
-$myArray, 5 -> insert -> $myArray
+$myArray, 5 -> insert
 ```
 
 Pop:
@@ -675,7 +675,7 @@ cargo build --release --lib
 # Builtin Functions
 
 [runtime/builtin_function](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function) <br>
-Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
+Chap has 49 builtin function(version 2.0.0) (less than javas keywords)
 
 | Names                   | Input params      | output   | description                                                 |
 |-------------------------|-------------------|----------|-------------------------------------------------------------|
@@ -711,6 +711,14 @@ Chap has 46 builtin function(version 1.0.1) (less than javas keywords)
 | length, len             | any               | int      | convert input to string and returns length 456 -> 3         |
 | contains, has           | any               | bool     | convert inputs to string and returns 1st contains 2nd 11,1->true |
 | slice, sub_string       | any, int, int     | string   | "hello", 1, 3 -> "el"                                       |
+| insert                  | array, any        | nothing  | insert an item to list                                      |
+| get                     | array, int        | any      | get nth item of list second param is index of item          |
+| pop                     | array             | any      | remove last item of list and returns it                     |
+| last                    | array             | any      | return lsat item of list (without removin it)               |
+| has                     | array, any        | bool     | check if an item exist in a list                            |
+| remove                  | array, any        | nohting  | removes a given item from list                              |
+| remove_at               | array, int        | nothing  | removes item at index of second param                       |
+| index_of                | array, any        | int      | search for an item on list and returns index                |
 | to_string               | any               | string   | convert input to string        1 -> "1"                     |
 | to_float                | string            | float    | convert input to float  "1.5" -> 1.5 ; "a"->error           |
 | to_int                  | string            | int      | convert input to int    "1" -> 1 ; "a"->error               |
