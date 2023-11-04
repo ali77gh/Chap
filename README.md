@@ -476,18 +476,13 @@ you win
 ## christmas_tree.chp
 
 ```chp
-
 0 -> $counter
 @loop
     $counter -> increase
 
-    $counter, 2 -> multiply -> $stars_size
-    10, $counter -> minus -> $space_size
-
-    "*", $stars_size -> repeat -> $stars
-    " ", $space_size -> repeat -> $spaces
-
-    $spaces, $stars -> cat
+    (" ", (10, $counter -> minus) -> repeat),
+    ("*", ($counter, 2 -> multiply) -> repeat) -> 
+    cat
 @loop, $counter, 10 -> jump if not equal
 
 ```
