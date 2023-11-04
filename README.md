@@ -6,12 +6,12 @@
 [![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
 [![GitHub license](https://badgen.net/github/license/ali77gh/chap)](https://github.com/ali77gh/chap/blob/master/LICENSE)
 
-Chap is an Easy to learn, dynamic, interpretive, isolated, and keywordless scripting language written in Rust. It is useful when you want your non-programmer users to control some stuff dynamically and perform some custom calculations in a safe sandbox.
+Chap is an Easy to learn, dynamic, interpretive, isolated, and keyword-less scripting language written in Rust. It is useful when you want your non-programmer users to control some stuff dynamically and perform some custom calculations in a safe sandbox.
 
 
 Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Assembly](https://en.wikipedia.org/wiki/Assembly_language) and [Bash](https://www.php.net/).
 
-[ChapApp](https://github.com/ali77gh/chapAPP) is a Chap Editor/Compiler on Broswer (Powerd by WASM). ChapApp is written in Rust([Dioxus](https://dioxuslabs.com/)) as well.
+[ChapApp](https://github.com/ali77gh/chapAPP) is a Chap Editor/Compiler on Browser (Powered by WASM). ChapApp is written in Rust([Dioxus](https://dioxuslabs.com/)) as well.
 <a href="https://ali77gh.github.io/ChapApp/" target="_blank">Open ChapApp in new tab</a>.
 
 <br>
@@ -39,7 +39,7 @@ Rust or راست in persian means right and Chap or چپ means left.
 
 If you code in rust(right) too much you gradually became capitalist after a while. so you need to write some chap(left) to escape from matrix.
 
-Chap unlocks **Two-Dimentional** Full Stack Development. Front⬆️End, Back⬇️End, Rust➡️End, Chap⬅️End.
+Chap unlocks **Two-Dimensional** Full Stack Development. Front⬆️End, Back⬇️End, Rust➡️End, Chap⬅️End.
 
 <br>
 
@@ -47,7 +47,8 @@ Chap unlocks **Two-Dimentional** Full Stack Development. Front⬆️End, Back⬇
 
 1. Its so easy to learn, (your grandma can learn it in 15 minutes max).
 2. Cross platform (chap runs on Linux, MacOS, Web(WASM) and even Windows!)
-3. OOP or FP? Chap does not gives a sh*t about other programming languages and do the thing in its own way (aka Gigachap paradaim).
+3. Slow
+4. Useless
 
 <br>
 
@@ -117,9 +118,9 @@ result = send(sqrt(1 + 2).toString());
         1       2         3          4        5
 ```
 
-This is acctually left to right like normal english.
+This is actually left to right like normal english.
 
-TODO: "Piping" is not supported in version 1.0.0. and every chap line can have 3 chunk max.
+Note: "Piping" is added in version 2.0.0
 
 <br>
 
@@ -235,11 +236,54 @@ We have worlds smallest hello world:
 
 I wish I could remove double quotes too :)
 
+# Piping syntax
+
+Sometimes you have a collection of function calls like this:
+
+```chp
+1, 2 -> add -> $tmp1
+$tmp1 -> sqrt -> $tmp2
+$tmp2 -> print
+```
+
+As you can see output of a function call is input of the next function call.
+
+In this case you can use piping syntax and write functions next to to each other and get rid of temp variables:
+
+```chp
+1, 2 -> add -> sqrt -> print
+```
+
+# Parentheses
+
+You can't use Piping while one of functions has more than one param.
+
+```chp
+1,2 -> add -> add -> print
+               ↑
+               This needs two input param
+```
+
+In this case you can use Parentheses:
+
+```chp
+(1,2 -> add), (3 -> sqrt) -> add -> print
+```
+
+This converts two:
+
+```chp
+1,2 -> add -> $TMP1
+3 -> sqrt -> $TMP2
+$TMP1, TMP2 -> add -> print
+```
+
+
 # Operators
 
 There is one operator -> which moves data from left to right and it is language logo.
 
-Why operators are bad? <br> becuase they behave different with different types.
+Why operators are bad? <br> because they behave different with different types.
 look at this python example:
 
 ```python
@@ -276,7 +320,7 @@ Runtime errors are much better than logical error. and in chap we have repeat fu
 // foo foo foo 
 ```
 
-In many languges "+" operator has same problem:
+In many languages "+" operator has same problem:
 
 ```python
 # python
@@ -348,9 +392,36 @@ jumping backward makes loops
 @i
 ```
 
-Note: Indenation is not nessessery
+Note: Indention is not necessary
 
 <br>
+
+# Array
+
+Initialize:
+
+```chp
+[1 2 3 4] -> $myArray
+```
+
+Insert:
+
+```chp
+$myArray, 5 -> insert -> $myArray
+```
+
+Pop:
+
+```chp
+$myArray-> pop -> $last_item
+```
+
+Get item by index:
+
+```chp
+$myArray, 1 -> get -> $first_item
+// arrays index start from 1
+```
 
 # Samples
 
@@ -364,7 +435,7 @@ Note: Indenation is not nessessery
 Hello world
 ```
 
-## couter.chp
+## counter.chp
 
 ```chp
 0 -> $counter
@@ -591,7 +662,6 @@ cargo build --release --lib
 - [x] Piping syntax (1, 2 -> add -> toString -> print)
 - [x] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
 - [x] New debugger syntax 1,2 -> add? -> $sum
-- [ ] Fix clusure problem and unsafe eval
 
 ## Version 3.0.0
 
