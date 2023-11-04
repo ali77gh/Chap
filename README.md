@@ -348,7 +348,7 @@ You can put a ? end of line to debug that line:
 ```chp
 1 -> $a
 2 -> $b
-$a, $b -> add -> $c?
+$a, $b -> add? -> $c
 // result 1, 2 -> add -> 3
 ```
 
