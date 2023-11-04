@@ -15,13 +15,15 @@ mod date_time;
 mod delay;
 mod debugger;
 mod error_handling;
+mod list;
 
 pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 
+    let debug_mode = executable.function_name.ends_with("?");
     let function_name = executable.function_name
         .clone()
         .to_lowercase()
-        .replace([' ', '_'], "");
+        .replace([' ', '_', '?'], "");
 
     
     let function = match function_match(&function_name){
@@ -34,7 +36,7 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
         )
     };
 
-    if executable.debug_mode{
+    if debug_mode{
         Ok(debugger::debugger)
     }else {
         Ok(function)
@@ -45,11 +47,9 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction>{
 #[cfg(target_family = "unix")]
 pub fn function_match(function_name: &str) -> Option<BuiltinFunction>{
     if let Some(f) = common_functions(function_name){
-        return Some(f);
-    }else if let Some(f) = random_functions(function_name) {
-        return Some(f);
-    }else{
-        None
+        Some(f)
+    }else {
+        random_functions(function_name)
     }
 }
 
@@ -106,6 +106,14 @@ pub fn common_functions(function_name: &str) -> Option<BuiltinFunction>{
         "length" | "len"  => Some(strings::length::length),
         "contains" | "has"  => Some(strings::contains::contains),
         "slice" | "substring"  => Some(strings::slice::slice),
+        "insert" | "push" => Some(list::insert::insert),
+        "get" | "at" => Some(list::get::get),
+        "pop" => Some(list::pop::pop),
+        "last" => Some(list::last::last),
+        "includes" | "in" => Some(list::has::has),
+        "removeat" | "rmat" => Some(list::remove_at::remove_at),
+        "removeitem" | "rmit" => Some(list::remove::remove),
+        "indexof"  => Some(list::index_of::index_of),
         "dump" | "dumpmemory" => Some(debugger::dump::dump),
         "typeof" | "type" => Some(type_of::type_of),
         "tostring" | "tostr" => Some(type_conversion::to_string::to_string),
@@ -120,7 +128,7 @@ pub fn common_functions(function_name: &str) -> Option<BuiltinFunction>{
         "input" | "stdin" => Some(std::input::input),
         "exit" | "quit" | "kill" | "end" => Some(std::exit::exit),
         _=>{
-            return None;
+            None
         }
     }
 }
@@ -137,7 +145,7 @@ pub fn random_functions(function_name: &str) -> Option<BuiltinFunction>{
         "randombool" | "randbool" => Some(random::random_bool::random_bool),
         "randomchoice" | "randchoice" => Some(random::random_choice::random_choice),
         _=>{
-            return None;
+            None
         }
     }
 }

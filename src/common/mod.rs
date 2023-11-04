@@ -7,3 +7,4 @@ pub mod executable;
 pub mod errors;
 pub mod help;
 pub mod version;
+pub mod splitter;

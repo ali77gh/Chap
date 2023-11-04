@@ -13,7 +13,7 @@ pub fn file_executor(file_name: &str) -> Result<()>{
     // initialize
     let mut preprocessor = Preprocessor::default();
 
-    let parser= Parser;
+    let mut parser= Parser::default();
 
     let mut runtime = Runtime::new(|msg|{
         println!("{}", msg);
@@ -21,26 +21,32 @@ pub fn file_executor(file_name: &str) -> Result<()>{
         let mut buffer = String::new();
         let stdin = io::stdin(); // We get `Stdin` here.
         stdin.read_line(&mut buffer).unwrap();
-        buffer = buffer.replace("\n", "").trim().to_string();
+        buffer = buffer.replace('\n', "").trim().to_string();
         buffer
     });
 
 
     for line in read_to_string(file_name).unwrap().lines() {
         let ls = preprocessor.on_new_line(line.to_string());
-        for line in ls{
-            let e = parser.on_new_line(line);
-            match e {
-                Ok(el) => {
-                    if let Err(e)=runtime.on_new_line(el){
-                        e.exit_with_error();
+        match ls{
+            Ok(ls) => {
+                for line in ls{
+                    let e = parser.on_new_line(line);
+                    match e {
+                        Ok(els) => {
+                            for el in els{
+                                if let Err(e)=runtime.on_new_line(el){
+                                    e.exit_with_error();
+                                }
+                            }
+                        },
+                        Err(err) => {
+                            err.exit_with_error();
+                        },
                     }
-                },
-                Err(err) => {
-                    err.exit_with_error();
-                },
-            }
-            
+                }
+            },
+            Err(e) => e.exit_with_error(),
         }
     }
 

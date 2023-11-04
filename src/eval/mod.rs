@@ -7,26 +7,35 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_exit: fn
 
     // initialize
     let mut preprocessor = Preprocessor::default();
-    let parser= Parser;
+    let mut parser= Parser::default();
     let mut runtime = Runtime::new(std_out, std_in);
 
-    for line in code.split("\n") {
+    for line in code.split('\n') {
         let ls = preprocessor.on_new_line(line.to_string());
-        for line in ls{
-            let e = parser.on_new_line(line);
-            match e {
-                Ok(el) => {
-                    if let Err(e) = runtime.on_new_line(el){
-                        on_error(e);
-                        return;
+        match ls {
+            Ok(ls) => {
+                for line in ls{
+                    let e = parser.on_new_line(line);
+                    match e {
+                        Ok(els) => {
+                            for el in els{
+                                if let Err(e) = runtime.on_new_line(el){
+                                    on_error(e);
+                                    return;
+                                }
+                            }
+                        },
+                        Err(e) => {
+                            on_error(e);
+                            return;
+                        },
                     }
-                },
-                Err(e) => {
-                    on_error(e);
-                    return;
-                },
-            }
-            
+                }
+            },
+            Err(e) => {
+                on_error(e);
+                return;
+            },
         }
     }
 
@@ -55,6 +64,6 @@ mod tests{
     #[test]
     fn test_eval(){
         eval(
-            "3".to_string(), |x|{}, ||{"".to_string()}, ||{}, |e|{});
+            "3".to_string(), |_|{}, ||{"".to_string()}, ||{}, |_|{});
     }
 }

@@ -6,7 +6,8 @@
 [![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
 [![GitHub license](https://badgen.net/github/license/ali77gh/chap)](https://github.com/ali77gh/chap/blob/master/LICENSE)
 
-Chap is an Easy to learn, dynamic, interpretive, isolated, and keywordless scripting language written in Rust. It is useful when you want your user to control some stuff dynamically and perform some custom calculations in a safe sandbox.
+Chap is an Easy to learn, dynamic, interpretive, isolated, and keywordless scripting language written in Rust. It is useful when you want your non-programmer users to control some stuff dynamically and perform some custom calculations in a safe sandbox.
+
 
 Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Assembly](https://en.wikipedia.org/wiki/Assembly_language) and [Bash](https://www.php.net/).
 
@@ -37,6 +38,8 @@ Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programmi
 Rust or راست in persian means right and Chap or چپ means left.
 
 If you code in rust(right) too much you gradually became capitalist after a while. so you need to write some chap(left) to escape from matrix.
+
+Chap unlocks **Two-Dimentional** Full Stack Development. Front⬆️End, Back⬇️End, Rust➡️End, Chap⬅️End.
 
 <br>
 
@@ -157,7 +160,7 @@ Function names are not sensitive about anything else:<br>
 // to_string = ToString = TOSTRING = to string = t o s t r_i_n_g
 ```
 
-variables should starts with $ which known as most loved feature of PHP. <br>
+variables should start with $ which is known as the most loved feature of PHP.<br>
 variable name rules:
 
 ```chp
@@ -506,18 +509,21 @@ you win
 # DataTypes
 
 ```chp
-// REPL log
--> 1 -> type_of
+1 -> type_of
 int
--> 3.14 -> type of
-float
--> "ali" -> TypeOf
-string
--> true -> type      
-boolean
-```
 
-// TODO arrays
+3.14 -> type of
+float
+
+"ali" -> TypeOf
+string
+
+true -> type      
+boolean
+
+-> [1 2 3] -> type      
+list
+```
 
 # Installation
 
@@ -576,22 +582,26 @@ cargo build --release --lib
 
 # TODOs
 
-## Version 2.0.0:
+## Release Note version 2.0.0
 
-- [ ] Arrays
-- [ ] Piping syntax (1,2->add->toString->print)
+- [x] Arrays
 - [x] fix: 'random' module will not work on WASM
 - [x] eval function
 - [x] [ChapApp](https://github.com/ali77gh/ChapApp)
+- [x] Piping syntax (1, 2 -> add -> toString -> print)
+- [x] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
+- [x] New debugger syntax 1,2 -> add? -> $sum
+- [ ] Fix clusure problem and unsafe eval
 
-## Version 3.0.0:
+## Version 3.0.0
 
-- [ ] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var
-- [ ] Static analyzer
-- [ ] Performace improvement
-- [ ] Chap to C compiler (C has jumps BTW)
+- [ ] Fix floating point 0.2, 0.1 -> add -> $a // 0.3
+- [ ] Better Closure gen for:
+  - [ ] Static analyzer
+  - [ ] Performance improvement
+- [ ] Chap to C compiler (C has jumps BTW) + (executable or standard lib(dll|so|wasm) with extern)
 - [ ] Update [is_prime](https://github.com/ali77gh/language_performance_prime_algorithm) results
-- [ ] WASM lib
+- [ ] chap library for other programming lanuages
 
 # Stars
 
