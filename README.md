@@ -46,8 +46,7 @@ Chap unlocks **Two-Dimensional** Full Stack Development. Front⬆️End, Back⬇
 # Features
 
 1. Easy to learn.
-2. Easy to extend for your
-3. Cross platform (It runs on Linux, MacOS, Windows, Web(WASM))
+2. Cross platform (It runs on Linux, MacOS, Windows, Web(WASM))
 
 <br>
 
