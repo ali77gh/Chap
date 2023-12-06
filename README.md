@@ -45,10 +45,9 @@ Chap unlocks **Two-Dimensional** Full Stack Development. Front⬆️End, Back⬇
 
 # Features
 
-1. Its so easy to learn, (your grandma can learn it in 15 minutes max).
-2. Cross platform (chap runs on Linux, MacOS, Web(WASM) and even Windows!)
-3. Slow
-4. Useless
+1. Easy to learn.
+2. Easy to extend for your
+3. Cross platform (It runs on Linux, MacOS, Windows, Web(WASM))
 
 <br>
 
@@ -67,6 +66,8 @@ What makes a programming language hard to learn?
 | Python   | 35        | 3/5              |
 | Lua      | 22        | 2/5              |
 | Chap     | 0         | 0/5              |
+
+There is no keyword in Chap.
 
 <br>
 
