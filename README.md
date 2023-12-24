@@ -666,8 +666,9 @@ cargo build --release --lib
   - [ ] Performance improvement
 - [ ] Chap to C compiler (C has jumps BTW) + (executable or standard lib(dll|so|wasm) with extern)
 - [ ] Update [is_prime](https://github.com/ali77gh/language_performance_prime_algorithm) results
-- [ ] chap library for other programming lanuages
-
+- [ ] Chap library for other programming lanuages
+- [ ] Error Handling (backward compatible): 1, 0 -> divide -> $result, err // if you catch error like this it will prevents throwing error and give you the message.
+ 
 # Stars
 
 [![Stargazers over time](https://starchart.cc/ali77gh/chap.svg)](https://starchart.cc/ali77gh/chap)
