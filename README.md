@@ -6,19 +6,19 @@
 [![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
 [![GitHub license](https://badgen.net/github/license/ali77gh/chap)](https://github.com/ali77gh/chap/blob/master/LICENSE)
 
-Chap is an Easy to learn, dynamic, interpretive, isolated, and keyword-less scripting language written in Rust. It is useful when you want your non-programmer users to control some stuff dynamically and perform some custom calculations in a safe sandbox.
+Chap is an easy to learn, dynamic, interpretive, isolated, and keyword-less scripting language written in Rust. It is useful when you want your non-programmer users to control some stuff dynamically and perform some custom calculations in a safe sandbox.
 
 
-Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Assembly](https://en.wikipedia.org/wiki/Assembly_language) and [Bash](https://www.php.net/).
+Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Assembly](https://en.wikipedia.org/wiki/Assembly_language) and [PHP](https://www.php.net/).
 
 [ChapApp](https://github.com/ali77gh/chapAPP) is a Chap Editor/Compiler on Browser (Powered by WASM). ChapApp is written in Rust([Dioxus](https://dioxuslabs.com/)) as well.
-<a href="https://ali77gh.github.io/ChapApp/" target="_blank">Open ChapApp in new tab</a>.
+<a href="https://ali77gh.github.io/ChapApp/" target="_blank">Open ChapApp in a new tab</a>.
 
 <br>
 
 # Table of content
 
-1. [Why it named 'Chap'](#name)
+1. [Why was it named 'Chap'?](#name)
 1. [Features](#features)
 1. [Keywords](#keywords)
 1. [Syntax](#syntax)
@@ -28,7 +28,7 @@ Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programmi
 1. [Data Types](#datatypes)
 1. [Installation](#installation)
 1. [How to use](#how-to-use)
-1. [TODOs for version 2.0.0](#todos)
+1. [TODOs for version 3.0.0](#todos)
 1. [Builtin function](#builtin-functions)
 
 <br>
@@ -37,7 +37,7 @@ Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programmi
 
 Rust or راست in persian means right and Chap or چپ means left.
 
-If you code in rust(right) too much you gradually became capitalist after a while. so you need to write some chap(left) to escape from matrix.
+If you code in rust(right) too much, you gradually become capitalist after a while. So you need to write some chap(left) to escape from the matrix.
 
 Chap unlocks **Two-Dimensional** Full Stack Development. Front⬆️End, Back⬇️End, Rust➡️End, Chap⬅️End.
 
@@ -66,7 +66,7 @@ What makes a programming language hard to learn?
 | Lua      | 22        | 2/5              |
 | Chap     | 0         | 0/5              |
 
-There is no keyword in Chap.
+There are no keywords in Chap.
 
 <br>
 
@@ -96,13 +96,13 @@ For example:
 1. These input params are moving to "add" function <br>
 1. Finally $sum is a variable that holds the add result in it. <br>
 
-Note: "add" is not a keyword its a builtin function.
+Note: "add" is not a keyword, it's a builtin function.
 
 ## Ok but why?
 
-English language is a <b>"left to right"</b> (aka LTR) language. and programming languages should follows the same rule right?
+English language is a <b>"left to right"</b> (aka LTR) language, and programming languages should follow the same rule, right?
 
-wrong:
+Wrong:
 
 ```javascript
 // c base languages:
@@ -126,13 +126,13 @@ Note: "Piping" is added in version 2.0.0
 
 ## Syntax Rules
 
-Make a comment with // and anything you write in right side will be ignored. <br>
+Make a comment with // and anything you write on the right side will be ignored. <br>
 
 ```
 1, 2 -> add -> $sum // this is a comment
 ```
 
-You can write many line of code in one line by using ;
+You can write many lines of code in one line by using ;
 
 ```chp
 1 -> $a; $a, 2-> sum -> $b; $b -> print -> $_
@@ -147,13 +147,13 @@ Input params can be:
  1. Int just a number: 5<br>
  1. Float just a normal form of floating point number 3.14<br>
  1. Bool is a boolean value which is a true or false<br>
- 1. Tag starts with @. [more on control flow](#controlflow)
+ 1. Tags start with @. [(more on control flow)](#controlflow)
 
 ```chp
 $a, "hello", 5, 3.14, false -> function_name -> $output_var
 ```
 
-Function names are not case sensitive. <br>
+Function names are not case-sensitive. <br>
 
 Function names are not sensitive about anything else:<br>
 
@@ -161,15 +161,16 @@ Function names are not sensitive about anything else:<br>
 // to_string = ToString = TOSTRING = to string = t o s t r_i_n_g
 ```
 
-variables should start with $ which is known as the most loved feature of PHP.<br>
-variable name rules:
+Variables should start with $ which is known as the most loved feature of PHP.<br>
+
+Variable name rules:
 
 ```chp
 $12 // Ok
 $sp a ce // OK
-$#^3 //Ok
+$#^3 // Ok
 $a,b // comma not allowed
-$really? // question mark at end not allowed
+$really? // question mark at the end not allowed
 $rea?lly // OK
 $some->thing // -> is not allowed 
 ```
@@ -178,7 +179,7 @@ $some->thing // -> is not allowed
 
 ## Short syntax features
 
-If a function have no output variable you can remove chunk3:
+If a function has no output variable you can remove chunk3:
 
 ```chp
 "hello world" -> print
@@ -186,7 +187,7 @@ If a function have no output variable you can remove chunk3:
    input         function   removed chunk3
 ```
 
-If a function have no input param you can remove chunk1:
+If a function has no input param you can remove chunk1:
 
 ```chp
               input -> $user_input
@@ -194,25 +195,25 @@ If a function have no input param you can remove chunk1:
 nothing      function    output
 ```
 
-removing chunk2 (function name) means assign:
+Removing chunk2 (function name) means assigning a variable:
 
 ```chp
 1 -> $variable
-// its actually short form of:
+// it's actually short for:
 1 -> assign -> $variable
 ```
 
-If a function have no input param and output_var you just write function name:
+If a function has no input param and output_var you just write function name:
 
 ```chp
 exit
 ```
 
-If function has output var but you removed chunk3 the result of function will get printed:
+If a function has output var but you removed chunk3 the result of function will get printed:
 
 ```chp
 1, 2 -> add
-// its short for of:
+// it's short for:
 1, 2 -> add -> $temp
 $temp -> print
 ```
@@ -228,7 +229,7 @@ $a
 // prints whatever $a is
 ```
 
-We have worlds smallest hello world:
+We have the world's smallest hello world:
 
 ```chp
 "Hello World"
@@ -246,9 +247,9 @@ $tmp1 -> sqrt -> $tmp2
 $tmp2 -> print
 ```
 
-As you can see output of a function call is input of the next function call.
+As you can see, output of a function call is input of the next function call.
 
-In this case you can use piping syntax and write functions next to to each other and get rid of temp variables:
+In this case, you can use piping syntax to write functions next to each other and get rid of temp variables:
 
 ```chp
 1, 2 -> add -> sqrt -> print
@@ -256,12 +257,12 @@ In this case you can use piping syntax and write functions next to to each other
 
 # Parentheses
 
-You can't use Piping while one of functions has more than one param.
+You can't use Piping when one of the functions has more than one param.
 
 ```chp
 1,2 -> add -> add -> print
                ↑
-               This needs two input param
+               This needs two input params
 ```
 
 In this case you can use Parentheses:
@@ -283,16 +284,16 @@ $TMP1, TMP2 -> add -> print
 
 There is one operator -> which moves data from left to right and it is language logo.
 
-Why operators are bad? <br> because they behave different with different types.
-look at this python example:
+Why are operators bad? <br> Because they behave different with different types.
+Look at this python example:
 
 ```python
 number = input("Enter a number:")
-result = number * 5 # multiply number to 5
+result = number * 5 # multiply number by 5
 print(number, "* 5 =", result)
 ```
 
-Following code has bug and result will be:
+Following code has a bug and the result will be:
 
 ```python
 Enter a number: 3
@@ -300,11 +301,11 @@ Enter a number: 3
 # no runtime error
 ```
 
-Why? because python use same operator for math.multiply and strings.repeat.
+Why? Because Python uses the same operator for math.multiply and strings.repeat.
 
-So * operator <b>is not a type safe</b> operator and it will <b>do unexpected things</b> when your forget to pass right type to it and it will happen without throwing runtime errors (which is bad).
+So * operator <b>is not a type safe</b> operator and it will <b>do unexpected things</b> when your forget to pass the right type to it and it will happen without throwing runtime errors (which is bad).
 
-Same code in chap:
+Same code in Chap:
 
 ```chp
 input -> $number
@@ -313,17 +314,17 @@ $result
 // error in line 2: multiply function works only with numbers int and float
 ```
 
-Runtime errors are much better than logical error. and in chap we have repeat function:
+Runtime errors are much better than logical errors, and in chap we have the repeat function:
 
 ```chp
 "foo ", 3 -> repeat
 // foo foo foo 
 ```
 
-In many languages "+" operator has same problem:
+In many languages "+" operator has the same problem:
 
 ```python
-# python
+# Python
 def add(a, b):
     a + b # concat or add? both?
 
@@ -341,9 +342,9 @@ add(1, 2) # 3
 
 <br>
 
-## debugger
+## Debugger
 
-You can put a ? end of line to debug that line:
+You can put a ? at the end of a line to debug that line:
 
 ```chp
 1 -> $a
@@ -356,7 +357,7 @@ Chap also has a function called "dump" which prints every variable you have.
 
 # Control Flow
 
-You can create tag like this:
+You can create a tag like this:
 
 ```chp
 @tag_name
@@ -376,11 +377,11 @@ And you can jump to it:
 
 ## loop
 
-jumping backward makes loops
+Jumping backward makes loops:
 
 ```chp
 @l
-    "Hello util your battery dies"
+    "Hello until your battery dies"
 @l -> jump
 ```
 
@@ -676,7 +677,7 @@ cargo build --release --lib
 # Builtin Functions
 
 [runtime/builtin_function](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function) <br>
-Chap has 49 builtin function(version 2.0.0) (less than javas keywords)
+Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
 
 | Names                   | Input params      | output   | description                                                 |
 |-------------------------|-------------------|----------|-------------------------------------------------------------|
