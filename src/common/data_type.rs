@@ -1,12 +1,10 @@
-
-
 #[derive(PartialEq, Debug, Clone)]
 pub enum DataType {
     String(String),
     Int(i32),
     Float(f64),
     Bool(bool),
-    List(Vec<DataType>)
+    List(Vec<DataType>),
 }
 
 impl ToString for DataType {
@@ -17,18 +15,17 @@ impl ToString for DataType {
             Self::Float(f) => f.to_string(),
             Self::Bool(b) => b.to_string(),
             Self::List(b) => {
-                let a = b.iter().map(|x|x.to_string());
+                let a = b.iter().map(|x| x.to_string());
                 let a: Vec<String> = a.collect();
                 let i = a.join(" ");
-                format!("[{}]",i)
-            },
+                format!("[{}]", i)
+            }
         }
     }
 }
 
 impl DataType {
-    
-    pub fn type_name(&self) -> String{
+    pub fn type_name(&self) -> String {
         match self {
             DataType::String(_) => "string".to_string(),
             DataType::Int(_) => "int".to_string(),
@@ -39,25 +36,24 @@ impl DataType {
     }
 }
 
-
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
 
     #[test]
-    fn data_type_equal_test(){
-        assert!(
-            DataType::String("abcd".to_string()) == DataType::String("abcd".to_string())
-        );
-        assert!(
-            DataType::String("abce".to_string()) != DataType::String("abcd".to_string())
-        );
+    fn data_type_equal_test() {
+        assert!(DataType::String("abcd".to_string()) == DataType::String("abcd".to_string()));
+        assert!(DataType::String("abce".to_string()) != DataType::String("abcd".to_string()));
     }
 
     #[test]
-    fn list_to_string(){
+    fn list_to_string() {
         assert_eq!(
-            DataType::List(vec![DataType::Int(1), DataType::String("hello".to_string())]).to_string(),
+            DataType::List(vec![
+                DataType::Int(1),
+                DataType::String("hello".to_string())
+            ])
+            .to_string(),
             "[1 hello]"
         );
     }

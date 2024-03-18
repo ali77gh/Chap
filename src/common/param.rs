@@ -1,4 +1,3 @@
-
 use super::data_type::DataType;
 
 #[derive(PartialEq, Debug, Clone)]
