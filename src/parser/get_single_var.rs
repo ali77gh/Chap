@@ -9,7 +9,7 @@ pub fn get_single_var(params: Vec<Param>, line_number: u32) -> Result<String> {
         ));
     }
 
-    match params.get(0).unwrap() {
+    match params.first().unwrap() {
         Param::Tag(_) => Err(ChapError::syntax_with_msg(
             line_number,
             "you can't set function result to a tag".to_string(),

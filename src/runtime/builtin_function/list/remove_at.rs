@@ -7,7 +7,7 @@ pub fn remove_at(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<(
     let p2 = param_to_datatype(runtime, executable.params.get(1), executable.line_number)?.clone();
     let p1 = param_to_datatype_mut(
         &mut (*runtime),
-        executable.params.get(0),
+        executable.params.first(),
         executable.line_number,
     )?;
 

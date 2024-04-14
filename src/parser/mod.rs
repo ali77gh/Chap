@@ -44,7 +44,7 @@ impl Parser {
                         match nc {
                             None => {
                                 // nothing -> param -> nothing
-                                match cc.get(0) {
+                                match cc.first() {
                                     None => {
                                         return Err(ChapError::syntax_with_msg(
                                             ln,
@@ -241,7 +241,7 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(
                 1,
                 "new_tag".to_string(),
@@ -258,7 +258,7 @@ mod tests {
             .on_new_line(LineOfCode::new(1, " $myVar ".to_string()))
             .unwrap();
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(
                 1,
                 "print".to_string(),
@@ -271,7 +271,7 @@ mod tests {
             .on_new_line(LineOfCode::new(1, " \"hello\" ".to_string()))
             .unwrap();
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(
                 1,
                 "print".to_string(),
@@ -288,7 +288,7 @@ mod tests {
             .on_new_line(LineOfCode::new(1, " exit ".to_string()))
             .unwrap();
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(1, "exit".to_string(), vec![], None)
         );
     }
@@ -301,7 +301,7 @@ mod tests {
             .on_new_line(LineOfCode::new(1, " 1 -> $var ".to_string()))
             .unwrap();
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(
                 1,
                 "assign".to_string(),
@@ -318,7 +318,7 @@ mod tests {
             .on_new_line(LineOfCode::new(1, " $var -> function ".to_string()))
             .unwrap();
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(
                 1,
                 "function".to_string(),
@@ -335,7 +335,7 @@ mod tests {
             .on_new_line(LineOfCode::new(1, " input -> $var ".to_string()))
             .unwrap();
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(1, "input".to_string(), vec![], Some("var".to_string()))
         );
     }
@@ -348,7 +348,7 @@ mod tests {
             .on_new_line(LineOfCode::new(1, " 2 -> sum -> $var ".to_string()))
             .unwrap();
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(
                 1,
                 "sum".to_string(),
@@ -370,7 +370,7 @@ mod tests {
             .unwrap();
         assert_eq!(result.len(), 2);
         assert_eq!(
-            result.get(0).unwrap(),
+            result.first().unwrap(),
             &ExecutableLine::new(
                 1,
                 "add".to_string(),

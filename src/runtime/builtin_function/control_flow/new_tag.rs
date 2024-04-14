@@ -6,7 +6,7 @@ use crate::{
 };
 
 pub fn new_tag(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    if let Some(Param::Tag(tag)) = executable.params.get(0) {
+    if let Some(Param::Tag(tag)) = executable.params.first() {
         runtime.tags.insert(tag.clone(), runtime.current_line);
     } else {
         return Err(ChapError::runtime_with_msg(

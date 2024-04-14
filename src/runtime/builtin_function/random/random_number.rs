@@ -1,11 +1,13 @@
-use crate::common::data_type::DataType;
 use crate::common::errors::{ChapError, Result};
-use crate::runtime::builtin_function::utils::{param_to_datatype, returns};
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
-use rand::Rng;
 
+#[cfg(not(target_family = "wasm"))]
 pub fn random_number(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    let p1 = param_to_datatype(runtime, executable.params.get(0), executable.line_number)?;
+    use crate::common::data_type::DataType;
+    use crate::runtime::builtin_function::utils::{param_to_datatype, returns};
+    use rand::Rng;
+
+    let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;
     let p2 = param_to_datatype(runtime, executable.params.get(1), executable.line_number)?;
 
     let mut rng = rand::thread_rng();
@@ -21,4 +23,12 @@ pub fn random_number(runtime: &mut Runtime, executable: &ExecutableLine) -> Resu
         }
     };
     returns(runtime, executable, result)
+}
+
+#[cfg(target_family = "wasm")]
+pub fn random_number(_runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
+    Err(ChapError::runtime_with_msg(
+        executable.line_number,
+        "random_number not supported in wasm".to_string(),
+    ))
 }

@@ -8,7 +8,7 @@ use crate::{
 pub fn assign(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
     assign_validator(executable)?;
 
-    let p1 = param_to_datatype(runtime, executable.params.get(0), executable.line_number)?;
+    let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;
 
     returns(runtime, executable, p1.clone())
 }

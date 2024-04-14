@@ -4,7 +4,7 @@ use crate::runtime::builtin_function::utils::{param_to_datatype, returns};
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 pub fn to_float(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    let p1 = param_to_datatype(runtime, executable.params.get(0), executable.line_number)?;
+    let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;
     let result = match p1 {
         DataType::String(s) => match s.parse() {
             Ok(x) => DataType::Float(x),

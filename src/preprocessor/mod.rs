@@ -102,12 +102,7 @@ impl Preprocessor {
     }
 
     fn find_backward(s: &str, from: usize) -> Option<usize> {
-        for i in (0..from).rev() {
-            if s.chars().nth(i).unwrap() == '(' {
-                return Some(i);
-            }
-        }
-        None
+        (0..from).rev().find(|&i| s.chars().nth(i).unwrap() == '(')
     }
 }
 
@@ -179,7 +174,7 @@ mod tests {
 
         let pped = pp.on_new_line("param -> func -> out".to_string()).unwrap();
 
-        assert_eq!(3, pped.get(0).unwrap().line_number)
+        assert_eq!(3, pped.first().unwrap().line_number)
     }
 
     #[test]
@@ -190,7 +185,7 @@ mod tests {
             .on_new_line(";  command1 ;  ; command2 ;;//comment;".to_string())
             .unwrap();
 
-        assert_eq!("command1", pped.get(0).unwrap().code);
+        assert_eq!("command1", pped.first().unwrap().code);
         assert_eq!("command2", pped.get(1).unwrap().code);
     }
 
@@ -199,7 +194,7 @@ mod tests {
         let mut p = Preprocessor::default();
         let result = p.on_new_line("\"hello // world\"".to_string()).unwrap();
         assert_eq!(
-            result.get(0).unwrap().code,
+            result.first().unwrap().code,
             "\"hello // world\"".to_string()
         );
     }
@@ -213,7 +208,7 @@ mod tests {
 
         assert_eq!(result1.len(), 0);
         assert_eq!(result2.len(), 0);
-        assert_eq!(result3.get(0).unwrap().code, "1,2->add".to_string());
+        assert_eq!(result3.first().unwrap().code, "1,2->add".to_string());
     }
 
     #[test]
@@ -222,7 +217,7 @@ mod tests {
         let result = p.on_new_line("(1,2->add),2->add".to_string()).unwrap();
 
         assert_eq!(result.len(), 2);
-        assert_eq!(result.get(0).unwrap().code, "1,2->add->$TMP_0".to_string());
+        assert_eq!(result.first().unwrap().code, "1,2->add->$TMP_0".to_string());
         assert_eq!(result.get(1).unwrap().code, "$TMP_0,2->add".to_string());
     }
 
@@ -233,7 +228,7 @@ mod tests {
             .on_new_line("(1,2->add),(3,4->add)->add".to_string())
             .unwrap();
         assert_eq!(result.len(), 3);
-        assert_eq!(result.get(0).unwrap().code, "1,2->add->$TMP_0".to_string());
+        assert_eq!(result.first().unwrap().code, "1,2->add->$TMP_0".to_string());
         assert_eq!(result.get(1).unwrap().code, "3,4->add->$TMP_1".to_string());
         assert_eq!(
             result.get(2).unwrap().code,
@@ -248,7 +243,7 @@ mod tests {
             .on_new_line("((1,2->add),2->add),(3,4->add)->add".to_string())
             .unwrap();
         assert_eq!(result.len(), 4);
-        assert_eq!(result.get(0).unwrap().code, "1,2->add->$TMP_0".to_string());
+        assert_eq!(result.first().unwrap().code, "1,2->add->$TMP_0".to_string());
         assert_eq!(
             result.get(1).unwrap().code,
             "$TMP_0,2->add->$TMP_1".to_string()

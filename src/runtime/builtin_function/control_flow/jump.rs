@@ -6,7 +6,7 @@ use crate::{
 
 // this function can't jump to a tag that is not added to runtime.executables
 pub fn jump(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    if let Some(Param::Tag(tag)) = executable.params.get(0) {
+    if let Some(Param::Tag(tag)) = executable.params.first() {
         if let Some(line_number) = runtime.tags.get(tag) {
             // jumping back (loop)
             runtime.current_line = *line_number;
@@ -16,7 +16,7 @@ pub fn jump(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
                 match runtime.executables.get(runtime.current_line) {
                     Some(el) => {
                         if el.function_name == "new_tag" {
-                            if let Some(Param::Tag(eltag)) = el.params.get(0) {
+                            if let Some(Param::Tag(eltag)) = el.params.first() {
                                 if tag == eltag {
                                     runtime.tags.insert(tag.clone(), runtime.current_line);
                                     break;

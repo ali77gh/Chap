@@ -34,7 +34,7 @@ pub fn debugger(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()
 
     // run actual function
     let mut executable = executable.clone();
-    executable.function_name = executable.function_name.replace("?", "");
+    executable.function_name = executable.function_name.replace('?', "");
     let real_function: BuiltinFunction = closure_gen(&executable)?;
     real_function(runtime, &executable)?;
 

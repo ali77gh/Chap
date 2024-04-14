@@ -4,7 +4,7 @@ use crate::runtime::builtin_function::utils::{param_to_datatype, returns};
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 pub fn get(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    let p1 = param_to_datatype(runtime, executable.params.get(0), executable.line_number)?;
+    let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;
     let p2 = param_to_datatype(runtime, executable.params.get(1), executable.line_number)?;
 
     if let (DataType::List(list), DataType::Int(index)) = (p1, p2) {

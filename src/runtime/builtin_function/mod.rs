@@ -16,12 +16,13 @@ mod delay;
 mod error_handling;
 mod list;
 mod math;
+mod random;
 mod std;
 mod strings;
 mod type_conversion;
 
 pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction> {
-    let debug_mode = executable.function_name.ends_with("?");
+    let debug_mode = executable.function_name.ends_with('?');
     let function_name = executable
         .function_name
         .clone()
@@ -48,36 +49,7 @@ pub fn closure_gen(executable: &ExecutableLine) -> Result<BuiltinFunction> {
     }
 }
 
-#[cfg(target_family = "unix")]
 pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
-    if let Some(f) = common_functions(function_name) {
-        Some(f)
-    } else {
-        random_functions(function_name)
-    }
-}
-
-#[cfg(target_family = "windows")]
-pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
-    if let Some(f) = common_functions(function_name) {
-        return Some(f);
-    } else if let Some(f) = random_functions(function_name) {
-        return Some(f);
-    } else {
-        None
-    }
-}
-
-#[cfg(target_family = "wasm")]
-pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
-    if let Some(f) = common_functions(function_name) {
-        return Some(f);
-    } else {
-        None
-    }
-}
-
-pub fn common_functions(function_name: &str) -> Option<BuiltinFunction> {
     match function_name {
         "assign" => Some(assign::assign),
         "jump" => Some(control_flow::jump::jump),
@@ -129,16 +101,8 @@ pub fn common_functions(function_name: &str) -> Option<BuiltinFunction> {
         "print" | "show" | "stdout" => Some(std::println::println),
         "input" | "stdin" => Some(std::input::input),
         "exit" | "quit" | "kill" | "end" => Some(std::exit::exit),
-        _ => None,
-    }
-}
 
-// platform specific functions
-#[cfg(not(target_family = "wasm"))]
-mod random;
-#[cfg(not(target_family = "wasm"))]
-pub fn random_functions(function_name: &str) -> Option<BuiltinFunction> {
-    match function_name {
+        // random functions not working in wasm
         "randomnumber" | "randnum" => Some(random::random_number::random_number),
         "randomstring" | "randstr" => Some(random::random_string::random_string),
         "randombool" | "randbool" => Some(random::random_bool::random_bool),

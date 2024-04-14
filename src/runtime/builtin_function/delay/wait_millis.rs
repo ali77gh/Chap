@@ -5,7 +5,7 @@ use crate::{common::executable::ExecutableLine, runtime::Runtime};
 use std::{thread, time};
 
 pub fn wait_millis(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    let p1 = param_to_datatype(runtime, executable.params.get(0), executable.line_number)?;
+    let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;
 
     if let DataType::Int(x) = p1 {
         let ten_millis = time::Duration::from_millis((*x).try_into().unwrap());

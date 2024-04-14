@@ -6,7 +6,7 @@ use crate::{common::executable::ExecutableLine, runtime::Runtime};
 pub fn pop(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
     let p1 = param_to_datatype_mut(
         &mut (*runtime),
-        executable.params.get(0),
+        executable.params.first(),
         executable.line_number,
     )?;
 

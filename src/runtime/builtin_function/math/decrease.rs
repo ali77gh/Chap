@@ -4,7 +4,7 @@ use crate::common::param::Param;
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 pub fn decrease(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    if let Some(Param::Variable(name)) = executable.params.get(0) {
+    if let Some(Param::Variable(name)) = executable.params.first() {
         match runtime.variables.get(name) {
             Some(x) => match x {
                 DataType::Int(x) => {
