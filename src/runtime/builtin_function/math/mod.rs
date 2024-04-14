@@ -1,15 +1,13 @@
-
-
 // simple math
 pub mod add;
-pub mod minus;
 pub mod divide;
-pub mod multiply;
-pub mod modulus; // Divide remaining
+pub mod minus;
+pub mod modulus;
+pub mod multiply; // Divide remaining
 
 // more math
+pub mod add_many;
+pub mod decrease;
+pub mod increase;
 pub mod power;
 pub mod sqrt;
-pub mod increase;
-pub mod decrease;
-pub mod add_many;

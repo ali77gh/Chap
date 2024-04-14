@@ -1,7 +1,6 @@
-use crate::{runtime::Runtime, common::executable::ExecutableLine};
-use crate::common::errors::{Result, ChapError};
+use crate::common::errors::{ChapError, Result};
+use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
-pub fn exit(_runtime: &mut Runtime,_executable: &ExecutableLine)-> Result<()>{
-
+pub fn exit(_runtime: &mut Runtime, _executable: &ExecutableLine) -> Result<()> {
     Err(ChapError::stop())
 }

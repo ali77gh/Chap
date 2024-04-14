@@ -1,5 +1,4 @@
-
-pub fn show_help(){
+pub fn show_help() {
     println!("┌───────────────────────────────────────────────┐");
     println!("│                 Chap Language                 │");
     println!("│                                               │");
@@ -16,4 +15,4 @@ pub fn show_help(){
     println!("│   -v, --version                               │");
     println!("│                                               │");
     println!("└───────────────────────────────────────────────┘");
- }
+}

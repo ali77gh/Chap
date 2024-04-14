@@ -1,16 +1,12 @@
 use std::process::exit;
 
 use crate::{
-    parser::Parser,
-    preprocessor::Preprocessor,
-    runtime::Runtime, common::errors::ErrorType
+    common::errors::ErrorType, parser::Parser, preprocessor::Preprocessor, runtime::Runtime,
 };
 
 use rustyline::DefaultEditor;
 
-
-pub fn start_rpel(){
-
+pub fn start_rpel() {
     // initialize
     let mut preprocessor = Preprocessor::default();
 
@@ -18,11 +14,12 @@ pub fn start_rpel(){
 
     let mut reader = DefaultEditor::new().unwrap(); // TODO: handle error
 
-    let mut runtime = Runtime::new(|msg|{
-        println!("{}", msg);
-    },||{
-        String::from("")
-    });
+    let mut runtime = Runtime::new(
+        |msg| {
+            println!("{}", msg);
+        },
+        || String::from(""),
+    );
 
     loop {
         // let source: String;
@@ -30,41 +27,40 @@ pub fn start_rpel(){
             Ok(line) => {
                 let _ = reader.add_history_entry(line.clone());
                 line
-            },
+            }
             Err(_) => break,
         };
         let lines = preprocessor.on_new_line(source);
-        match lines{
+        match lines {
             Ok(lines) => {
-                for t in lines{
+                for t in lines {
                     let el = parser.on_new_line(t);
                     match el {
                         Err(err) => err.show_warning(),
                         Ok(els) => {
-                            for el in els{
-                                if let Err(e)=runtime.on_new_line(el){
+                            for el in els {
+                                if let Err(e) = runtime.on_new_line(el) {
                                     e.show_warning();
                                 }
                                 'inner: loop {
-                                    if let Err(err) = runtime.execution_cycle(){
+                                    if let Err(err) = runtime.execution_cycle() {
                                         match err.err_type {
                                             ErrorType::NothingToExecute => break 'inner,
                                             ErrorType::Stop => exit(0),
-                                            _=> {
+                                            _ => {
                                                 err.show_warning();
                                             }
                                         }
                                     }
                                 }
                             }
-                        },
+                        }
                     }
                 }
-            },
+            }
             Err(e) => {
                 e.show_warning();
-            },
+            }
         }
-            
     }
 }

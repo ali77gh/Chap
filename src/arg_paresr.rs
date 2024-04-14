@@ -1,24 +1,21 @@
-
 use std::env;
 
-pub fn arg_parser() -> InputType{
+pub fn arg_parser() -> InputType {
     let args: Vec<String> = env::args().collect();
 
     match args.get(1) {
         None => InputType::Repl,
         Some(param) => match param.as_str() {
             "--help" | "-h" => InputType::Help,
-            "--version" | "-v"=> InputType::Version,
-            file_name => {
-                InputType::ExecuteFile(file_name.to_string())
-            }   
+            "--version" | "-v" => InputType::Version,
+            file_name => InputType::ExecuteFile(file_name.to_string()),
         },
     }
 }
 
-pub enum InputType{
+pub enum InputType {
     ExecuteFile(String),
     Help,
     Repl,
-    Version
+    Version,
 }

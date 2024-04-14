@@ -1,10 +1,9 @@
-
 pub mod common; // language common defenitions
 
 //phases
+pub mod parser; // phase 2
 pub mod preprocessor; // phase 1
-pub mod parser;       // phase 2
-pub mod runtime;      // phase 3
+pub mod runtime; // phase 3
 
 pub mod eval;
 
