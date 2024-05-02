@@ -1,7 +1,16 @@
 [package]
 name = "chap"
-version = "2.0.0"
+version = "2.0.1"
 edition = "2021"
+description = "Chap is an easy to learn, interpretive, scripting language written in Rust"
+license = "GPL-3.0"
+readme = "README.md"
+# documentation = "https://docs.rs/chap" # if not set docs.rs will generate one and put it in place 
+homepage = "https://crates.io/crates/chap"
+repository = "https://github.com/persian-tools/chap"
+categories = ["wasm", "command-line-interface", "compilers"]
+keywords = ["programming", "language", "scripting", "eval", "dynamic"]
+include = ["src/**/*.rs", "Cargo.toml", "LICENSE", "README.md", "Logo.png"]
 
 [lib]
 name = "chap"
