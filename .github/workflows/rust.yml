@@ -26,6 +26,13 @@ jobs:
       - name: Clippy
         run: make clippy
 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make build
+
   test:
     runs-on: ubuntu-latest
     needs:
