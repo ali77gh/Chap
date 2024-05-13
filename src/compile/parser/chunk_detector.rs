@@ -63,8 +63,8 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param> {
                     "list should ends with ]".to_string(),
                 ));
             }
-            let param = &param[1..param.len() - 1];
-            if !param.trim().is_empty() {
+            let param = &param[1..param.len() - 1].trim();
+            if !param.is_empty() {
                 let items = param
                     .split(' ')
                     .map(|token| param_parser(token, line_number));
@@ -248,6 +248,24 @@ mod tests {
                 Param::Value(DataType::List(vec![])),
                 Param::Value(DataType::List(vec![])),
             ])
+        );
+
+        //syntax error problem on ends or space with space
+        assert_eq!(
+            params_parser("[ 1 2 3]", 1),
+            Ok(vec![Param::Value(DataType::List(vec![
+                DataType::Int(1),
+                DataType::Int(2),
+                DataType::Int(3),
+            ])),])
+        );
+        assert_eq!(
+            params_parser("[1 2 3 ]", 1),
+            Ok(vec![Param::Value(DataType::List(vec![
+                DataType::Int(1),
+                DataType::Int(2),
+                DataType::Int(3),
+            ])),])
         );
     }
 }
