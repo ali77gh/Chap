@@ -1,6 +1,6 @@
 use super::param::Param;
+use crate::builtin_function::closure_gen;
 use crate::common::errors::Result;
-use crate::runtime::builtin_function::closure_gen;
 use crate::runtime::Runtime;
 
 pub type BuiltinFunction = fn(&mut Runtime, &ExecutableLine) -> Result<()>;
