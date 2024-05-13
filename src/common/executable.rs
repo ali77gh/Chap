@@ -30,6 +30,10 @@ impl ExecutableLine {
         }
     }
 
+    pub fn exit() -> Self {
+        ExecutableLine::new(0, "exit".to_string(), vec![], None)
+    }
+
     pub fn bind_closure(&mut self) -> Result<()> {
         self.closure = closure_gen(self)?;
         Ok(())

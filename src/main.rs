@@ -11,7 +11,7 @@ use runners::repl::start_repl;
 fn main() -> Result<()> {
     match arg_parser() {
         InputType::ExecuteFile(file_name) => {
-            file_executor(&file_name)?;
+            file_executor(&file_name);
         }
         InputType::Help => show_help(),
         InputType::Version => show_version(),

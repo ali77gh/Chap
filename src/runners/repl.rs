@@ -23,7 +23,6 @@ pub fn start_repl() {
     );
 
     loop {
-        // let source: String;
         let source = match reader.readline("-> ") {
             Ok(line) => {
                 let _ = reader.add_history_entry(line.clone());
@@ -32,35 +31,37 @@ pub fn start_repl() {
             Err(_) => break,
         };
         let lines = preprocessor.on_new_line(source);
-        match lines {
-            Ok(lines) => {
-                for t in lines {
-                    let el = parser.on_new_line(t);
-                    match el {
-                        Err(err) => err.show_warning(),
-                        Ok(els) => {
-                            for el in els {
-                                if let Err(e) = runtime.on_new_line(el) {
-                                    e.show_warning();
-                                }
-                                'inner: loop {
-                                    if let Err(err) = runtime.execution_cycle() {
-                                        match err.err_type {
-                                            ErrorType::NothingToExecute => break 'inner,
-                                            ErrorType::Stop => exit(0),
-                                            _ => {
-                                                err.show_warning();
-                                            }
-                                        }
-                                    }
-                                }
+        let lines = match lines {
+            Ok(lines) => lines,
+            Err(e) => {
+                e.show_warning();
+                vec![]
+            }
+        };
+        for t in lines {
+            let el = parser.on_new_line(t);
+            let els = match el {
+                Ok(els) => els,
+                Err(err) => {
+                    err.show_warning();
+                    vec![]
+                }
+            };
+            for el in els {
+                if let Err(e) = runtime.on_new_line(el) {
+                    e.show_warning();
+                }
+                'inner: loop {
+                    if let Err(err) = runtime.execution_cycle() {
+                        match err.err_type {
+                            ErrorType::NothingToExecute => break 'inner,
+                            ErrorType::Stop => exit(0),
+                            _ => {
+                                err.show_warning();
                             }
                         }
                     }
                 }
-            }
-            Err(e) => {
-                e.show_warning();
             }
         }
     }
