@@ -26,3 +26,41 @@ print(count)
 |----------------|------|-------------|
 | Python 3.11.3  | 3.2s | N/A         |
 | Chap 2.0.0     | 9.0s | 5.8s slower |
+
+## Chap vs Chap (finding slow parts)
+
+### Time Chart
+
+| Function       | Time range        | Time avg |
+|----------------|-------------------|----------|
+| nothing        | 8.838s  - 9.200s  | 9.018s   |
+| pass           | 10.261s - 10.482s | 10.371s  |
+| increase       | 13.700s - 13.884s | 13.792s  |
+| var = add(1,2) | 13.370s - 14.300s | 13.835s  |
+| var = add(a,2) | 14.346s - 15.363s | 14.854s  |
+| var = add(a,b) | 15.984s - 16.845s | 16.414s  |
+
+### Technical Analyis
+
+| Function       | Overhead | Operations |
+|----------------|----------|------------|
+| nothing        | N/A      | N/A        |
+| pass           | 1.352s   | rel        |
+| increase       | 4.773s   | rel + cpe + cpt + vg + cve + cpdt + mo + vs |
+| var = add(1,2) | 4.817s   | rel + (cpe + cpt) + (cpe + cpt) + cpdt + cpdt + mo + cope + vs |
+| var = add(a,2) | 5.835s   | rel + (cpe + cpt + vg + cve) + (cpe + cpt) + cpdt + cpdt + mo + cope + vs |
+| var = add(a,b) | 7.396s   | rel + (cpe + cpt + vg + cve) + (cpe + cpt + vg + cve) + cpdt + cpdt + mo + cope + vs |
+
+### operations
+
+| Short-form | Actual meaning            |
+|------------|---------------------------|
+| rel        | runtime execute line      |
+| cpe        | check param exist         |
+| cpt        | check param type          |
+| cpdt       | check param datatype      |
+| vg         | var-get                   |
+| mo         | math operation            |
+| vs         | var-set                   |
+| cve        | check variable exist      |
+| cope       | check output param exists |
