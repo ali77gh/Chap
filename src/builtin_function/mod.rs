@@ -5,6 +5,7 @@ use crate::common::{
 };
 
 mod assign;
+mod pass;
 mod type_of;
 mod utils;
 
@@ -100,6 +101,7 @@ pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
         "print" | "show" | "stdout" => Some(std::println::println),
         "input" | "stdin" => Some(std::input::input),
         "exit" | "quit" | "kill" | "end" => Some(std::exit::exit),
+        "pass" | "nop" | "noop" => Some(pass::pass),
 
         // random functions not working in wasm
         "randomnumber" | "randnum" => Some(random::random_number::random_number),
