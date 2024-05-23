@@ -14,7 +14,8 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_error: f
     };
 
     loop {
-        if let Err(e) = runtime.execution_cycle() {
+        // Safety: make runtime function is adding exit to the end of source code
+        if let Err(e) = unsafe { runtime.execution_cycle() } {
             match e.err_type {
                 ErrorType::Stop => {
                     // stop happened when user call exit function (it's not error)
@@ -43,6 +44,7 @@ fn make_runtime(code: String, std_out: fn(&str), std_in: fn() -> String) -> Resu
             }
         }
     }
+    // Safety: remove this will cause segmentation fault
     runtime.on_new_line(ExecutableLine::exit())?; // performance improvement (no need to check if there is more lines)
     Ok(runtime)
 }

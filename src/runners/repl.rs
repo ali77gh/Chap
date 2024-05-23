@@ -52,14 +52,19 @@ pub fn start_repl() {
                     e.show_warning();
                 }
                 'inner: loop {
-                    if let Err(err) = runtime.execution_cycle() {
-                        match err.err_type {
-                            ErrorType::NothingToExecute => break 'inner,
-                            ErrorType::Stop => exit(0),
-                            _ => {
-                                err.show_warning();
+                    match runtime.executables.get(runtime.current_line) {
+                        Some(_) => {
+                            // Safety: manually checking next line exist above, so it's safe
+                            if let Err(err) = unsafe { runtime.execution_cycle() } {
+                                match err.err_type {
+                                    ErrorType::Stop => exit(0),
+                                    _ => {
+                                        err.show_warning();
+                                    }
+                                }
                             }
                         }
+                        None => break 'inner,
                     }
                 }
             }

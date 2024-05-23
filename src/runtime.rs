@@ -1,5 +1,5 @@
 use crate::common::data_type::DataType;
-use crate::common::errors::{ChapError, Result};
+use crate::common::errors::Result;
 use crate::common::executable::ExecutableLine;
 use std::collections::HashMap;
 
@@ -30,18 +30,15 @@ impl Runtime {
         Ok(())
     }
 
-    pub fn execution_cycle(&mut self) -> Result<()> {
-        match self.executables.get(self.current_line) {
-            Some(l) => {
-                let l = l.clone();
-                self.current_line += 1;
-                (l.closure)(self, &l)?;
-                // execute(self, &l)?;
-            }
-            None => {
-                return Err(ChapError::no_more_line());
-            }
-        }
+    /// Safety: this function is not checking if there is more lines or not (for better performance)
+    /// caller should check to avoid segmentation fault
+    /// eval function adds an exit function call to end of source code to avoid checking next line exist at every line execution
+    /// repl is checking next line exist itself
+    pub unsafe fn execution_cycle(&mut self) -> Result<()> {
+        let l = self.executables.get(self.current_line).unwrap_unchecked(); // unsafe
+        let l = l.clone();
+        self.current_line += 1;
+        (l.closure)(self, &l)?;
         Ok(())
     }
 
@@ -75,7 +72,7 @@ mod tests {
         .unwrap();
         assert_eq!(rt.current_line, 0);
 
-        rt.execution_cycle().unwrap();
+        unsafe { rt.execution_cycle().unwrap() };
         assert_eq!(rt.current_line, 1);
 
         assert_eq!(rt.variables.get("my_variable"), Some(&DataType::Int(2)))
@@ -97,7 +94,7 @@ mod tests {
             Some("name".to_string()),
         ))
         .unwrap();
-        rt.execution_cycle().unwrap();
+        unsafe { rt.execution_cycle().unwrap() };
 
         rt.on_new_line(ExecutableLine::new(
             2,
@@ -106,6 +103,6 @@ mod tests {
             None,
         ))
         .unwrap();
-        rt.execution_cycle().unwrap();
+        unsafe { rt.execution_cycle().unwrap() };
     }
 }
