@@ -30,7 +30,8 @@ impl Runtime {
         Ok(())
     }
 
-    /// Safety: this function is not checking if there is more lines or not (for better performance)
+    /// # Safety
+    /// this function is not checking if there is more lines or not (for better performance)
     /// caller should check to avoid segmentation fault
     /// eval function adds an exit function call to end of source code to avoid checking next line exist at every line execution
     /// repl is checking next line exist itself

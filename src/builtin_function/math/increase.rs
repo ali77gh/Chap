@@ -8,7 +8,7 @@ pub fn increase(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()
         match runtime.variables.get_mut(name) {
             Some(x) => match x {
                 DataType::Int(x) => {
-                    *x = *x + 1;
+                    *x += 1;
                     Ok(())
                 }
                 _ => Err(ChapError::runtime_with_msg(
