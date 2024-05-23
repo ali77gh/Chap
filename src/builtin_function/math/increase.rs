@@ -5,12 +5,10 @@ use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 pub fn increase(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
     if let Some(Param::Variable(name)) = executable.params.first() {
-        match runtime.variables.get(name) {
+        match runtime.variables.get_mut(name) {
             Some(x) => match x {
                 DataType::Int(x) => {
-                    runtime
-                        .variables
-                        .insert(name.to_string(), DataType::Int(x + 1));
+                    *x = *x + 1;
                     Ok(())
                 }
                 _ => Err(ChapError::runtime_with_msg(
@@ -20,7 +18,7 @@ pub fn increase(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()
             },
             None => Err(ChapError::runtime_with_msg(
                 executable.line_number,
-                format!("variable {} is not defind", name),
+                format!("variable {} is not defend", name),
             )),
         }
     } else {
