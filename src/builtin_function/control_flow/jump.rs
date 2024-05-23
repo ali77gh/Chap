@@ -16,8 +16,8 @@ pub fn jump(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
                 match runtime.executables.get(runtime.current_line) {
                     Some(el) => {
                         if el.function_name == "new_tag" {
-                            if let Some(Param::Tag(eltag)) = el.params.first() {
-                                if tag == eltag {
+                            if let Some(Param::Tag(el_tag)) = el.params.first() {
+                                if tag == el_tag {
                                     runtime.tags.insert(tag.clone(), runtime.current_line);
                                     break;
                                 }

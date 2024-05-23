@@ -59,7 +59,7 @@ mod tests {
     use super::Runtime;
 
     #[test]
-    fn simple_executaion_test() {
+    fn simple_execution_test() {
         let mut rt = Runtime::new(|_| {}, || "".to_string());
 
         assert_eq!(rt.current_line, 0);

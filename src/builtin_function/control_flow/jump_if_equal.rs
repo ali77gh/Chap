@@ -8,7 +8,7 @@ pub fn jump_if_equal(runtime: &mut Runtime, executable: &ExecutableLine) -> Resu
     let p2 = utils::param_to_datatype(runtime, executable.params.get(2), executable.line_number)?;
 
     if p1 == p2 {
-        //Datatype impelements PartialEq
+        // Datatype implements PartialEq
         jump(runtime, executable)?;
     }
 

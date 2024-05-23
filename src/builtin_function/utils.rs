@@ -10,7 +10,7 @@ pub fn get_var(runtime: &Runtime, name: &str, line_number: u32) -> Result<DataTy
         Some(x) => Ok(x.clone()),
         None => Err(ChapError::runtime_with_msg(
             line_number,
-            format!("variable {} is not defind", name),
+            format!("variable {} is not defend", name),
         )),
     }
 }
@@ -40,7 +40,7 @@ pub fn param_to_datatype<'a>(
             Some(x) => Ok(x),
             None => Err(ChapError::runtime_with_msg(
                 line_number,
-                format!("variable {} is not defind", name),
+                format!("variable {} is not defend", name),
             )),
         },
     }
@@ -74,7 +74,7 @@ pub fn param_to_datatype_mut<'a>(
             Some(x) => Ok(x),
             None => Err(ChapError::runtime_with_msg(
                 line_number,
-                format!("variable {} is not defind", name),
+                format!("variable {} is not defend", name),
             )),
         },
     }

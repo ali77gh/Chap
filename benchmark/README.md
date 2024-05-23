@@ -22,11 +22,11 @@ while count!=30000000:
 print(count)
 ```
 
-| Language       | Time | overhead    |
-|----------------|------|-------------|
-| Python 3.11.3  | 3.2s | N/A         |
-| Chap 2.0.0     | 9.0s | 5.8s slower |
-| Chap 2.0.0     | 8.4s | 5.2s slower |
+| Language       | Time | Slower than Python |
+|----------------|------|--------------------|
+| Python 3.11.3  | 3.2s | N/A                |
+| Chap 2.0.0     | 9.0s | 5.8s               |
+| Chap [7729d79](https://github.com/ali77gh/Chap/commit/7729d7962f0d3579e3877406f675b3e3d8ee0198)     | 8.4s | 5.2s         |
 
 ## Chap vs Chap (finding slow parts)(version 2.0.0)
 

@@ -95,7 +95,7 @@ impl Parser {
                                 }
                             }
                         }
-                    } // will use in next itration
+                    } // will use in next iteration
                     Chunk::Function(cc) => {
                         match nc {
                             None => {
@@ -282,7 +282,7 @@ mod tests {
     }
 
     #[test]
-    fn function_call_paramless() {
+    fn function_call_param_less() {
         let mut p = Parser::default();
         let result = p
             .on_new_line(LineOfCode::new(1, " exit ".to_string()))

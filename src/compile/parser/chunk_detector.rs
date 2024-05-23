@@ -173,7 +173,7 @@ mod tests {
     }
 
     #[test]
-    fn chunk_parser_negetive_number() {
+    fn chunk_parser_negative_number() {
         assert_eq!(
             chunk_detector("-1.5".to_string(), 1),
             Ok(Chunk::Params(vec![Param::Value(DataType::Float(-1.5))]))

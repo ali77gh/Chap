@@ -29,7 +29,7 @@ impl Preprocessor {
 
         let line = self.current_line;
 
-        lines = self.multiline_expresion(lines);
+        lines = self.multiline_expression(lines);
 
         let lines = self.parentheses(lines)?;
 
@@ -39,14 +39,14 @@ impl Preprocessor {
             .collect())
     }
 
-    fn multiline_expresion(&mut self, mut inp: Vec<String>) -> Vec<String> {
+    fn multiline_expression(&mut self, mut inp: Vec<String>) -> Vec<String> {
         if let Some(x) = inp.last() {
             if x.ends_with("->")
                 || x.ends_with(',')
                 || x.matches('(').count() > x.matches(')').count()
             {
-                let halfline = inp.pop().unwrap();
-                self.buffer.push_str(halfline.as_str());
+                let half_line = inp.pop().unwrap();
+                self.buffer.push_str(half_line.as_str());
                 inp
             } else {
                 inp
@@ -77,7 +77,7 @@ impl Preprocessor {
                         None => {
                             return Err(ChapError::syntax_with_msg(
                                 self.current_line,
-                                "parenthese ends without an start".to_string(),
+                                "parentheses ends without an start".to_string(),
                             ))
                         }
                     }
@@ -88,7 +88,7 @@ impl Preprocessor {
                         Some(_) => {
                             return Err(ChapError::syntax_with_msg(
                                 self.current_line,
-                                "parenthese starts without an end".to_string(),
+                                "parentheses starts without an end".to_string(),
                             ))
                         }
                         None => {
@@ -166,7 +166,7 @@ mod tests {
     }
 
     #[test]
-    fn currect_line_numbers() {
+    fn correct_line_numbers() {
         let mut pp = Preprocessor::default();
 
         assert_eq!(0, pp.on_new_line("//comment1".to_string()).unwrap().len());
@@ -178,7 +178,7 @@ mod tests {
     }
 
     #[test]
-    fn currect_actual_line() {
+    fn correct_actual_line() {
         let mut pp = Preprocessor::default();
 
         let pped = pp
@@ -200,7 +200,7 @@ mod tests {
     }
 
     #[test]
-    fn multiline_expresion() {
+    fn multiline_expression() {
         let mut p = Preprocessor::default();
         let result1 = p.on_new_line("1,".to_string()).unwrap();
         let result2 = p.on_new_line("2->".to_string()).unwrap();
@@ -256,7 +256,7 @@ mod tests {
     }
 
     #[test]
-    fn multiline_expresion_parentheses() {
+    fn multiline_expression_parentheses() {
         let mut p = Preprocessor::default();
         let result1 = p.on_new_line("(".to_string()).unwrap();
         let result2 = p.on_new_line("(1,2->add),2->add".to_string()).unwrap();
