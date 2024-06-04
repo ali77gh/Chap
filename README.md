@@ -25,6 +25,7 @@ Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programmi
 1. [ControlFlow](#control-flow)
 1. [Samples](#samples)
 1. [Data Types](#datatypes)
+1. [Memory Management](#memory-management)
 1. [Installation](#installation)
 1. [How to use](#how-to-use)
 1. [Builtin function](#builtin-functions)
@@ -578,13 +579,17 @@ boolean
 list
 ```
 
-# Installation
+## Memory Management
 
-## Download release
+Your OS will free memory after process is done!
+
+## Installation
+
+### Download release
 
 [link](https://github.com/ali77gh/Chap/releases)
 
-## Build
+### Build from source
 
 ```bash
 git clone https://github.com/ali77gh/Chap
@@ -592,9 +597,9 @@ cargo build --release
 sudo cp ./target/release/chap /usr/bin
 ```
 
-# How To Use
+## How To Use
 
-## REPL
+### REPL (Run Execute Print Loop)
 
 [./repl/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/repl/mod.rs)
 
@@ -605,7 +610,7 @@ hello world
 -> 
 ```
 
-## File_executor
+### File_executor
 
 [./file_executor/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/file_executor/mod.rs)
 
@@ -619,23 +624,19 @@ wrong
 you win answer was: 3
 ```
 
-## Library
+### Use As lib
 
 [./lib.rs](https://github.com/ali77gh/Chap/blob/master/src/lib.rs)
-
-## As lib
 
 ```bash
 cargo add chap # this include eval function
 ```
 
+or
+
 ```bash
 cargo build --release --lib
 ```
-
-## As Wasm module
-
- TODO
 
 ## Release Note version 2.0.0
 
@@ -707,4 +708,5 @@ Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
 | wait_mil, wait_millis   | int               | nothing  | delay code execution for 1st milliseconds                   |
 | wait_sec, wait_sec      | int               | nothing  | delay code execution for 1st seconds                        |
 | wait_min, wait_minute   | int               | nothing  | delay code execution for 1st minutes                        |
+| wait_hour,wait_hour     | int               | nothing  | delay code execution for 1st hours                          |
 | wait_hour,wait_hour     | int               | nothing  | delay code execution for 1st hours                          |
