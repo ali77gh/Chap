@@ -27,6 +27,7 @@ print(count)
 | Python 3.11.3  | 3.2s | N/A                |
 | Chap 2.0.0     | 9.0s | 5.8s               |
 | Chap [7729d79](https://github.com/ali77gh/Chap/commit/7729d7962f0d3579e3877406f675b3e3d8ee0198)     | 8.4s | 5.2s         |
+| Chap [7729d79](https://github.com/ali77gh/Chap/commit/a65421d838bb2376e9253bb68beb660a757534b0)     | 6.6s | 3.4s         |
 
 ## Chap vs Chap (finding slow parts)(version 2.0.0)
 
@@ -43,7 +44,7 @@ print(count)
 | var = add(a,b) | 15.984s - 16.845s | 16.414s  |
 | jump           | 12.103s - 12.816s | 12.459s  |
 
-### Technical Analyis
+### Technical Analysis
 
 | Function       | Overhead | Operations |
 |----------------|----------|------------|
