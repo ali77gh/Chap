@@ -1,0 +1,5 @@
+0 -> $counter
+@loop
+    $counter -> increase
+@loop , $counter, 30000000  -> jump_if_not_equal
+$counter

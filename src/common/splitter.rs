@@ -23,7 +23,7 @@ mod tests {
     use crate::common::splitter::string_safe_split;
 
     #[test]
-    fn comma_spliter_test() {
+    fn comma_splitter_test() {
         assert_eq!(
             string_safe_split("ali,hasan,majid", ",".to_string()),
             vec!["ali", "hasan", "majid"]

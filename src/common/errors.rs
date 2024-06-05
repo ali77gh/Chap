@@ -94,7 +94,7 @@ impl ChapError {
         panic!();
     }
 
-    // on the REPL mode we should not shut the whole interperter down
+    // on the REPL mode we should not shut the whole interpreter down
     pub fn show_warning(&self) {
         println!("{}", self.error_message());
     }

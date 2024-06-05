@@ -1,10 +1,11 @@
-pub mod common; // language common defenitions
+pub mod builtin_function;
+pub mod common;
+pub mod compile;
 
-//phases
-pub mod parser; // phase 2
-pub mod preprocessor; // phase 1
-pub mod runtime; // phase 3
+pub mod runtime;
 
-pub mod eval;
+pub mod runners;
+
+pub use runners::eval::eval;
 
 // repl and file_executor and param parser should not be in library

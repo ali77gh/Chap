@@ -1,6 +1,6 @@
 use super::param::Param;
+use crate::builtin_function::closure_gen;
 use crate::common::errors::Result;
-use crate::runtime::builtin_function::closure_gen;
 use crate::runtime::Runtime;
 
 pub type BuiltinFunction = fn(&mut Runtime, &ExecutableLine) -> Result<()>;
@@ -28,6 +28,10 @@ impl ExecutableLine {
             output_var,
             closure: |_, _| Ok(()),
         }
+    }
+
+    pub fn exit() -> Self {
+        ExecutableLine::new(0, "exit".to_string(), vec![], None)
     }
 
     pub fn bind_closure(&mut self) -> Result<()> {

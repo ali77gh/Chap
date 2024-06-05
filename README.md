@@ -2,21 +2,20 @@
 
 <img src="./Logo.png" width="130"></img>
 
-[![forthebadge made-with-rust](http://ForTheBadge.com/images/badges/made-with-rust.svg)](https://www.rust-lang.org/) <br>
+[![forthebadge made-with-rust](http://ForTheBadge.com/images/badges/made-with-rust.svg)](https://www.rust-lang.org/)\
 [![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
 [![GitHub license](https://badgen.net/github/license/ali77gh/chap)](https://github.com/ali77gh/chap/blob/master/LICENSE)
 
-Chap is an easy to learn, dynamic, interpretive, isolated, and keyword-less scripting language written in Rust. It is useful when you want your non-programmer users to control some stuff dynamically and perform some custom calculations in a safe sandbox.
+Chap is an easy to learn, dynamic, interpretive, and keyword-less language written in Rust.
 
+Remember, Chap is not a tool! its Art.
 
 Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Assembly](https://en.wikipedia.org/wiki/Assembly_language) and [PHP](https://www.php.net/).
 
-[ChapApp](https://github.com/ali77gh/chapAPP) is a Chap Editor/Compiler on Browser (Powered by WASM). ChapApp is written in Rust([Dioxus](https://dioxuslabs.com/)) as well.
+[ChapApp](https://github.com/ali77gh/chapAPP) is an offline Chap Editor/Compiler on Browser (Powered by WASM). ChapApp is written in Rust([Dioxus](https://dioxuslabs.com/)) as well.
 <a href="https://ali77gh.github.io/ChapApp/" target="_blank">Open ChapApp in a new tab</a>.
 
-<br>
-
-# Table of content
+## Table of content
 
 1. [Why was it named 'Chap'?](#name)
 1. [Features](#features)
@@ -26,14 +25,12 @@ Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programmi
 1. [ControlFlow](#control-flow)
 1. [Samples](#samples)
 1. [Data Types](#datatypes)
+1. [Memory Management](#memory-management)
 1. [Installation](#installation)
 1. [How to use](#how-to-use)
-1. [TODOs for version 3.0.0](#todos)
 1. [Builtin function](#builtin-functions)
 
-<br>
-
-# Name
+## Name
 
 Rust or راست in persian means right and Chap or چپ means left.
 
@@ -41,16 +38,12 @@ If you code in rust(right) too much, you gradually become capitalist after a whi
 
 Chap unlocks **Two-Dimensional** Full Stack Development. Front⬆️End, Back⬇️End, Rust➡️End, Chap⬅️End.
 
-<br>
-
-# Features
+## Features
 
 1. Easy to learn.
 2. Cross platform (It runs on Linux, MacOS, Windows, Web(WASM))
 
-<br>
-
-# Keywords
+## Keywords
 
 What makes a programming language hard to learn?
 
@@ -68,9 +61,7 @@ What makes a programming language hard to learn?
 
 There are no keywords in Chap.
 
-<br>
-
-# Syntax
+## Syntax
 
 A normal line of code in chap has 3 chunks separated with -> operator:
 
@@ -92,15 +83,15 @@ For example:
 1, 2 -> add -> $sum
 ```
 
-1. 1 and 2 separated by "," are input params. <br>
-1. These input params are moving to "add" function <br>
-1. Finally $sum is a variable that holds the add result in it. <br>
+1 and 2 separated by "," are input params.\
+These input params are moving to "add" function.\
+Finally $sum is a variable that holds the add result in it.
 
 Note: "add" is not a keyword, it's a builtin function.
 
 ## Ok but why?
 
-English language is a <b>"left to right"</b> (aka LTR) language, and programming languages should follow the same rule, right?
+English language is a **"left to right"** (aka LTR) language, and programming languages should follow the same rule, right?
 
 Wrong:
 
@@ -111,6 +102,8 @@ result = send(sqrt(1 + 2).toString());
    5       4    2     1       3
 ```
 
+But chap:
+
 ```chp
 // chap
 1,2 -> add -> sqrt -> to_string -> send -> $result
@@ -120,48 +113,46 @@ result = send(sqrt(1 + 2).toString());
 
 This is actually left to right like normal english.
 
-Note: "Piping" is added in version 2.0.0
-
-<br>
+Note: "Chain" syntax is added in version 2.0.0
 
 ## Syntax Rules
 
-Make a comment with // and anything you write on the right side will be ignored. <br>
+Make a comment with // and anything you write on the right side will be ignored by compiler.
 
-```
+```chp
 1, 2 -> add -> $sum // this is a comment
 ```
 
-You can write many lines of code in one line by using ;
+You can write many lines of code in one line by separating lines by ";"
 
 ```chp
 1 -> $a; $a, 2-> sum -> $b; $b -> print -> $_
 ```
 
-Input params are separated by comma character ",". <br>
+Input params are separated by comma character ",".
 
 Input params can be:
 
- 1. Variable <br>
- 1. String with " character around like: "hello world" <br>
- 1. Int just a number: 5<br>
- 1. Float just a normal form of floating point number 3.14<br>
- 1. Bool is a boolean value which is a true or false<br>
- 1. Tags start with @. [(more on control flow)](#controlflow)
+ 1. Variable
+ 1. String with " character around like: "hello world"
+ 1. Int just a number: 5
+ 1. Float just a normal form of floating point number 3.14
+ 1. Bool is a boolean value which is a true or false
+ 1. Tags start with @. [(more on control flow)](#control-flow)
 
 ```chp
 $a, "hello", 5, 3.14, false -> function_name -> $output_var
 ```
 
-Function names are not case-sensitive. <br>
+Function names are not case-sensitive.
 
-Function names are not sensitive about anything else:<br>
+Function names are not sensitive about anything else:
 
 ```chp
 // to_string = ToString = TOSTRING = to string = t o s t r_i_n_g
 ```
 
-Variables should start with $ which is known as the most loved feature of PHP.<br>
+Variables should start with $ which is known as the most loved feature of PHP.
 
 Variable name rules:
 
@@ -172,10 +163,8 @@ $#^3 // Ok
 $a,b // comma not allowed
 $really? // question mark at the end not allowed
 $rea?lly // OK
-$some->thing // -> is not allowed 
+$some->thing // "->" is not allowed 
 ```
-
-<br>
 
 ## Short syntax features
 
@@ -200,7 +189,7 @@ Removing chunk2 (function name) means assigning a variable:
 ```chp
 1 -> $variable
 // it's actually short for:
-1 -> assign -> $variable
+// 1 -> assign -> $variable
 ```
 
 If a function has no input param and output_var you just write function name:
@@ -214,8 +203,7 @@ If a function has output var but you removed chunk3 the result of function will 
 ```chp
 1, 2 -> add
 // it's short for:
-1, 2 -> add -> $temp
-$temp -> print
+// 1, 2 -> add -> print
 ```
 
 If you just write some params. chap will print them:
@@ -229,7 +217,7 @@ $a
 // prints whatever $a is
 ```
 
-We have the world's smallest hello world:
+As you can guess, we have the world's smallest hello world:
 
 ```chp
 "Hello World"
@@ -237,7 +225,7 @@ We have the world's smallest hello world:
 
 I wish I could remove double quotes too :)
 
-# Piping syntax
+## Chain syntax (aka pipe)
 
 Sometimes you have a collection of function calls like this:
 
@@ -255,7 +243,7 @@ In this case, you can use piping syntax to write functions next to each other an
 1, 2 -> add -> sqrt -> print
 ```
 
-# Parentheses
+## Parentheses
 
 You can't use Piping when one of the functions has more than one param.
 
@@ -276,15 +264,15 @@ This converts two:
 ```chp
 1,2 -> add -> $TMP1
 3 -> sqrt -> $TMP2
-$TMP1, TMP2 -> add -> print
+$TMP1, $TMP2 -> add -> print
 ```
 
-
-# Operators
+## Operators
 
 There is one operator -> which moves data from left to right and it is language logo.
 
-Why are operators bad? <br> Because they behave different with different types.
+Why are operators bad?\
+Because they behave different with different types.
 Look at this python example:
 
 ```python
@@ -303,7 +291,7 @@ Enter a number: 3
 
 Why? Because Python uses the same operator for math.multiply and strings.repeat.
 
-So * operator <b>is not a type safe</b> operator and it will <b>do unexpected things</b> when your forget to pass the right type to it and it will happen without throwing runtime errors (which is bad).
+So * operator **"IS NOT A TYPE SAFE"** operator and it will **"DO UNEXPECTED THINGS"** when your forget to pass the right type to it and it will happen without throwing runtime errors (which is bad).
 
 Same code in Chap:
 
@@ -340,11 +328,9 @@ add(1, 2) # 3
 "1", "2" -> add // runtime error
 ```
 
-<br>
-
 ## Debugger
 
-You can put a ? at the end of a line to debug that line:
+You can put a ? at the end of function name to debug that line:
 
 ```chp
 1 -> $a
@@ -355,7 +341,7 @@ $a, $b -> add? -> $c
 
 Chap also has a function called "dump" which prints every variable you have.
 
-# Control Flow
+## Control Flow
 
 You can create a tag like this:
 
@@ -395,9 +381,7 @@ Jumping backward makes loops:
 
 Note: Indention is not necessary
 
-<br>
-
-# Array
+## Array
 
 Initialize:
 
@@ -424,7 +408,9 @@ $myArray, 1 -> get -> $first_item
 // arrays index start from 1
 ```
 
-# Samples
+## Samples
+
+Note: You can test and tweak samples at [ChapApp](https://ali77gh.github.io/ChapApp/).
 
 ## hello_world.chp
 
@@ -477,15 +463,19 @@ you win
 ## christmas_tree.chp
 
 ```chp
+ // Editable
 0 -> $counter
 @loop
     $counter -> increase
 
-    (" ", (10, $counter -> minus) -> repeat),
-    ("*", ($counter, 2 -> multiply) -> repeat) -> 
-    cat
-@loop, $counter, 10 -> jump if not equal
+    $counter, 2 -> multiply -> $stars_size
+    10, $counter -> minus -> $space_size
 
+    "*", $stars_size -> repeat -> $stars
+    " ", $space_size -> repeat -> $spaces
+
+    $spaces, $stars -> cat
+@loop, $counter, 10 -> jump if not equal
 ```
 
 ```sh
@@ -500,8 +490,6 @@ you win
  ******************
 ********************
 ```
-
-<br>
 
 ## christmas_tree_with_trunk.chp
 
@@ -542,6 +530,7 @@ you win
 @loop, $c, 7 -> jump if not equal
 
 ```
+
 ```sh
 
                    * 
@@ -571,9 +560,7 @@ you win
 
 ```
 
-<br>
-
-# DataTypes
+## DataTypes
 
 ```chp
 1 -> type_of
@@ -592,13 +579,17 @@ boolean
 list
 ```
 
-# Installation
+## Memory Management
 
-## Download release
+Your OS will free memory after process is done!
+
+## Installation
+
+### Download release
 
 [link](https://github.com/ali77gh/Chap/releases)
 
-## Build
+### Build from source
 
 ```bash
 git clone https://github.com/ali77gh/Chap
@@ -606,9 +597,9 @@ cargo build --release
 sudo cp ./target/release/chap /usr/bin
 ```
 
-# How To Use
+## How To Use
 
-## REPL
+### REPL (Run Execute Print Loop)
 
 [./repl/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/repl/mod.rs)
 
@@ -619,7 +610,7 @@ hello world
 -> 
 ```
 
-## File_executor
+### File_executor
 
 [./file_executor/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/file_executor/mod.rs)
 
@@ -633,21 +624,19 @@ wrong
 you win answer was: 3
 ```
 
-## Library
+### Use As lib
 
 [./lib.rs](https://github.com/ali77gh/Chap/blob/master/src/lib.rs)
 
-## As lib
+```bash
+cargo add chap # this include eval function
+```
+
+or
 
 ```bash
 cargo build --release --lib
 ```
-
-## As Wasm module
-
- TODO
-
-# TODOs
 
 ## Release Note version 2.0.0
 
@@ -659,24 +648,13 @@ cargo build --release --lib
 - [x] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
 - [x] New debugger syntax 1,2 -> add? -> $sum
 
-## Version 3.0.0
-
-- [ ] Fix floating point 0.2, 0.1 -> add -> $a // 0.3
-- [ ] Better Closure gen for:
-  - [ ] Static analyzer
-  - [ ] Performance improvement
-- [ ] Chap to C compiler (C has jumps BTW) + (executable or standard lib(dll|so|wasm) with extern)
-- [ ] Update [is_prime](https://github.com/ali77gh/language_performance_prime_algorithm) results
-- [ ] Chap library for other programming lanuages
-- [ ] Error Handling (backward compatible): 1, 0 -> divide -> $result, err // if you catch error like this it will prevents throwing error and give you the message.
- 
-# Stars
+## Stars
 
 [![Stargazers over time](https://starchart.cc/ali77gh/chap.svg)](https://starchart.cc/ali77gh/chap)
 
-# Builtin Functions
+## Builtin Functions
 
-[runtime/builtin_function](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function) <br>
+[runtime/builtin_function](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function)\
 Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
 
 | Names                   | Input params      | output   | description                                                 |
@@ -685,7 +663,7 @@ Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
 | std_out, print, show    | any, any, any,... | any      | prints params to console                                    |
 | std_in, input           | nothing           | string   | read user input from console                                |
 | exit, quit, kill, end   | nothing           | nothing  |  ends execution                                             |
-| jump                    | @tag              | nothing  | moves executor curser to closest tag with specfied name     |
+| jump                    | @tag              | nothing  | moves executor curser to closest tag with specified name     |
 | jump_if                 | @tag, bool        | nothing  | jumps to tag if 1st param is true                           |
 | jump_if_not             | @tag, bool        | nothing  | jumps to tag if 1st param is false                          |
 | jump_if_equal, jeq      | @tag, any, any    | nothing  | jumps to tag if 2th and 3th params are equal                |
@@ -695,7 +673,7 @@ Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
 | add_many, add_all       | num, num, num,... | num      | adds many numbers    1 + 2 + 3 = 6                          |
 | minus                   | num, num          | num      | minus two numbers    3 - 2  = 1                             |
 | multiply                | num, num          | num      | minus two numbers    3 * 2  = 6                             |
-| divide                  | num, num          | num      | divede two numbers   3 / 2  = 1.5                           |
+| divide                  | num, num          | num      | divide two numbers   3 / 2  = 1.5                           |
 | modulus, mod            | num, num          | num      | divide remaining     3 / 2  = 1                             |
 | power, pow              | num, num          | num      | power                3 ** 2  = 9                            |
 | square_root, sqrt       | num               | num      | square root          9 -> sqrt -> 3                         |
@@ -716,9 +694,9 @@ Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
 | insert                  | array, any        | nothing  | insert an item to list                                      |
 | get                     | array, int        | any      | get nth item of list second param is index of item          |
 | pop                     | array             | any      | remove last item of list and returns it                     |
-| last                    | array             | any      | return lsat item of list (without removin it)               |
+| last                    | array             | any      | return lsat item of list (without removing it)              |
 | has                     | array, any        | bool     | check if an item exist in a list                            |
-| remove                  | array, any        | nohting  | removes a given item from list                              |
+| remove                  | array, any        | nothing  | removes a given item from list                              |
 | remove_at               | array, int        | nothing  | removes item at index of second param                       |
 | index_of                | array, any        | int      | search for an item on list and returns index                |
 | to_string               | any               | string   | convert input to string        1 -> "1"                     |
@@ -730,4 +708,5 @@ Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
 | wait_mil, wait_millis   | int               | nothing  | delay code execution for 1st milliseconds                   |
 | wait_sec, wait_sec      | int               | nothing  | delay code execution for 1st seconds                        |
 | wait_min, wait_minute   | int               | nothing  | delay code execution for 1st minutes                        |
+| wait_hour,wait_hour     | int               | nothing  | delay code execution for 1st hours                          |
 | wait_hour,wait_hour     | int               | nothing  | delay code execution for 1st hours                          |
