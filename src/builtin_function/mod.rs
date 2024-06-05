@@ -17,7 +17,7 @@ mod delay;
 mod list;
 mod math;
 mod random;
-mod std;
+mod std_io;
 mod strings;
 mod type_conversion;
 
@@ -98,9 +98,9 @@ pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
         "waitsec" | "waitseconds" => Some(delay::wait_second::wait_second),
         "waitmin" | "waitminutes" => Some(delay::wait_minute::wait_minute),
         "waithour" | "delayhour" => Some(delay::wait_hour::wait_hour),
-        "print" | "show" | "stdout" => Some(std::println::println),
-        "input" | "stdin" => Some(std::input::input),
-        "exit" | "quit" | "kill" | "end" => Some(std::exit::exit),
+        "print" | "show" | "stdout" => Some(std_io::println::println),
+        "input" | "stdin" => Some(std_io::input::input),
+        "exit" | "quit" | "kill" | "end" => Some(std_io::exit::exit),
         "pass" | "nop" | "noop" => Some(pass::pass),
 
         // random functions not working in wasm
