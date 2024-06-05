@@ -3,17 +3,20 @@ use crate::common::errors::Result;
 use crate::common::executable::ExecutableLine;
 use std::collections::HashMap;
 
-pub struct Runtime {
+pub struct Runtime<'a> {
     pub executables: Vec<ExecutableLine>,
     pub variables: HashMap<String, DataType>, // <variable name, variable value>
     pub tags: HashMap<String, usize>,         // <tag name, index in executables vector>
     pub current_line: usize,
-    pub std_out: fn(&str),
-    pub std_in: fn() -> String,
+    pub std_out: Box<dyn FnMut(&str) + 'a>,
+    pub std_in: Box<dyn FnMut() -> String + 'a>,
 }
 
-impl Runtime {
-    pub fn new(std_out: fn(&str), std_in: fn() -> String) -> Self {
+impl<'a> Runtime<'a> {
+    pub fn new(
+        std_out: Box<dyn FnMut(&str) + 'a>,
+        std_in: Box<dyn FnMut() -> String + 'a>,
+    ) -> Self {
         Self {
             executables: vec![],
             variables: HashMap::new(),
@@ -43,11 +46,11 @@ impl Runtime {
         Ok(())
     }
 
-    pub fn std_out(&self, msg: &str) {
+    pub fn std_out(&mut self, msg: &str) {
         (self.std_out)(msg);
     }
 
-    pub fn std_in(&self) -> String {
+    pub fn std_in(&mut self) -> String {
         (self.std_in)()
     }
 }
@@ -61,7 +64,7 @@ mod tests {
 
     #[test]
     fn simple_execution_test() {
-        let mut rt = Runtime::new(|_| {}, || "".to_string());
+        let mut rt = Runtime::new(Box::new(|_| {}), Box::new(|| "".to_string()));
 
         assert_eq!(rt.current_line, 0);
         rt.on_new_line(ExecutableLine::new(
@@ -82,10 +85,10 @@ mod tests {
     #[test]
     fn runtime_std_test() {
         let mut rt = Runtime::new(
-            |x| {
+            Box::new(|x| {
                 assert_eq!(x, "the text");
-            },
-            || "the text".to_string(),
+            }),
+            Box::new(|| "the text".to_string()),
         );
 
         rt.on_new_line(ExecutableLine::new(

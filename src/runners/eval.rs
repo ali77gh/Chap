@@ -4,7 +4,12 @@ use crate::compile::parser::Parser;
 use crate::compile::preprocessor::Preprocessor;
 use crate::runtime::Runtime;
 
-pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_error: fn(ChapError)) {
+pub fn eval<'a>(
+    code: String,
+    std_out: Box<dyn FnMut(&str) + 'a>,
+    std_in: Box<dyn FnMut() -> String + 'a>,
+    mut on_error: impl FnMut(ChapError),
+) {
     let mut runtime = match make_runtime(code, std_out, std_in) {
         Ok(rt) => rt,
         Err(e) => {
@@ -30,7 +35,11 @@ pub fn eval(code: String, std_out: fn(&str), std_in: fn() -> String, on_error: f
     }
 }
 
-fn make_runtime(code: String, std_out: fn(&str), std_in: fn() -> String) -> Result<Runtime> {
+fn make_runtime<'a>(
+    code: String,
+    std_out: Box<dyn FnMut(&str) + 'a>,
+    std_in: Box<dyn FnMut() -> String + 'a>,
+) -> Result<Runtime<'a>> {
     let mut preprocessor = Preprocessor::default();
     let mut parser = Parser::default();
     let mut runtime = Runtime::new(std_out, std_in);
@@ -51,10 +60,54 @@ fn make_runtime(code: String, std_out: fn(&str), std_in: fn() -> String) -> Resu
 
 #[cfg(test)]
 mod tests {
+    use crate::common::errors::ChapError;
+
     use super::eval;
 
     #[test]
     fn test_eval() {
-        eval("3".to_string(), |_| {}, || "".to_string(), |_| {});
+        eval(
+            "3".to_string(),
+            Box::new(|_| {}),
+            Box::new(|| "".to_string()),
+            |_| {},
+        );
+    }
+
+    #[test]
+    fn test_eval_closure() {
+        let input = "INPUT".to_string();
+        let mut output = "".to_string();
+
+        eval(
+            "input -> $a; $a -> print".to_string(),
+            Box::new(|out| {
+                output = out.to_string();
+            }),
+            Box::new(|| {
+                return input.clone();
+            }),
+            |_| {},
+        );
+        assert_eq!(input, output);
+    }
+
+    #[test]
+    fn test_eval_error() {
+        let mut error: Option<ChapError> = None;
+        eval(
+            "a".to_string(),
+            Box::new(|_| {}),
+            Box::new(|| {
+                return "".to_string();
+            }),
+            |e| {
+                error = Some(e);
+            },
+        );
+
+        if let None = error {
+            assert!(false, "error not happened");
+        }
     }
 }

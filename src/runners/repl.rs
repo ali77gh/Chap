@@ -16,10 +16,10 @@ pub fn start_repl() {
     let mut reader = DefaultEditor::new().unwrap(); // TODO: handle error
 
     let mut runtime = Runtime::new(
-        |msg| {
+        Box::new(|msg| {
             println!("{}", msg);
-        },
-        || String::from(""),
+        }),
+        Box::new(|| String::from("")),
     );
 
     loop {

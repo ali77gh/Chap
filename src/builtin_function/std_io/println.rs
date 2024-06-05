@@ -1,5 +1,5 @@
-use crate::common::errors::Result;
 use crate::builtin_function::utils::param_to_datatype;
+use crate::common::errors::Result;
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 pub fn println(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
@@ -23,10 +23,10 @@ mod tests {
     #[test]
     fn print_string() {
         let mut runtime = Runtime::new(
-            |x| {
+            Box::new(|x| {
                 assert_eq!(x, "test");
-            },
-            || "".to_string(),
+            }),
+            Box::new(|| "".to_string()),
         );
 
         println(
@@ -44,10 +44,10 @@ mod tests {
     #[test]
     fn print_int() {
         let mut runtime = Runtime::new(
-            |x| {
+            Box::new(|x| {
                 assert_eq!(x, "2");
-            },
-            || "".to_string(),
+            }),
+            Box::new(|| "".to_string()),
         );
 
         println(
@@ -65,10 +65,10 @@ mod tests {
     #[test]
     fn print_many() {
         let mut runtime = Runtime::new(
-            |x| {
+            Box::new(|x| {
                 assert_eq!(x, "2, false");
-            },
-            || "".to_string(),
+            }),
+            Box::new(|| "".to_string()),
         );
 
         println(

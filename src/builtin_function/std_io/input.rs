@@ -1,6 +1,6 @@
+use crate::builtin_function::utils::returns;
 use crate::common::data_type::DataType;
 use crate::common::errors::Result;
-use crate::builtin_function::utils::returns;
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 pub fn input(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
@@ -19,7 +19,7 @@ mod tests {
 
     #[test]
     fn input_test() {
-        let mut runtime = Runtime::new(|_| {}, || "test".to_string());
+        let mut runtime = Runtime::new(Box::new(|_| {}), Box::new(|| "test".to_string()));
 
         input(
             &mut runtime,

@@ -4,13 +4,22 @@ use crate::{
 };
 
 pub fn dump(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    runtime.std_out(format!("------- Memory dump line: {}", executable.line_number).as_str());
+    let mut result = String::new();
     for variable in runtime.variables.iter() {
         let name = variable.0;
         let value = variable.1;
-        runtime.std_out(format!("{} -> ${}", value.to_string(), name).as_str())
+        result.push_str(format!("{} -> ${}\n", value.to_string(), name).as_str())
     }
-    runtime.std_out("------- Memory dump ends");
+    result.pop();
+    runtime.std_out(
+        format!(
+            "------- Memory dump line: {} -------",
+            executable.line_number
+        )
+        .as_str(),
+    );
+    runtime.std_out(&result);
+    runtime.std_out("------- Memory dump ends -------");
 
     Ok(())
 }

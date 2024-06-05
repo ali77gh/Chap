@@ -34,7 +34,7 @@ mod tests {
 
     #[test]
     fn assign_value_and_variable() {
-        let mut runtime = Runtime::new(|_| {}, || "".to_string());
+        let mut runtime = Runtime::new(Box::new(|_| {}), Box::new(|| "".to_string()));
 
         assign(
             &mut runtime,

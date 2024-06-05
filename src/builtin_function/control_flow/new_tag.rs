@@ -28,7 +28,7 @@ mod tests {
 
     #[test]
     fn new_tag_test() {
-        let mut runtime = Runtime::new(|_| {}, || "".to_string());
+        let mut runtime = Runtime::new(Box::new(|_| {}), Box::new(|| "".to_string()));
 
         new_tag(
             &mut runtime,
