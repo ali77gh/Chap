@@ -3,8 +3,8 @@ use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 #[cfg(not(target_family = "wasm"))]
 pub fn random_bool(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    use crate::common::data_type::DataType;
     use crate::builtin_function::utils::returns;
+    use crate::common::data_type::DataType;
     use rand::Rng;
 
     let mut rng = rand::thread_rng();

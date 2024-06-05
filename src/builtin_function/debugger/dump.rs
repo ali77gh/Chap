@@ -8,7 +8,7 @@ pub fn dump(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
     for variable in runtime.variables.iter() {
         let name = variable.0;
         let value = variable.1;
-        result.push_str(format!("{} -> ${}\n", value.to_string(), name).as_str())
+        result.push_str(format!("{} -> ${}\n", value, name).as_str())
     }
     result.pop();
     runtime.std_out(

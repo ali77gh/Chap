@@ -1,6 +1,6 @@
+use crate::builtin_function::utils::{param_to_datatype_mut, returns};
 use crate::common::data_type::DataType;
 use crate::common::errors::{ChapError, Result};
-use crate::builtin_function::utils::{param_to_datatype_mut, returns};
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 pub fn last(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {

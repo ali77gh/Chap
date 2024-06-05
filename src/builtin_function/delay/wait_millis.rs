@@ -1,6 +1,6 @@
+use crate::builtin_function::utils::param_to_datatype;
 use crate::common::data_type::DataType;
 use crate::common::errors::{ChapError, Result};
-use crate::builtin_function::utils::param_to_datatype;
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 use std::{thread, time};
 

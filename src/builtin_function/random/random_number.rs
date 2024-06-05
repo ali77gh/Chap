@@ -3,8 +3,8 @@ use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 #[cfg(not(target_family = "wasm"))]
 pub fn random_number(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    use crate::common::data_type::DataType;
     use crate::builtin_function::utils::{param_to_datatype, returns};
+    use crate::common::data_type::DataType;
     use rand::Rng;
 
     let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;

@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 #[derive(PartialEq, Debug, Clone)]
 pub enum DataType {
     String(String),
@@ -7,18 +9,18 @@ pub enum DataType {
     List(Vec<DataType>),
 }
 
-impl ToString for DataType {
-    fn to_string(&self) -> String {
+impl Display for DataType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::String(m) => m.clone(),
-            Self::Int(i) => i.to_string(),
-            Self::Float(f) => f.to_string(),
-            Self::Bool(b) => b.to_string(),
+            Self::String(m) => write!(f, "{}", m.clone()),
+            Self::Int(i) => write!(f, "{}", i),
+            Self::Float(f_) => write!(f, "{}", f_),
+            Self::Bool(b) => write!(f, "{}", b),
             Self::List(b) => {
                 let a = b.iter().map(|x| x.to_string());
                 let a: Vec<String> = a.collect();
                 let i = a.join(" ");
-                format!("[{}]", i)
+                write!(f, "[{}]", i)
             }
         }
     }
