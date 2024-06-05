@@ -31,7 +31,7 @@ pub fn param_to_datatype<'a>(
     };
 
     match param {
-        Param::Tag(_) => Err(ChapError::runtime_with_msg(
+        Param::Tag(_, _) => Err(ChapError::runtime_with_msg(
             line_number,
             "can not convert a tag to datatype".to_string(),
         )),
@@ -62,7 +62,7 @@ pub fn param_to_datatype_mut<'a>(
     };
 
     match param {
-        Param::Tag(_) => Err(ChapError::runtime_with_msg(
+        Param::Tag(_, _) => Err(ChapError::runtime_with_msg(
             line_number,
             "can not convert a tag to datatype".to_string(),
         )),

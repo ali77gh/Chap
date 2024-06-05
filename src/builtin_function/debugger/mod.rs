@@ -17,7 +17,7 @@ pub fn debugger(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()
     // inputs
     let mut params_values = Vec::new();
     for param in &executable.params {
-        let param_str = if let Param::Tag(tag_name) = param {
+        let param_str = if let Param::Tag(tag_name, _) = param {
             ("@".to_string() + tag_name).to_string()
         } else {
             param_to_datatype(runtime, Some(param), executable.line_number)?.to_string()

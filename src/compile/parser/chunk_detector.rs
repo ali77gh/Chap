@@ -44,7 +44,7 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param> {
 
     let parsed_param = match param.chars().next().unwrap_or(' ') {
         '$' => Param::Variable((param[1..]).to_string()),
-        '@' => Param::Tag((param[1..]).to_string()),
+        '@' => Param::Tag((param[1..]).to_string(), None),
         '"' => {
             let len = param.len();
             if !(&param.ends_with('\"')) {
@@ -70,7 +70,7 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param> {
                     .map(|token| param_parser(token, line_number));
                 for item in items {
                     match item? {
-                        Param::Tag(_) => {
+                        Param::Tag(_, _) => {
                             return Err(ChapError::syntax_with_msg(
                                 line_number,
                                 "tags cant be in list".to_string(),
@@ -130,7 +130,10 @@ mod tests {
 
     #[test]
     fn param_parser_tag() {
-        assert_eq!(param_parser("@name", 0), Ok(Param::Tag("name".to_string())));
+        assert_eq!(
+            param_parser("@name", 0),
+            Ok(Param::Tag("name".to_string(), None))
+        );
     }
 
     #[test]

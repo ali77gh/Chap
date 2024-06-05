@@ -10,7 +10,7 @@ pub fn get_single_var(params: Vec<Param>, line_number: u32) -> Result<String> {
     }
 
     match params.first().unwrap() {
-        Param::Tag(_) => Err(ChapError::syntax_with_msg(
+        Param::Tag(_, _) => Err(ChapError::syntax_with_msg(
             line_number,
             "you can't set function result to a tag".to_string(),
         )),
@@ -33,7 +33,10 @@ mod tests {
     fn get_single_var_test() {
         assert_eq!(
             get_single_var(
-                vec![Param::Tag("".to_string()), Param::Tag("".to_string())],
+                vec![
+                    Param::Tag("".to_string(), None),
+                    Param::Tag("".to_string(), None)
+                ],
                 1
             ),
             Err(ChapError::syntax_with_msg(
@@ -56,7 +59,7 @@ mod tests {
             ))
         );
         assert_eq!(
-            get_single_var(vec![Param::Tag("mytag".to_string())], 1),
+            get_single_var(vec![Param::Tag("mytag".to_string(), None)], 1),
             Err(ChapError::syntax_with_msg(
                 1,
                 "you can't set function result to a tag".to_string()

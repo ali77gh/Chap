@@ -52,7 +52,7 @@ impl Parser {
                                         ))
                                     }
                                     Some(cc1) => match cc1 {
-                                        Param::Tag(_) => {
+                                        Param::Tag(_, _) => {
                                             if cc.len() > 1 {
                                                 return Err(ChapError::syntax_with_msg(
                                                     ln,
@@ -245,7 +245,7 @@ mod tests {
             &ExecutableLine::new(
                 1,
                 "new_tag".to_string(),
-                vec![Param::Tag("myTag".to_string())],
+                vec![Param::Tag("myTag".to_string(), None)],
                 None
             )
         );

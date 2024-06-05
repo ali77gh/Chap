@@ -1,13 +1,13 @@
-use crate::common::errors::Result;
-use crate::common::param::Param;
+use crate::common::{errors::Result, param::Param};
+
 use crate::{
     common::{errors::ChapError, executable::ExecutableLine},
     runtime::Runtime,
 };
 
 pub fn new_tag(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    if let Some(Param::Tag(tag)) = executable.params.first() {
-        runtime.tags.insert(tag.clone(), runtime.current_line);
+    if let Some(Param::Tag(tag_name, _)) = executable.params.first() {
+        runtime.tags.insert(tag_name.clone(), runtime.current_line);
     } else {
         return Err(ChapError::runtime_with_msg(
             executable.line_number,
@@ -35,7 +35,7 @@ mod tests {
             &ExecutableLine::new(
                 6,
                 "".to_string(),
-                vec![Param::Tag("new_tag".to_string())],
+                vec![Param::Tag("new_tag".to_string(), None)],
                 None,
             ),
         )
