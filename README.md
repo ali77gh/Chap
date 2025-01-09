@@ -12,8 +12,11 @@ Remember, Chap is not a tool! its Art.
 
 Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Assembly](https://en.wikipedia.org/wiki/Assembly_language) and [PHP](https://www.php.net/).
 
-[ChapApp](https://github.com/ali77gh/chapAPP) is an offline Chap Editor/Compiler on Browser (Powered by WASM). ChapApp is written in Rust([Dioxus](https://dioxuslabs.com/)) as well.
-<a href="https://ali77gh.github.io/ChapApp/" target="_blank">Open ChapApp in a new tab</a>.
+<a href="https://ali77gh.github.io/ChapApp">
+    <img src="WebIDEButton.png" width=300>
+</a>
+
+[ChapApp](https://github.com/ali77gh/chapAPP) the WebIDE (WASM).
 
 ## Table of content
 
