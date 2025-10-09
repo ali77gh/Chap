@@ -74,6 +74,7 @@ pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
         "or" => Some(bools::or::or),
         "not" => Some(bools::not::not),
         "gt" | "greaterthan" => Some(bools::greater_than::greater_than),
+        "gte" | "greaterthanequal" => Some(bools::greater_than_equal::greater_than_equal),
         "lt" | "lessthan" => Some(bools::less_than::less_than),
         "concat" | "cat" => Some(strings::contact::concat),
         "repeat" => Some(strings::repeat::repeat),
