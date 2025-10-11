@@ -6,11 +6,11 @@
 [![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
 [![GitHub license](https://badgen.net/github/license/ali77gh/chap)](https://github.com/ali77gh/chap/blob/master/LICENSE)
 
-Chap is an easy to learn, dynamic, interpretive, and keyword-less language written in Rust.
+Chap is an easy to learn, dynamic, interpretive language written in Rust.
 
-Remember, Chap is not a tool! its Art.
+Chap is like **Communism**✊, It's useless and people think it's because it's not implemented correctly 🫳🏻🎤, (We need to test it on an smaller society first). 
 
-Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Assembly](https://en.wikipedia.org/wiki/Assembly_language) and [PHP](https://www.php.net/).
+Besides the comedy part, It actually does have some cool new Ideas about programming languages in general.
 
 <a href="https://ali77gh.github.io/ChapApp">
     <img src="WebIDEButton.png" width=300>
@@ -37,14 +37,14 @@ Syntax is something between [Lisp](https://en.wikipedia.org/wiki/Lisp_(programmi
 
 Rust or راست in persian means right and Chap or چپ means left.
 
-If you code in rust(right) too much, you gradually become capitalist after a while. So you need to write some chap(left) to escape from the matrix.
-
 Chap unlocks **Two-Dimensional** Full Stack Development. Front⬆️End, Back⬇️End, Rust➡️End, Chap⬅️End.
 
 ## Features
 
-1. Easy to learn.
-2. Cross platform (It runs on Linux, MacOS, Windows, Web(WASM))
+1. Easy to learn and fun to code (hard to code, honestly).
+2. Keyword-less
+3. Actually left-to-right syntax
+4. Cross platform (It runs on Linux, MacOS, Windows, Web(WASM))
 
 ## Keywords
 
