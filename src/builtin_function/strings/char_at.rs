@@ -20,21 +20,21 @@ pub fn char_at(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>
         }
     };
 
-    // Convert usize index to i32 for bounds checking
-    if index < 0 {
+    // Chap uses 1-based indexing, so index must be >= 1
+    if index < 1 {
         return Err(ChapError::runtime_with_msg(
             executable.line_number,
             format!(
-                "Index {} is negative. Index must be non-negative",
+                "Index {} is invalid. Index must be 1 or greater (1-based indexing)",
                 index
             ),
         ));
     }
 
-    let index = index as usize;
+    let index_usize = index as usize;
     
-    // Check if index is within bounds
-    if index >= string_value.len() {
+    // Check if index is within bounds (convert to 0-based for length check)
+    if index_usize > string_value.len() {
         return Err(ChapError::runtime_with_msg(
             executable.line_number,
             format!(
@@ -45,9 +45,9 @@ pub fn char_at(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>
         ));
     }
 
-    // Get the character at the specified index
+    // Get the character at the specified index (convert to 0-based indexing)
     let chars: Vec<char> = string_value.chars().collect();
-    let result_char = chars[index];
+    let result_char = chars[index_usize - 1];
     let result = DataType::String(result_char.to_string());
 
     returns(runtime, executable, result)
