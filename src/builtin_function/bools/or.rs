@@ -4,7 +4,7 @@ use crate::common::errors::{ChapError, Result};
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
 pub fn or(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
-    let mut result = true;
+    let mut result = false;
     for param in &executable.params {
         let dt = param_to_datatype(runtime, Some(param), executable.line_number)?;
         match dt {
