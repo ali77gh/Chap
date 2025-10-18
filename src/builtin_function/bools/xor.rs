@@ -1,0 +1,22 @@
+use crate::builtin_function::utils::{param_to_datatype, returns};
+use crate::common::data_type::DataType;
+use crate::common::errors::{ChapError, Result};
+use crate::{common::executable::ExecutableLine, runtime::Runtime};
+
+pub fn xor(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
+    let mut result = false;
+    for param in &executable.params {
+        let dt = param_to_datatype(runtime, Some(param), executable.line_number)?;
+        match dt {
+            DataType::Bool(x) => result ^= *x,
+            _ => {
+                return Err(ChapError::runtime_with_msg(
+                    executable.line_number,
+                    "xor function needs bool params".to_string(),
+                ));
+            }
+        }
+    }
+
+    returns(runtime, executable, DataType::Bool(result))
+}

@@ -686,6 +686,7 @@ Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
 | not_equal, neq          | any, any          | bool     | true if 1st and 2nd are not equal and false if they are     |
 | and                     | bool, bool        | bool     | and logical gate                                            |
 | or                      | bool, bool        | bool     | or logical gate                                             |
+| xor                     | bool, bool        | bool     | xor logical gate                                            |
 | not                     | bool              | bool     | not logical gate                                            |
 | greater_than, gt        | num, num          | bool     | true if 1st param is bigger than 2nd param 3,2 -> true      |
 | less_than, lt           | num, num          | bool     | true if 1st param is less than 2nd param   3,2 -> false     |

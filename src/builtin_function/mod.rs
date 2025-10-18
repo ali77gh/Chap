@@ -72,6 +72,7 @@ pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
         "notequal" | "neq" => Some(bools::not_equal::not_equal),
         "and" => Some(bools::and::and),
         "or" => Some(bools::or::or),
+        "xor" => Some(bools::xor::xor),
         "not" => Some(bools::not::not),
         "gt" | "greaterthan" => Some(bools::greater_than::greater_than),
         "gte" | "greaterthanequal" => Some(bools::greater_than_equal::greater_than_equal),

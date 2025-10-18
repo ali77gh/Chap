@@ -7,3 +7,4 @@ pub mod less_than_equal;
 pub mod not;
 pub mod not_equal;
 pub mod or;
+pub mod xor;
