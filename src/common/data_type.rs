@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::{collections::HashMap, fmt::Display};
 
 #[derive(PartialEq, Debug, Clone)]
 pub enum DataType {
@@ -7,6 +7,7 @@ pub enum DataType {
     Float(f64),
     Bool(bool),
     List(Vec<DataType>),
+    Map(HashMap<String, DataType>),
 }
 
 impl Display for DataType {
@@ -22,6 +23,13 @@ impl Display for DataType {
                 let i = a.join(" ");
                 write!(f, "[{}]", i)
             }
+            Self::Map(b) => {
+                let mut a: Vec<_> = b.iter().collect();
+                a.sort_by_key(|(k, _)| *k);
+                let a: Vec<String> = a.iter().map(|(k, v)| format!("\"{}\": {}", k, v)).collect();
+                let i = a.join(" ");
+                write!(f, "{{{}}}", i)
+            }
         }
     }
 }
@@ -34,6 +42,7 @@ impl DataType {
             DataType::Float(_) => "float".to_string(),
             DataType::Bool(_) => "boolean".to_string(),
             DataType::List(_) => "list".to_string(),
+            DataType::Map(_) => "map".to_string(),
         }
     }
 }
@@ -57,6 +66,35 @@ mod tests {
             ])
             .to_string(),
             "[1 hello]"
+        );
+    }
+
+    #[test]
+    fn map_to_string() {
+        let mut map: HashMap<String, DataType> = HashMap::new();
+        let mut inner: HashMap<String, DataType> = HashMap::new();
+
+        inner.insert("a".to_string(), DataType::Int(1));
+
+        map.insert("alpha".to_string(), DataType::Bool(true));
+        map.insert("bravo".to_string(), DataType::Float(3.1415));
+        map.insert("charlie".to_string(), DataType::Int(42));
+        map.insert(
+            "delta".to_string(),
+            DataType::List(vec![
+                DataType::Int(1),
+                DataType::String("hello".to_string()),
+            ]),
+        );
+        map.insert("echo".to_string(), DataType::Map(inner));
+        map.insert(
+            "foxtrot".to_string(),
+            DataType::String("String".to_string()),
+        );
+
+        assert_eq!(
+            DataType::Map(map).to_string(),
+            "{\"alpha\": true \"bravo\": 3.1415 \"charlie\": 42 \"delta\": [1 hello] \"echo\": {\"a\": 1} \"foxtrot\": String}"
         );
     }
 }
