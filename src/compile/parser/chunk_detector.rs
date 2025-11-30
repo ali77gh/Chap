@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::common::errors::{ChapError, Result};
 use crate::common::splitter::string_safe_split;
 use crate::common::{chunk::Chunk, data_type::DataType, param::Param};
@@ -10,14 +12,10 @@ pub fn chunk_detector(chunk_str: String, line_number: u32) -> Result<Chunk> {
     }
 
     let r = match chunk_str.chars().next().unwrap_or(' ') {
-        '$' | '@' | '"' | '-' | '+' | '[' => Chunk::Params(params_parser(chunk_str, line_number)?),
-        c => {
-            if c.is_ascii_digit() {
-                Chunk::Params(params_parser(chunk_str, line_number)?)
-            } else {
-                Chunk::Function(chunk_str.to_string())
-            }
+        '$' | '@' | '"' | '-' | '+' | '[' | '{' | '0'..='9' => {
+            Chunk::Params(params_parser(chunk_str, line_number)?)
         }
+        _ => Chunk::Function(chunk_str.to_string()),
     };
     Ok(r)
 }
@@ -87,6 +85,46 @@ fn param_parser(param: &str, line_number: u32) -> Result<Param> {
                 }
             }
             Param::Value(DataType::List(list))
+        }
+        '{' => {
+            let mut map: HashMap<String, DataType> = HashMap::new();
+            if !(&param.ends_with('}')) {
+                return Err(ChapError::syntax_with_msg(
+                    line_number,
+                    "map should ends with }".to_string(),
+                ));
+            }
+            let param = &param[1..param.len() - 1].trim();
+            if !param.is_empty() {
+                let pairs = string_safe_split(param, " ".to_string());
+                for pair in pairs {
+                    let pair = pair.trim();
+                    let colon = pair.find(':').ok_or_else(|| {
+                        ChapError::syntax_with_msg(line_number, "map pair missing ':'".to_string())
+                    })?;
+                    let key = pair[..colon].trim();
+                    let value = pair[colon + 1..].trim();
+                    if !key.starts_with('"') || !key.ends_with('"') {
+                        return Err(ChapError::syntax_with_msg(
+                            line_number,
+                            "map key must be string".to_string(),
+                        ));
+                    }
+                    let key = key[1..key.len() - 1].to_string();
+                    let value = param_parser(value, line_number)?;
+
+                    match value {
+                        Param::Value(v) => map.insert(key, v),
+                        _ => {
+                            return Err(ChapError::syntax_with_msg(
+                                line_number,
+                                "map value must be a type variable".to_string(),
+                            ));
+                        }
+                    };
+                }
+            }
+            Param::Value(DataType::Map(map))
         }
         _ => {
             if param.contains('.') {
@@ -270,5 +308,18 @@ mod tests {
                 DataType::Int(3),
             ])),])
         );
+    }
+
+    #[test]
+    fn map_parser() {
+        let result = param_parser("{\"a\":{\"b\":1}}", 1);
+
+        let mut map = HashMap::new();
+        map.insert("b".to_string(), DataType::Int(1));
+
+        let mut expected = HashMap::new();
+        expected.insert("a".to_string(), DataType::Map(map));
+
+        assert_eq!(result, Ok(Param::Value(DataType::Map(expected))));
     }
 }

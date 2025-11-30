@@ -10,6 +10,7 @@ mod type_of;
 mod utils;
 
 mod bools;
+mod collection;
 mod control_flow;
 mod date_time;
 mod debugger;
@@ -83,13 +84,17 @@ pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
         "length" | "len" => Some(strings::length::length),
         "contains" | "has" => Some(strings::contains::contains),
         "slice" | "substring" => Some(strings::slice::slice),
-        "insert" | "push" => Some(list::insert::insert),
-        "get" | "at" => Some(list::get::get),
+        "charat" => Some(strings::char_at::char_at),
+        "toupper" | "uppercase" => Some(strings::to_upper::to_upper),
+        "tolower" | "lowercase" => Some(strings::to_lower::to_lower),
+        "trim" => Some(strings::trim::trim),
+        "insert" | "push" => Some(collection::insert::insert),
+        "get" | "at" => Some(collection::get::get),
         "pop" => Some(list::pop::pop),
         "last" => Some(list::last::last),
-        "includes" | "in" => Some(list::has::has),
+        "includes" | "in" => Some(collection::has::has),
         "removeat" | "rmat" => Some(list::remove_at::remove_at),
-        "removeitem" | "rmit" => Some(list::remove::remove),
+        "removeitem" | "rmit" => Some(collection::remove::remove),
         "indexof" => Some(list::index_of::index_of),
         "dump" | "dumpmemory" => Some(debugger::dump::dump),
         "typeof" | "type" => Some(type_of::type_of),

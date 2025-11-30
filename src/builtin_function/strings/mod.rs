@@ -1,5 +1,9 @@
+pub mod char_at;
 pub mod contact;
 pub mod contains;
 pub mod length;
 pub mod repeat;
 pub mod slice;
+pub mod to_lower;
+pub mod to_upper;
+pub mod trim;
