@@ -17,6 +17,7 @@ mod debugger;
 mod delay;
 mod list;
 mod math;
+mod net;
 mod random;
 mod std_io;
 mod strings;
@@ -101,6 +102,7 @@ pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
         "tostring" | "tostr" => Some(type_conversion::to_string::to_string),
         "tofloat" => Some(type_conversion::to_float::to_float),
         "toint" => Some(type_conversion::to_int::to_int),
+        "tomap" => Some(type_conversion::to_map::to_map),
         "now" | "nowsec" | "unixtime" => Some(date_time::now::now_sec),
         "waitmil" | "waitmillis" => Some(delay::wait_millis::wait_millis),
         "waitsec" | "waitseconds" => Some(delay::wait_second::wait_second),
@@ -110,6 +112,7 @@ pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
         "input" | "stdin" => Some(std_io::input::input),
         "exit" | "quit" | "kill" | "end" => Some(std_io::exit::exit),
         "pass" | "nop" | "noop" => Some(pass::pass),
+        "httpget" => Some(net::http_get::http_get),
 
         // random functions not working in wasm
         "randomnumber" | "randnum" => Some(random::random_number::random_number),
