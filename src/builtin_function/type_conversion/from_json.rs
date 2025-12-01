@@ -7,7 +7,7 @@ use crate::common::data_type::DataType;
 use crate::common::errors::{ChapError, Result};
 use crate::{common::executable::ExecutableLine, runtime::Runtime};
 
-pub fn to_map(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
+pub fn from_json(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
     let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;
 
     match p1 {
@@ -43,7 +43,7 @@ impl TryFrom<Value> for DataType {
                     // safe to use here, as we checked for being a float
                     Ok(DataType::Float(s.as_f64().unwrap()))
                 } else {
-                    // safe to use here, as we checked for being a integer
+                    // safe to use here, as we checked for being an integer
                     // right now Chap does not support i64, so we cast to i32
                     Ok(DataType::Int(s.as_i64().unwrap() as i32))
                 }

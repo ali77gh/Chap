@@ -33,4 +33,5 @@ overflow-checks=false
 panic = "abort"
 
 [dependencies]
-serde_json = "1.0.145"
+serde_json = {version = "1.0.145"}
+serde = { version = "1.0", features = ["derive"] }

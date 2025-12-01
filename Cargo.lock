@@ -67,6 +67,7 @@ dependencies = [
  "rand 0.8.5",
  "reqwest",
  "rustyline",
+ "serde",
  "serde_json",
 ]
 
