@@ -15,6 +15,7 @@ use crate::{
     runtime::Runtime,
 };
 
+#[cfg(not(target_family = "wasm"))]
 pub fn http_get(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
     let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;
     let p2 = if let Some(_) = executable.params.get(1) {
@@ -105,4 +106,12 @@ pub fn http_get(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()
             ));
         }
     }
+}
+
+#[cfg(target_family = "wasm")]
+pub fn http_get(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
+    Err(ChapError::runtime_with_msg(
+        executable.line_number,
+        "http_get not supported in wasm".to_string(),
+    ))
 }
