@@ -1,6 +1,9 @@
 use std::{collections::HashMap, fmt::Display};
 
-#[derive(PartialEq, Debug, Clone)]
+use serde::{Deserialize, Serialize};
+
+#[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum DataType {
     String(String),
     Int(i32),

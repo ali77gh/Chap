@@ -5,7 +5,7 @@ edition = "2021"
 description = "Chap is an easy to learn, interpretive, scripting language written in Rust"
 license = "GPL-3.0"
 readme = "README.md"
-# documentation = "https://docs.rs/chap" # if not set docs.rs will generate one and put it in place 
+# documentation = "https://docs.rs/chap" # if not set docs.rs will generate one and put it in place
 homepage = "https://crates.io/crates/chap"
 repository = "https://github.com/ali77gh/chap"
 categories = ["wasm", "command-line-interface", "compilers"]
@@ -20,12 +20,10 @@ path = "src/lib.rs"
 name = "chap"
 path = "src/main.rs"
 
-
-[dependencies]
-
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 rustyline = "12.0.0"
 rand = "0.8.5"
+reqwest = {version = "0.12.24", features = ["blocking", "rustls-tls"]}
 
 [profile.release]
 opt-level = 3
@@ -33,3 +31,7 @@ lto = true
 codegen-units = 1
 overflow-checks=false
 panic = "abort"
+
+[dependencies]
+serde_json = {version = "1.0.145"}
+serde = { version = "1.0", features = ["derive"] }
