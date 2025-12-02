@@ -11,25 +11,15 @@ use crate::{
 pub fn to_json(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()> {
     let p1 = param_to_datatype(runtime, executable.params.first(), executable.line_number)?;
 
-    match p1 {
-        DataType::Map(map) => {
-            // need to handle null values properly, right now
-            // Chap doesnt support Null value, so we case it
-            // to a string
-            let parsed = serde_json::to_string(map).map_err(|_| {
-                ChapError::runtime_with_msg(
-                    executable.line_number,
-                    format!("failed to parse map to json string"),
-                )
-            })?;
+    // need to handle null values properly, right now
+    // Chap doesnt support Null value, so we case it
+    // to a string
+    let parsed = serde_json::to_string(p1).map_err(|_| {
+        ChapError::runtime_with_msg(
+            executable.line_number,
+            format!("failed to parse map to json string"),
+        )
+    })?;
 
-            returns(runtime, executable, DataType::String(parsed))
-        }
-        _ => {
-            return Err(ChapError::runtime_with_msg(
-                executable.line_number,
-                format!("first parameter must be a map, got {}", p1.type_name()),
-            ))
-        }
-    }
+    returns(runtime, executable, DataType::String(parsed))
 }
