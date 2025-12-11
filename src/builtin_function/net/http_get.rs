@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+#[cfg(not(target_family = "wasm"))]
 use reqwest::{
     blocking::Client,
     header::{HeaderMap, HeaderName, HeaderValue, USER_AGENT},
