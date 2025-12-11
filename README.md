@@ -4,7 +4,7 @@
 
 [![forthebadge made-with-rust](http://ForTheBadge.com/images/badges/made-with-rust.svg)](https://www.rust-lang.org/)\
 [![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
-[![GitHub license](https://badgen.net/github/license/ali77gh/chap)](https://github.com/ali77gh/chap/blob/master/LICENSE)
+[![GitHub license](https://badgen.net/github/license/ali77gh/chap)](https://github.com/ali77gh/chap/blob/stable/LICENSE)
 
 Chap is an easy to learn, dynamic, interpretive language written in Rust.
 
@@ -529,7 +529,7 @@ sudo cp ./target/release/chap /usr/bin
 
 ### REPL (Run Execute Print Loop)
 
-[./repl/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/repl/mod.rs)
+[./repl/mod.rs](https://github.com/ali77gh/Chap/blob/stable/src/repl/mod.rs)
 
 ```bash
 ❯ chap
@@ -540,7 +540,7 @@ hello world
 
 ### File_executor
 
-[./file_executor/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/file_executor/mod.rs)
+[./file_executor/mod.rs](https://github.com/ali77gh/Chap/blob/stable/src/file_executor/mod.rs)
 
 ```bash
 ❯ chap number_guess_game.chp
@@ -554,16 +554,16 @@ you win answer was: 3
 
 ### Use As lib
 
-[./lib.rs](https://github.com/ali77gh/Chap/blob/master/src/lib.rs)
+[./lib.rs](https://github.com/ali77gh/Chap/blob/stable/src/lib.rs)
 
 ```bash
 cargo add chap # this include eval function
 ```
 
+## Builtin Functions
+
+[builtin function docs](https://github.com/ali77gh/Chap/tree/stable/src/runtime/builtin_function)
+
 ## Stars
 
 [![Stargazers over time](https://starchart.cc/ali77gh/chap.svg)](https://starchart.cc/ali77gh/chap)
-
-## Builtin Functions
-
-[builtin function docs](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function)\
