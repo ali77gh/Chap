@@ -14,7 +14,6 @@ mod collection;
 mod control_flow;
 mod date_time;
 mod debugger;
-mod delay;
 mod list;
 mod math;
 mod net;
@@ -105,10 +104,10 @@ pub fn function_match(function_name: &str) -> Option<BuiltinFunction> {
         "fromjson" => Some(type_conversion::from_json::from_json),
         "tojson" => Some(type_conversion::to_json::to_json),
         "now" | "nowsec" | "unixtime" => Some(date_time::now::now_sec),
-        "waitmil" | "waitmillis" => Some(delay::wait_millis::wait_millis),
-        "waitsec" | "waitseconds" => Some(delay::wait_second::wait_second),
-        "waitmin" | "waitminutes" => Some(delay::wait_minute::wait_minute),
-        "waithour" | "delayhour" => Some(delay::wait_hour::wait_hour),
+        "waitmil" | "waitmillis" => Some(date_time::wait_millis::wait_millis),
+        "waitsec" | "waitseconds" => Some(date_time::wait_second::wait_second),
+        "waitmin" | "waitminutes" => Some(date_time::wait_minute::wait_minute),
+        "waithour" => Some(date_time::wait_hour::wait_hour),
         "print" | "show" | "stdout" => Some(std_io::println::println),
         "input" | "stdin" => Some(std_io::input::input),
         "exit" | "quit" | "kill" | "end" => Some(std_io::exit::exit),
