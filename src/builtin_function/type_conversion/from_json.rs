@@ -71,7 +71,6 @@ impl TryFrom<Value> for DataType {
                 // right now Chap doesnt support Null as a data type, so we just cast it to a string
                 Ok(DataType::String("null".to_string()))
             }
-            _ => Err("unsupported type in source json string".to_string()),
         }
     }
 }
