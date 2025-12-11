@@ -1,6 +1,6 @@
 [package]
 name = "chap"
-version = "2.2.2"
+version = "2.5.0"
 edition = "2021"
 description = "Chap is an easy to learn, interpretive, scripting language written in Rust"
 license = "GPL-3.0"
