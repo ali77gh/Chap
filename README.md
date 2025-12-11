@@ -8,7 +8,7 @@
 
 Chap is an easy to learn, dynamic, interpretive language written in Rust.
 
-Chap is like **Communism**✊, It's useless and people think it's because it's not implemented correctly 🫳🏻🎤, (We need to test it on an smaller society first). 
+The Chap joke: Chap is like **Communism**✊, It's useless and people think it's because it's not implemented correctly 🫳🏻🎤, (We need to test it on an smaller society first).
 
 Besides the comedy part, It actually does have some cool new Ideas about programming languages in general.
 
@@ -54,17 +54,11 @@ What makes a programming language hard to learn?
 "Keywords"
 ```
 
-| Language | Keywords  | Difficulty level |
-|----------|-----------|------------------|
-| C#       | 102       | 5/5              |
-| Java     | 48        | 4/5              |
-| Python   | 35        | 3/5              |
-| Lua      | 22        | 2/5              |
-| Chap     | 0         | 0/5              |
-
 There are no keywords in Chap.
 
 ## Syntax
+
+There is only one syntax in Chap, Other ones are just sugar syntaxes.
 
 A normal line of code in chap has 3 chunks separated with -> operator:
 
@@ -72,8 +66,8 @@ A normal line of code in chap has 3 chunks separated with -> operator:
 chunk1 -> chunk2 -> chunk3
 ```
 
-| Chunk 1      | Chunk 2        | Chunk 3         |
-|--------------|---------------|-----------------|
+| Chunk 1      | Chunk 2       | Chunk 3         |
+| ------------ | ------------- | --------------- |
 | input params | function name | output variable |
 
 ```chp
@@ -136,12 +130,14 @@ Input params are separated by comma character ",".
 
 Input params can be:
 
- 1. Variable
- 1. String with " character around like: "hello world"
- 1. Int just a number: 5
- 1. Float just a normal form of floating point number 3.14
- 1. Bool is a boolean value which is a true or false
- 1. Tags start with @. [(more on control flow)](#control-flow)
+1.  Variable
+1.  String with " character around like: "hello world"
+1.  Int just a number: 5
+1.  Float just a normal form of floating point number 3.14
+1.  Bool is a boolean value which is a true or false
+1.  Tags start with @. [(more on control flow)](#control-flow)
+1.  Lists can be created like this: [ 1 "hello" "world"] (space separated).
+1.  Maps can be created like this: {"name":"Ali" "age":26} (space separated)
 
 ```chp
 $a, "hello", 5, 3.14, false -> function_name -> $output_var
@@ -166,10 +162,10 @@ $#^3 // Ok
 $a,b // comma not allowed
 $really? // question mark at the end not allowed
 $rea?lly // OK
-$some->thing // "->" is not allowed 
+$some->thing // "->" is not allowed
 ```
 
-## Short syntax features
+## Sugar syntaxes
 
 If a function has no output variable you can remove chunk3:
 
@@ -294,13 +290,13 @@ Enter a number: 3
 
 Why? Because Python uses the same operator for math.multiply and strings.repeat.
 
-So * operator **"IS NOT A TYPE SAFE"** operator and it will **"DO UNEXPECTED THINGS"** when your forget to pass the right type to it and it will happen without throwing runtime errors (which is bad).
+So \* operator **"IS NOT A TYPE SAFE"** operator and it will **"DO UNEXPECTED THINGS"** when your forget to pass the right type to it and it will happen without throwing runtime errors (which is bad).
 
 Same code in Chap:
 
 ```chp
 input -> $number
-$number, 5 -> multiply -> $result 
+$number, 5 -> multiply -> $result
 $result
 // error in line 2: multiply function works only with numbers int and float
 ```
@@ -309,7 +305,7 @@ Runtime errors are much better than logical errors, and in chap we have the repe
 
 ```chp
 "foo ", 3 -> repeat
-// foo foo foo 
+// foo foo foo
 ```
 
 In many languages "+" operator has the same problem:
@@ -466,18 +462,13 @@ you win
 ## christmas_tree.chp
 
 ```chp
- // Editable
 0 -> $counter
 @loop
     $counter -> increase
 
-    $counter, 2 -> multiply -> $stars_size
-    10, $counter -> minus -> $space_size
-
-    "*", $stars_size -> repeat -> $stars
-    " ", $space_size -> repeat -> $spaces
-
-    $spaces, $stars -> cat
+    (" ", (10, $counter -> minus) -> repeat),
+    ("*", ($counter, 2 -> multiply) -> repeat) ->
+    cat
 @loop, $counter, 10 -> jump if not equal
 ```
 
@@ -494,75 +485,6 @@ you win
 ********************
 ```
 
-## christmas_tree_with_trunk.chp
-
-```chp
-
- // Editable
-0 -> $counter
-@loop
-    $counter -> increase
-
-    $counter, 1 -> multiply -> $stars_size
-    19, $counter -> minus -> $space_size
-
-    " * ", $stars_size -> repeat -> $stars
-    " ", $space_size -> repeat -> $spaces
-
-    $spaces, $stars -> cat
-
-    "`*-", $stars_size -> repeat -> $stars
-    " ", $space_size -> repeat -> $spaces
-
-    $spaces, $stars -> cat
-@loop, $counter, 10 -> jump if not equal
-
-3 -> $c
-@loop
-    $c-> increase
-
-    $c, 2 -> multiply -> $stars_size
-    22, $c-> minus -> $space_size
-
-
-    "*", $stars_size -> repeat -> $stars
-    " ", $space_size -> repeat -> $spaces
-
-    $spaces, $stars -> cat
-
-@loop, $c, 7 -> jump if not equal
-
-```
-
-```sh
-
-                   * 
-                  `*-
-                  *  * 
-                 `*-`*-
-                 *  *  * 
-                `*-`*-`*-
-                *  *  *  * 
-               `*-`*-`*-`*-
-               *  *  *  *  * 
-              `*-`*-`*-`*-`*-
-              *  *  *  *  *  * 
-             `*-`*-`*-`*-`*-`*-
-             *  *  *  *  *  *  * 
-            `*-`*-`*-`*-`*-`*-`*-
-            *  *  *  *  *  *  *  * 
-           `*-`*-`*-`*-`*-`*-`*-`*-
-           *  *  *  *  *  *  *  *  * 
-          `*-`*-`*-`*-`*-`*-`*-`*-`*-
-          *  *  *  *  *  *  *  *  *  * 
-         `*-`*-`*-`*-`*-`*-`*-`*-`*-`*-
-                  ********
-                 **********
-                ************
-               **************
-
-```
-
 ## DataTypes
 
 ```chp
@@ -575,11 +497,14 @@ float
 "ali" -> TypeOf
 string
 
-true -> type      
+true -> type
 boolean
 
--> [1 2 3] -> type      
+-> [1 2 3] -> type
 list
+
+-> {"name":"Ali"} -> type
+map
 ```
 
 ## Memory Management
@@ -610,7 +535,7 @@ sudo cp ./target/release/chap /usr/bin
 ❯ chap
 -> "hello world"
 hello world
--> 
+->
 ```
 
 ### File_executor
@@ -618,7 +543,7 @@ hello world
 [./file_executor/mod.rs](https://github.com/ali77gh/Chap/blob/master/src/file_executor/mod.rs)
 
 ```bash
-❯ chap number_guess_game.chp 
+❯ chap number_guess_game.chp
 1
 wrong
 2
@@ -635,82 +560,10 @@ you win answer was: 3
 cargo add chap # this include eval function
 ```
 
-or
-
-```bash
-cargo build --release --lib
-```
-
-## Release Note version 2.0.0
-
-- [x] Arrays
-- [x] fix: 'random' module will not work on WASM
-- [x] eval function
-- [x] [ChapApp](https://github.com/ali77gh/ChapApp)
-- [x] Piping syntax (1, 2 -> add -> toString -> print)
-- [x] Parentheses (1, 2 -> add), (2, 3 -> add) -> concat -> $var // 35
-- [x] New debugger syntax 1,2 -> add? -> $sum
-
 ## Stars
 
 [![Stargazers over time](https://starchart.cc/ali77gh/chap.svg)](https://starchart.cc/ali77gh/chap)
 
 ## Builtin Functions
 
-[runtime/builtin_function](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function)\
-Chap has 49 builtin function(version 2.0.0) (less than Java's keywords)
-
-| Names                   | Input params      | output   | description                                                 |
-|-------------------------|-------------------|----------|-------------------------------------------------------------|
-| assign                  | any               | any      | put a value or variable in other variable  1 -> $a          |
-| std_out, print, show    | any, any, any,... | any      | prints params to console                                    |
-| std_in, input           | nothing           | string   | read user input from console                                |
-| exit, quit, kill, end   | nothing           | nothing  |  ends execution                                             |
-| jump                    | @tag              | nothing  | moves executor curser to closest tag with specified name     |
-| jump_if                 | @tag, bool        | nothing  | jumps to tag if 1st param is true                           |
-| jump_if_not             | @tag, bool        | nothing  | jumps to tag if 1st param is false                          |
-| jump_if_equal, jeq      | @tag, any, any    | nothing  | jumps to tag if 2th and 3th params are equal                |
-| jump_if_not_equal, jneq | @tag, any, any    | nothing  | jumps to tag if 2th and 3th params are not equal            |
-| new_tag                 | @tag              | nothing  | creates tag (you can call this just by writing tag name     |
-| add                     | num, num          | num      | adds two numbers     1 + 2 = 3 or 1.5 + 1 = 2.5             |
-| add_many, add_all       | num, num, num,... | num      | adds many numbers    1 + 2 + 3 = 6                          |
-| minus                   | num, num          | num      | minus two numbers    3 - 2  = 1                             |
-| multiply                | num, num          | num      | minus two numbers    3 * 2  = 6                             |
-| divide                  | num, num          | num      | divide two numbers   3 / 2  = 1.5                           |
-| modulus, mod            | num, num          | num      | divide remaining     3 / 2  = 1                             |
-| power, pow              | num, num          | num      | power                3 ** 2  = 9                            |
-| square_root, sqrt       | num               | num      | square root          9 -> sqrt -> 3                         |
-| increase, inc           | $num              | nothing  | adds one to variable short form of: $a,1 -> add -> $a       |
-| decrease, dec           | $num              | nothing  | minus one from variable short form of: $a,1 -> minus -> $a  |
-| equal, eq               | any, any          | bool     | true if 1st and 2nd are equal and false if they are not     |
-| not_equal, neq          | any, any          | bool     | true if 1st and 2nd are not equal and false if they are     |
-| and                     | bool, bool        | bool     | and logical gate                                            |
-| or                      | bool, bool        | bool     | or logical gate                                             |
-| xor                     | bool, bool        | bool     | xor logical gate                                            |
-| not                     | bool              | bool     | not logical gate                                            |
-| greater_than, gt        | num, num          | bool     | true if 1st param is bigger than 2nd param 3,2 -> true      |
-| less_than, lt           | num, num          | bool     | true if 1st param is less than 2nd param   3,2 -> false     |
-| concat, cat             | any, any          | string   | convert inputs to string and concat them "al","i" -> "ali"  |
-| repeat                  | any, int          | string   | convert inputs to string and repeat "a",3 -> "aaa"          |
-| length, len             | any               | int      | convert input to string and returns length 456 -> 3         |
-| contains, has           | any               | bool     | convert inputs to string and returns 1st contains 2nd 11,1->true |
-| slice, sub_string       | any, int, int     | string   | "hello", 1, 3 -> "el"                                       |
-| insert                  | array, any        | nothing  | insert an item to list                                      |
-| get                     | array, int        | any      | get nth item of list second param is index of item          |
-| pop                     | array             | any      | remove last item of list and returns it                     |
-| last                    | array             | any      | return lsat item of list (without removing it)              |
-| has                     | array, any        | bool     | check if an item exist in a list                            |
-| remove                  | array, any        | nothing  | removes a given item from list                              |
-| remove_at               | array, int        | nothing  | removes item at index of second param                       |
-| index_of                | array, any        | int      | search for an item on list and returns index                |
-| to_string               | any               | string   | convert input to string        1 -> "1"                     |
-| to_float                | string            | float    | convert input to float  "1.5" -> 1.5 ; "a"->error           |
-| to_int                  | string            | int      | convert input to int    "1" -> 1 ; "a"->error               |
-| dump, dump_memory       | nothing           | nothing  | prints all variables with values                            |
-| type_of, type           | any               | str      | prints type of param   1 -> int; "s" -> string              |
-| now_sec, now, unixtime  | nothing           | float    | unix time standard in seconds                               |
-| wait_mil, wait_millis   | int               | nothing  | delay code execution for 1st milliseconds                   |
-| wait_sec, wait_sec      | int               | nothing  | delay code execution for 1st seconds                        |
-| wait_min, wait_minute   | int               | nothing  | delay code execution for 1st minutes                        |
-| wait_hour,wait_hour     | int               | nothing  | delay code execution for 1st hours                          |
-| wait_hour,wait_hour     | int               | nothing  | delay code execution for 1st hours                          |
+[builtin function docs](https://github.com/ali77gh/Chap/tree/master/src/runtime/builtin_function)\
