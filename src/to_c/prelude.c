@@ -5,6 +5,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdarg.h>
+#include <ctype.h>
 
 typedef enum { T_INT, T_FLOAT, T_BOOL, T_STR } Type;
 
@@ -62,6 +63,27 @@ __attribute__((unused)) static CV cv_mod(CV a, CV b) {
     return cv_int(a.i % b.i);
 }
 
+/* int op int stays int, anything with float becomes float (like chap) */
+__attribute__((unused)) static CV cv_add(CV a, CV b) {
+    if (a.t == T_INT && b.t == T_INT) return cv_int(a.i + b.i);
+    return cv_flt(cv_num(a) + cv_num(b));
+}
+
+__attribute__((unused)) static CV cv_minus(CV a, CV b) {
+    if (a.t == T_INT && b.t == T_INT) return cv_int(a.i - b.i);
+    return cv_flt(cv_num(a) - cv_num(b));
+}
+
+__attribute__((unused)) static CV cv_multiply(CV a, CV b) {
+    if (a.t == T_INT && b.t == T_INT) return cv_int(a.i * b.i);
+    return cv_flt(cv_num(a) * cv_num(b));
+}
+
+/* chap divide always returns float, even for int / int */
+__attribute__((unused)) static CV cv_divide(CV a, CV b) {
+    return cv_flt(cv_num(a) / cv_num(b));
+}
+
 __attribute__((unused)) static CV cv_toint(CV v) {
     if (v.t == T_INT) return v;
     if (v.t == T_FLOAT) return cv_int((long long)v.f);
@@ -102,4 +124,44 @@ __attribute__((unused)) static CV cv_concat(int n, ...) {
     char* joined = cv_join(n, ap, "");
     va_end(ap);
     return cv_str_take(joined);
+}
+
+__attribute__((unused)) static CV cv_and(int n, ...) {
+    va_list ap;
+    va_start(ap, n);
+    int result = 1;
+    for (int k = 0; k < n; k++) result = result && va_arg(ap, CV).b;
+    va_end(ap);
+    return cv_bool(result);
+}
+
+__attribute__((unused)) static CV cv_or(int n, ...) {
+    va_list ap;
+    va_start(ap, n);
+    int result = 0;
+    for (int k = 0; k < n; k++) result = result || va_arg(ap, CV).b;
+    va_end(ap);
+    return cv_bool(result);
+}
+
+__attribute__((unused)) static CV cv_xor(int n, ...) {
+    va_list ap;
+    va_start(ap, n);
+    int result = 0;
+    for (int k = 0; k < n; k++) result ^= va_arg(ap, CV).b;
+    va_end(ap);
+    return cv_bool(result);
+}
+
+/* reads one line from stdin and trims it like the chap interpreter does */
+__attribute__((unused)) static CV cv_input(void) {
+    char buf[4096];
+    if (!fgets(buf, sizeof buf, stdin)) buf[0] = '\0';
+    buf[strcspn(buf, "\n")] = '\0';
+    char* start = buf;
+    while (*start && isspace((unsigned char)*start)) start++;
+    char* end = start + strlen(start);
+    while (end > start && isspace((unsigned char)end[-1])) end--;
+    *end = '\0';
+    return cv_str(start);
 }

@@ -1,0 +1,7 @@
+// counts down from 3 using tags and jumps
+3 -> $i
+@loop
+    $i
+    $i, 1 -> minus -> $i
+@loop, $i, 0 -> jneq
+"done"

@@ -67,6 +67,16 @@ fn expr(param: &Param) -> Result<String> {
     })
 }
 
+/// call a variadic C helper: name(count, arg1, arg2, ...)
+fn variadic(name: &str, args: &[String]) -> String {
+    format!(
+        "{}({}{})",
+        name,
+        args.len(),
+        args.iter().fold(String::new(), |acc, x| acc + ", " + x)
+    )
+}
+
 pub fn generate(executables: &[ExecutableLine]) -> Result<String> {
     let names: Vec<String> = executables
         .iter()
@@ -229,19 +239,11 @@ fn statement(
 
         "print" | "show" | "stdout" => {
             let a = args(0)?;
-            format!(
-                "chap_print({}{});",
-                a.len(),
-                a.into_iter().fold(String::new(), |acc, x| acc + ", " + &x)
-            )
+            format!("{};", variadic("chap_print", &a))
         }
         "concat" | "cat" => {
             let a = args(0)?;
-            assign_to(format!(
-                "cv_concat({}{})",
-                a.len(),
-                a.into_iter().fold(String::new(), |acc, x| acc + ", " + &x)
-            ))
+            assign_to(variadic("cv_concat", &a))
         }
 
         "increase" | "inc" => match params.first() {
@@ -270,6 +272,64 @@ fn statement(
             let a = args(0)?;
             assign_to(format!("cv_bool(cv_num({}) < cv_num({}))", a[0], a[1]))
         }
+        "lte" | "lessthanequal" => {
+            let a = args(0)?;
+            assign_to(format!("cv_bool(cv_num({}) <= cv_num({}))", a[0], a[1]))
+        }
+        "gt" | "greaterthan" => {
+            let a = args(0)?;
+            assign_to(format!("cv_bool(cv_num({}) > cv_num({}))", a[0], a[1]))
+        }
+        "gte" | "greaterthanequal" => {
+            let a = args(0)?;
+            assign_to(format!("cv_bool(cv_num({}) >= cv_num({}))", a[0], a[1]))
+        }
+
+        "add" => {
+            let a = args(0)?;
+            assign_to(format!("cv_add({}, {})", a[0], a[1]))
+        }
+        "minus" => {
+            let a = args(0)?;
+            assign_to(format!("cv_minus({}, {})", a[0], a[1]))
+        }
+        "multiply" => {
+            let a = args(0)?;
+            assign_to(format!("cv_multiply({}, {})", a[0], a[1]))
+        }
+        "divide" => {
+            let a = args(0)?;
+            assign_to(format!("cv_divide({}, {})", a[0], a[1]))
+        }
+
+        "equal" | "eq" => {
+            let a = args(0)?;
+            assign_to(format!("cv_bool(cv_eq({}, {}))", a[0], a[1]))
+        }
+        "notequal" | "neq" => {
+            let a = args(0)?;
+            assign_to(format!("cv_bool(!cv_eq({}, {}))", a[0], a[1]))
+        }
+
+        // and/or/xor take any number of bool params (folded like chap does)
+        "and" => {
+            let a = args(0)?;
+            assign_to(variadic("cv_and", &a))
+        }
+        "or" => {
+            let a = args(0)?;
+            assign_to(variadic("cv_or", &a))
+        }
+        "xor" => {
+            let a = args(0)?;
+            assign_to(variadic("cv_xor", &a))
+        }
+        "not" => {
+            let a = args(0)?;
+            assign_to(format!("cv_bool(!({}).b)", a[0]))
+        }
+
+        "input" | "stdin" => assign_to("cv_input()".to_string()),
 
         "exit" | "quit" | "kill" | "end" => "return 0;".to_string(),
 

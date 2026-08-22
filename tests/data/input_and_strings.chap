@@ -1,0 +1,10 @@
+"Hello", " ", "World" -> cat -> $msg
+$msg
+
+"We have ", 3, " items and ", 2.5, " left" -> cat
+
+"" -> print
+
+"name: "
+input -> $name
+"hello ", $name -> cat

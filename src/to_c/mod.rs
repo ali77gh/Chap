@@ -3,9 +3,10 @@
 //! Turns a list of [`ExecutableLine`] (the output of chap's parser) into a
 //! self contained compilable C program with a `main` function.
 //!
-//! Only the builtin functions needed by the reference program are implemented:
-//! assign, print, jump, jump_if_not, jeq, jneq, new_tag, increase, mod,
-//! sqrt, lt, to int, cat and exit.
+//! Only a subset of chap builtin functions are implemented:
+//! assign, print, input, jump, jump_if_not, jeq, jneq, new_tag, increase,
+//! mod, add, minus, multiply, divide, sqrt, lt, lte, gt, gte, eq, neq,
+//! and, or, xor, not, to int, cat and exit.
 
 mod gen;
 

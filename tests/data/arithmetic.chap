@@ -1,0 +1,16 @@
+7 -> $a
+2 -> $b
+
+$a, $b -> add -> $sum
+$sum, $b -> minus -> $dif
+$a, $b -> multiply -> $prod
+$a, $b -> divide -> $quot
+
+$sum
+$dif
+$prod
+$quot
+
+1.5, 2.25 -> add
+10, 4 -> divide
+-3, -4 -> multiply

@@ -1,0 +1,11 @@
+true, true -> and
+true, false -> and
+false, false -> or
+true, false -> or
+true, true, false -> xor
+true, true -> xor
+true -> not
+false -> not
+
+true -> $a
+$a, true -> and
