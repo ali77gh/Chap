@@ -2,6 +2,9 @@ pub mod builtin_function;
 pub mod common;
 pub mod compile;
 
+#[path = "2c/mod.rs"]
+pub mod to_c;
+
 pub mod runtime;
 
 pub mod runners;

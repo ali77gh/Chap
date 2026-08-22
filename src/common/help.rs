@@ -7,6 +7,9 @@ pub fn show_help() {
     println!("│  Run script file:                             │");
     println!("│      $ chap <file_name>                       │");
     println!("│                                               │");
+    println!("│  Compile to C:                                │");
+    println!("│      $ chap --to-c <file_name> [output.c]     │");
+    println!("│                                               │");
     println!("│  Run REPL mode:                               │");
     println!("│      $ chap                                   │");
     println!("│                                               │");

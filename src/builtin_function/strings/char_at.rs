@@ -32,7 +32,7 @@ pub fn char_at(runtime: &mut Runtime, executable: &ExecutableLine) -> Result<()>
     }
 
     let index_usize = index as usize;
-    
+
     // Check if index is within bounds (convert to 0-based for length check)
     if index_usize > string_value.len() {
         return Err(ChapError::runtime_with_msg(
