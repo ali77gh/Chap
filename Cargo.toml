@@ -10,7 +10,7 @@ homepage = "https://crates.io/crates/chap"
 repository = "https://github.com/ali77gh/chap"
 categories = ["wasm", "command-line-interface", "compilers"]
 keywords = ["programming", "language", "scripting", "eval", "dynamic"]
-include = ["src/**/*.rs", "Cargo.toml", "LICENSE", "README.md", "Logo.png"]
+include = ["src/**/*.rs", "src/**/*.c", "Cargo.toml", "LICENSE", "README.md", "Logo.png"]
 
 [lib]
 name = "chap"
