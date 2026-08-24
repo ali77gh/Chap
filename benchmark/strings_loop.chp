@@ -1,0 +1,9 @@
+// 3M iterations of string repeat + concat (string heavy)
+"" -> $s
+0 -> $i
+@loop
+    "ab" , 50 -> repeat -> $s
+    "x" , $s -> concat -> $s
+    $i -> increase
+@loop , $i, 3000000 -> jump_if_not_equal
+$s -> length

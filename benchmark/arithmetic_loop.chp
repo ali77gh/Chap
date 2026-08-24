@@ -1,0 +1,9 @@
+// 10M iterations of add + multiply (arithmetic heavy)
+0 -> $i
+1 -> $acc
+@loop
+    $acc , $i -> add -> $acc
+    $acc , 2 -> multiply -> $acc
+    $i -> increase
+@loop , $i, 10000000 -> jump_if_not_equal
+$acc
