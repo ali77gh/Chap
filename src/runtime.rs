@@ -38,12 +38,16 @@ impl<'a> Runtime<'a> {
     /// caller should check to avoid segmentation fault
     /// eval function adds an exit function call to end of source code to avoid checking next line exist at every line execution
     /// repl is checking next line exist itself
+    ///
+    /// # Invariant
+    /// builtin functions must never push/remove from `executables` or take `&mut`
+    /// into it while executing (`on_new_line` only runs at load time), so the
+    /// pointer below stays valid for the whole call and no clone is needed.
     pub unsafe fn execution_cycle(&mut self) -> Result<()> {
-        let l = self.executables.get(self.current_line).unwrap_unchecked(); // unsafe
-        let l = l.clone();
+        let ptr: *const ExecutableLine = self.executables.get_unchecked(self.current_line);
+        let closure = (*ptr).closure;
         self.current_line += 1;
-        (l.closure)(self, &l)?;
-        Ok(())
+        (closure)(self, &*ptr)
     }
 
     pub fn std_out(&mut self, msg: &str) {
