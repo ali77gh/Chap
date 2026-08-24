@@ -66,6 +66,7 @@ version = "2.5.0"
 dependencies = [
  "rand 0.8.5",
  "reqwest",
+ "rustc-hash",
  "rustyline",
  "serde",
  "serde_json",

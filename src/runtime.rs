@@ -1,12 +1,12 @@
 use crate::common::data_type::DataType;
 use crate::common::errors::Result;
 use crate::common::executable::ExecutableLine;
-use std::collections::HashMap;
+use rustc_hash::FxHashMap;
 
 pub struct Runtime<'a> {
     pub executables: Vec<ExecutableLine>,
-    pub variables: HashMap<String, DataType>, // <variable name, variable value>
-    pub tags: HashMap<String, usize>,         // <tag name, index in executables vector>
+    pub variables: FxHashMap<String, DataType>, // <variable name, variable value>
+    pub tags: FxHashMap<String, usize>,         // <tag name, index in executables vector>
     pub current_line: usize,
     pub std_out: Box<dyn FnMut(&str) + 'a>,
     pub std_in: Box<dyn FnMut() -> String + 'a>,
@@ -19,8 +19,8 @@ impl<'a> Runtime<'a> {
     ) -> Self {
         Self {
             executables: vec![],
-            variables: HashMap::new(),
-            tags: HashMap::new(),
+            variables: FxHashMap::default(),
+            tags: FxHashMap::default(),
             current_line: 0,
             std_out,
             std_in,

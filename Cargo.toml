@@ -33,5 +33,6 @@ overflow-checks=false
 panic = "abort"
 
 [dependencies]
+rustc-hash = "2"
 serde_json = {version = "1.0.145"}
 serde = { version = "1.0", features = ["derive"] }
