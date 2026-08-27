@@ -1,4 +1,4 @@
-use std::collections::{BTreeSet, HashMap, HashSet};
+use std::collections::{BTreeSet, HashSet};
 use std::fmt::Write;
 
 use crate::common::data_type::DataType;
@@ -110,30 +110,30 @@ pub fn generate(executables: &[ExecutableLine]) -> Result<String> {
         }
     }
 
-    // map tag name -> executable index (labels)
-    let mut tags: HashMap<&str, usize> = HashMap::new();
-    for (i, ex) in executables.iter().enumerate() {
-        if names[i] == "newtag" {
-            match ex.params.first() {
-                Some(Param::Tag(tag, _)) => {
-                    tags.insert(tag.as_str(), i);
-                }
-                _ => {
-                    return Err(err(
-                        ex.line_number,
-                        "error while creating a tag".to_string(),
-                    ))
-                }
-            }
-        }
-    }
-
-    let target_of = |ex: &ExecutableLine| -> Result<usize> {
+    let find_tag = |i: usize| -> Result<usize> {
+        let ex = &executables[i];
         match ex.params.first() {
-            Some(Param::Tag(tag, _)) => match tags.get(tag.as_str()) {
-                Some(i) => Ok(*i),
-                None => Err(err(ex.line_number, format!("cant find tag: {}", tag))),
-            },
+            Some(Param::Tag(tag, _)) => {
+                for j in (0..i).rev() {
+                    if names[j] == "newtag" {
+                        if let Some(Param::Tag(t, _)) = executables[j].params.first() {
+                            if t == tag {
+                                return Ok(j);
+                            }
+                        }
+                    }
+                }
+                for j in (i + 1)..executables.len() {
+                    if names[j] == "newtag" {
+                        if let Some(Param::Tag(t, _)) = executables[j].params.first() {
+                            if t == tag {
+                                return Ok(j);
+                            }
+                        }
+                    }
+                }
+                Err(err(ex.line_number, format!("cant find tag: {}", tag)))
+            }
             _ => Err(err(
                 ex.line_number,
                 "function jump needs a tag for first params".to_string(),
@@ -146,9 +146,9 @@ pub fn generate(executables: &[ExecutableLine]) -> Result<String> {
     for (i, name) in names.iter().enumerate() {
         if matches!(
             name.as_str(),
-            "jump" | "jumpif" | "jumpifnot" | "jeq" | "jneq"
+            "jump" | "jumpif" | "jumpifnot" | "jumpifnotequal" | "jeq" | "jneq" | "jumpifequal"
         ) {
-            targets.insert(target_of(&executables[i])?);
+            targets.insert(find_tag(i)?);
         }
     }
 
@@ -162,7 +162,7 @@ pub fn generate(executables: &[ExecutableLine]) -> Result<String> {
         if targets.contains(&i) {
             writeln!(&mut body, "L{}:;", i).unwrap();
         }
-        let statement = statement(ex, &names[i], &vars, &target_of)?;
+        let statement = statement(ex, &names[i], &vars, &find_tag, i)?;
         if !statement.is_empty() {
             writeln!(&mut body, "    {}", statement).unwrap();
         }
@@ -178,7 +178,8 @@ fn statement(
     ex: &ExecutableLine,
     name: &str,
     vars: &BTreeSet<(String, String)>,
-    target_of: &dyn Fn(&ExecutableLine) -> Result<usize>,
+    find_tag: &dyn Fn(usize) -> Result<usize>,
+    i: usize,
 ) -> Result<String> {
     let params = &ex.params;
     // chap semantics: a function result without output variable gets printed.
@@ -226,9 +227,9 @@ fn statement(
         }
         "newtag" => String::new(), // handled by label emission
 
-        "jump" => format!("goto L{};", target_of(ex)?),
+        "jump" => format!("goto L{};", find_tag(i)?),
         "jumpif" => {
-            let tag = target_of(ex)?;
+            let tag = find_tag(i)?;
             let cond = args(1)?.into_iter().next();
             match cond {
                 Some(cond) => format!("if (({}).b) goto L{};", cond, tag),
@@ -241,7 +242,7 @@ fn statement(
             }
         }
         "jumpifnot" => {
-            let tag = target_of(ex)?;
+            let tag = find_tag(i)?;
             let cond = args(1)?.into_iter().next();
             match cond {
                 Some(cond) => format!("if (!({}).b) goto L{};", cond, tag),
@@ -254,7 +255,7 @@ fn statement(
             }
         }
         "jeq" | "jumpifequal" => {
-            let tag = target_of(ex)?;
+            let tag = find_tag(i)?;
             let a = args(1)?; // [p1, p2]
             if a.len() != 2 {
                 return Err(err(
@@ -265,7 +266,7 @@ fn statement(
             format!("if (cv_eq({}, {})) goto L{};", a[0], a[1], tag)
         }
         "jneq" | "jumpifnotequal" => {
-            let tag = target_of(ex)?;
+            let tag = find_tag(i)?;
             let a = args(1)?;
             if a.len() != 2 {
                 return Err(err(
