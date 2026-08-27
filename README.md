@@ -45,6 +45,16 @@ Chap unlocks **Two-Dimensional** Full Stack Development. Front⬆️End, Back⬇
 2. Keyword-less
 3. Actually left-to-right syntax
 4. Cross platform (It runs on Linux, MacOS, Windows, Web(WASM))
+5. **Chap-to-C compiler** (v3.0.0) — compile Chap code directly to native executables
+6. **Optimized runtime** with unsafe hashmap, union-based internals, and zero-clone execution
+
+## What's new in 3.0.0
+
+- **Chap-to-C compiler** — write Chap, compile to C, then to a native binary
+- **All interpreter functions** — full coverage of built-in functions
+- **Performance** — unsafe fast hashmap, union-based optimization, no-clone execution
+- **Benchmark suite** — track performance over time
+- **Bug fixes** — `jump_if_equal` / `jump_if_not_equal` edge cases, WASM compilation, unreachable code warnings
 
 ## Keywords
 
