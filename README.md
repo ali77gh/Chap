@@ -1,6 +1,6 @@
 # Chap
 
-<img src="./banner.png" width="130"></img>
+<img src="./banner.png"></img>
 
 [![forthebadge made-with-rust](http://ForTheBadge.com/images/badges/made-with-rust.svg)](https://www.rust-lang.org/)\
 [![Rust](https://github.com/ali77gh/Chap/actions/workflows/rust.yml/badge.svg?branch=stable)](https://github.com/ali77gh/Chap/actions/workflows/rust.yml)
