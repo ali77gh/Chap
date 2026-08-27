@@ -3,10 +3,8 @@
 //! Turns a list of [`ExecutableLine`] (the output of chap's parser) into a
 //! self contained compilable C program with a `main` function.
 //!
-//! Only a subset of chap builtin functions are implemented:
-//! assign, print, input, jump, jump_if_not, jeq, jneq, new_tag, increase,
-//! mod, add, minus, multiply, divide, sqrt, lt, lte, gt, gte, eq, neq,
-//! and, or, xor, not, to int, cat and exit.
+//! Implements every builtin function except http_get, to_json and from_json
+//! (see TODO.md at the repo root for the full status table).
 
 mod gen;
 

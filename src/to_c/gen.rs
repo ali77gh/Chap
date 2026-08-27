@@ -46,23 +46,37 @@ fn err(line_number: u32, msg: String) -> ChapError {
 
 /// turn a param into a C expression producing a CV
 fn expr(param: &Param) -> Result<String> {
-    Ok(match param {
-        Param::Value(DataType::Int(i)) => format!("cv_int({}LL)", i),
-        Param::Value(DataType::Float(f)) => format!("cv_flt({:?})", f),
-        Param::Value(DataType::Bool(b)) => format!("cv_bool({})", *b as i32),
-        Param::Value(DataType::String(s)) => format!("cv_str(\"{}\")", escape_string(s)),
-        Param::Value(value) => {
-            return Err(err(
-                0,
-                format!(
-                    "chap to C compiler does not support this type yet: {}",
-                    value.type_name()
-                ),
-            ))
+    match param {
+        Param::Value(value) => expr_value(value),
+        Param::Variable(name) => Ok(cname(name)),
+        Param::Tag(tag, _) => Err(err(0, format!("unexpected tag @{} in value position", tag))),
+    }
+}
+
+/// turn a compile time value into a C expression producing a CV
+fn expr_value(value: &DataType) -> Result<String> {
+    Ok(match value {
+        DataType::Int(i) => format!("cv_int({}LL)", i),
+        DataType::Float(f) => format!("cv_flt({:?})", f),
+        DataType::Bool(b) => format!("cv_bool({})", *b as i32),
+        DataType::String(s) => format!("cv_str(\"{}\")", escape_string(s)),
+        DataType::List(items) => {
+            let args = items
+                .iter()
+                .map(expr_value)
+                .collect::<Result<Vec<String>>>()?;
+            variadic("cv_list_lit", &args)
         }
-        Param::Variable(name) => cname(name),
-        Param::Tag(tag, _) => {
-            return Err(err(0, format!("unexpected tag @{} in value position", tag)))
+        DataType::Map(map) => {
+            // sorted for stable output, map equality does not care about order
+            let mut entries: Vec<(&String, &DataType)> = map.iter().collect();
+            entries.sort_by(|a, b| a.0.cmp(b.0));
+            let mut call = format!("cv_map_lit({}", entries.len());
+            for (k, v) in entries {
+                call.push_str(&format!(", \"{}\", {}", escape_string(k), expr_value(v)?));
+            }
+            call.push(')');
+            call
         }
     })
 }
@@ -83,15 +97,15 @@ pub fn generate(executables: &[ExecutableLine]) -> Result<String> {
         .map(|e| normalize(&e.function_name))
         .collect();
 
-    // collect variables
-    let mut vars: BTreeSet<String> = BTreeSet::new();
+    // collect variables (cname, original name)
+    let mut vars: BTreeSet<(String, String)> = BTreeSet::new();
     for ex in executables {
         if let Some(output) = &ex.output_var {
-            vars.insert(cname(output));
+            vars.insert((cname(output), output.clone()));
         }
         for param in &ex.params {
             if let Param::Variable(v) = param {
-                vars.insert(cname(v));
+                vars.insert((cname(v), v.clone()));
             }
         }
     }
@@ -130,22 +144,25 @@ pub fn generate(executables: &[ExecutableLine]) -> Result<String> {
     // indexes which get a C label because some jump points at them
     let mut targets: HashSet<usize> = HashSet::new();
     for (i, name) in names.iter().enumerate() {
-        if matches!(name.as_str(), "jump" | "jumpifnot" | "jeq" | "jneq") {
+        if matches!(
+            name.as_str(),
+            "jump" | "jumpif" | "jumpifnot" | "jeq" | "jneq"
+        ) {
             targets.insert(target_of(&executables[i])?);
         }
     }
 
     // body
     let mut body = String::from("int main(void) {\n");
-    for v in &vars {
-        writeln!(&mut body, "    CV {} = {{.t = T_INT}};", v).unwrap();
+    for (v, _) in &vars {
+        writeln!(&mut body, "    CV {v} = {{.t = T_INT}};").unwrap();
     }
 
     for (i, ex) in executables.iter().enumerate() {
         if targets.contains(&i) {
             writeln!(&mut body, "L{}:;", i).unwrap();
         }
-        let statement = statement(ex, &names[i], &target_of)?;
+        let statement = statement(ex, &names[i], &vars, &target_of)?;
         if !statement.is_empty() {
             writeln!(&mut body, "    {}", statement).unwrap();
         }
@@ -160,13 +177,15 @@ pub fn generate(executables: &[ExecutableLine]) -> Result<String> {
 fn statement(
     ex: &ExecutableLine,
     name: &str,
+    vars: &BTreeSet<(String, String)>,
     target_of: &dyn Fn(&ExecutableLine) -> Result<usize>,
 ) -> Result<String> {
     let params = &ex.params;
-    // chap semantics: a function result without output variable gets printed
+    // chap semantics: a function result without output variable gets printed.
+    // cv_copy gives value semantics on assignment (chap clones values too)
     let assign_to = |value: String| -> String {
         match &ex.output_var {
-            Some(output) => format!("{} = {};", cname(output), value),
+            Some(output) => format!("{} = cv_copy({});", cname(output), value),
             None => format!("chap_print(1, {});", value),
         }
     };
@@ -175,6 +194,13 @@ fn statement(
             .iter()
             .map(expr)
             .collect::<Result<Vec<String>>>()
+    };
+    // functions that mutate (insert, pop, ...) need a variable to mutate
+    let var_param = |ex: &ExecutableLine, idx: usize, msg: &str| -> Result<String> {
+        match params.get(idx) {
+            Some(Param::Variable(v)) => Ok(cname(v)),
+            _ => Err(err(ex.line_number, msg.to_string())),
+        }
     };
 
     Ok(match name {
@@ -189,7 +215,7 @@ fn statement(
                 }
             };
             match &ex.output_var {
-                Some(output) => format!("{} = {};", cname(output), value),
+                Some(output) => format!("{} = cv_copy({});", cname(output), value),
                 None => {
                     return Err(err(
                         ex.line_number,
@@ -201,6 +227,19 @@ fn statement(
         "newtag" => String::new(), // handled by label emission
 
         "jump" => format!("goto L{};", target_of(ex)?),
+        "jumpif" => {
+            let tag = target_of(ex)?;
+            let cond = args(1)?.into_iter().next();
+            match cond {
+                Some(cond) => format!("if (({}).b) goto L{};", cond, tag),
+                None => {
+                    return Err(err(
+                        ex.line_number,
+                        "jump_if function needs bool as second param".to_string(),
+                    ))
+                }
+            }
+        }
         "jumpifnot" => {
             let tag = target_of(ex)?;
             let cond = args(1)?.into_iter().next();
@@ -256,6 +295,61 @@ fn statement(
             }
         },
 
+        "decrease" | "dec" => match params.first() {
+            Some(Param::Variable(v)) => format!("{}.i -= 1;", cname(v)),
+            _ => {
+                return Err(err(
+                    ex.line_number,
+                    "decrease function need one variable".to_string(),
+                ))
+            }
+        },
+
+        "power" | "pow" => {
+            let a = args(0)?;
+            assign_to(format!("cv_pow({}, {})", a[0], a[1]))
+        }
+        "addmany" | "addall" => {
+            let a = args(0)?;
+            assign_to(variadic("cv_add_many", &a))
+        }
+
+        // does nothing
+        "pass" | "nop" | "noop" => String::new(),
+
+        "repeat" => {
+            let a = args(0)?;
+            assign_to(format!("cv_repeat({}, {})", a[0], a[1]))
+        }
+        "length" | "len" => {
+            let a = args(0)?;
+            assign_to(format!("cv_length({})", a[0]))
+        }
+        "contains" | "has" => {
+            let a = args(0)?;
+            assign_to(format!("cv_contains({}, {})", a[0], a[1]))
+        }
+        "slice" | "substring" => {
+            let a = args(0)?;
+            assign_to(format!("cv_slice({}, {}, {})", a[0], a[1], a[2]))
+        }
+        "charat" => {
+            let a = args(0)?;
+            assign_to(format!("cv_char_at({}, {})", a[0], a[1]))
+        }
+        "toupper" | "uppercase" => {
+            let a = args(0)?;
+            assign_to(format!("cv_to_upper({})", a[0]))
+        }
+        "tolower" | "lowercase" => {
+            let a = args(0)?;
+            assign_to(format!("cv_to_lower({})", a[0]))
+        }
+        "trim" => {
+            let a = args(0)?;
+            assign_to(format!("cv_trim({})", a[0]))
+        }
+
         "modulus" | "mod" => {
             let a = args(0)?;
             assign_to(format!("cv_mod({}, {})", a[0], a[1]))
@@ -267,6 +361,38 @@ fn statement(
         "toint" => {
             let a = args(0)?;
             assign_to(format!("cv_toint({})", a[0]))
+        }
+        "tostring" | "tostr" => {
+            let a = args(0)?;
+            assign_to(format!("cv_torepr({})", a[0]))
+        }
+        "tofloat" => {
+            let a = args(0)?;
+            assign_to(format!("cv_tofloat({})", a[0]))
+        }
+        "typeof" | "type" => {
+            let a = args(0)?;
+            assign_to(format!("cv_typeof({})", a[0]))
+        }
+        "dump" | "dumpmemory" => {
+            // interpreter iterates a hash map so its order is random, we print
+            // variables in declaration order instead
+            let mut block = format!(
+                "printf(\"------- Memory dump line: {} -------\\n\");",
+                ex.line_number
+            );
+            for (v, orig) in vars {
+                block.push_str(&format!(
+                    " {{ char* _s = cv_to_string({}); printf(\"%s -> $%s\\n\", _s, \"{}\"); free(_s); }}",
+                    v,
+                    escape_string(orig)
+                ));
+            }
+            if vars.is_empty() {
+                block.push_str(" putchar('\\n');");
+            }
+            block.push_str(" puts(\"------- Memory dump ends -------\");");
+            block
         }
         "lt" | "lessthan" => {
             let a = args(0)?;
@@ -331,6 +457,135 @@ fn statement(
 
         "input" | "stdin" => assign_to("cv_input()".to_string()),
 
+        "now" | "nowsec" | "unixtime" => assign_to("cv_now()".to_string()),
+        "waitmil" | "waitmillis" => format!(
+            "chap_wait_millis({});",
+            args(0)?.into_iter().next().ok_or_else(|| err(
+                ex.line_number,
+                "wait_millis needs one int param".to_string()
+            ))?
+        ),
+        "waitsec" | "waitseconds" => format!(
+            "chap_wait_seconds({});",
+            args(0)?.into_iter().next().ok_or_else(|| err(
+                ex.line_number,
+                "wait_seconds needs one int param".to_string()
+            ))?
+        ),
+        "waitmin" | "waitminutes" => format!(
+            "chap_wait_minutes({});",
+            args(0)?.into_iter().next().ok_or_else(|| err(
+                ex.line_number,
+                "wait_minutes needs one int param".to_string()
+            ))?
+        ),
+        "waithour" => format!(
+            "chap_wait_hours({});",
+            args(0)?
+                .into_iter()
+                .next()
+                .ok_or_else(|| err(ex.line_number, "wait_hour needs one int param".to_string()))?
+        ),
+
+        "randomnumber" | "randnum" => {
+            let a = args(0)?;
+            if a.len() != 2 {
+                return Err(err(
+                    ex.line_number,
+                    "random_number needs two params (min, max)".to_string(),
+                ));
+            }
+            assign_to(format!("cv_random_number({}, {})", a[0], a[1]))
+        }
+        "randomstring" | "randstr" => {
+            let a = args(0)?;
+            if a.len() != 2 {
+                return Err(err(
+                    ex.line_number,
+                    "random_string needs two params (alphabet, length)".to_string(),
+                ));
+            }
+            assign_to(format!("cv_random_string({}, {})", a[0], a[1]))
+        }
+        "randombool" | "randbool" => assign_to("cv_random_bool()".to_string()),
+        "randomchoice" | "randchoice" => {
+            let a = args(0)?;
+            assign_to(variadic("cv_random_choice", &a))
+        }
+
+        // ---- collection functions ----
+        // mutating ones need a variable as first param (like the interpreter)
+        "insert" | "push" => {
+            let target = var_param(
+                ex,
+                0,
+                "insert function needs a variable holding a list or map",
+            )?;
+            let a = args(1)?;
+            if a.len() != 1 {
+                return Err(err(
+                    ex.line_number,
+                    "insert function needs exactly two params".to_string(),
+                ));
+            }
+            format!("cv_insert(&{}, {});", target, a[0])
+        }
+        "get" | "at" => {
+            let a = args(0)?;
+            if a.len() != 2 {
+                return Err(err(
+                    ex.line_number,
+                    "correct form of 'get' function: <list | map>, <index | key> -> get -> $item"
+                        .to_string(),
+                ));
+            }
+            assign_to(format!("cv_get({}, {})", a[0], a[1]))
+        }
+        "includes" | "in" => {
+            let a = args(0)?;
+            assign_to(format!("cv_has({}, {})", a[0], a[1]))
+        }
+        "indexof" => {
+            let a = args(0)?;
+            assign_to(format!("cv_index_of({}, {})", a[0], a[1]))
+        }
+        "pop" => {
+            let target = var_param(ex, 0, "pop function first param should be a list variable")?;
+            assign_to(format!("cv_pop(&{})", target))
+        }
+        "last" => {
+            let a = args(0)?;
+            assign_to(format!("cv_last({})", a[0]))
+        }
+        "removeat" | "rmat" => {
+            let target = var_param(ex, 0, "remove_at needs a list variable as first param")?;
+            let a = args(1)?;
+            if a.len() != 1 {
+                return Err(err(
+                    ex.line_number,
+                    "correct form of remove_at function: <list>, <index> -> remove_at".to_string(),
+                ));
+            }
+            assign_to(format!("cv_remove_at(&{}, {})", target, a[0]))
+        }
+        // chap remove_item has no output
+        "removeitem" | "rmit" => {
+            let target = var_param(
+                ex,
+                0,
+                "remove_item needs a list or map variable as first param",
+            )?;
+            let a = args(1)?;
+            if a.len() != 1 {
+                return Err(err(
+                    ex.line_number,
+                    "correct form of remove_item function: <list | map>, <item | key> -> remove_item"
+                        .to_string(),
+                ));
+            }
+            format!("cv_remove_item(&{}, {});", target, a[0])
+        }
+
         "exit" | "quit" | "kill" | "end" => "return 0;".to_string(),
 
         _ => {
@@ -352,9 +607,22 @@ mod tests {
     #[test]
     fn assign_and_print() {
         let c_code = super::super::compile_to_c("10 -> $a\n$a").unwrap();
-        assert!(c_code.contains("v_a = cv_int(10LL);"));
+        assert!(c_code.contains("v_a = cv_copy(cv_int(10LL));"));
         assert!(c_code.contains("chap_print(1, v_a);"));
         assert!(c_code.ends_with("    return 0;\n}\n"));
+    }
+
+    #[test]
+    fn list_and_map_literals_compile() {
+        let c_code = super::super::compile_to_c("[1 2 3] -> $l\n{\"a\":1} -> $m").unwrap();
+        assert!(c_code.contains("cv_list_lit(3, cv_int(1LL), cv_int(2LL), cv_int(3LL))"));
+        assert!(c_code.contains("cv_map_lit(1, \"a\", cv_int(1LL))"));
+    }
+
+    #[test]
+    fn mutating_functions_need_variables() {
+        assert!(super::super::compile_to_c("5 -> insert").is_err());
+        assert!(super::super::compile_to_c("[1] -> $l\n$l -> pop -> $x").is_ok());
     }
 
     #[test]
@@ -374,7 +642,9 @@ mod tests {
     }
 
     #[test]
-    fn unsupported_value_types_are_error() {
-        assert!(super::super::compile_to_c("[1,2] -> $l").is_err());
+    fn skipped_functions_are_error() {
+        assert!(super::super::compile_to_c("\"url\" -> http_get").is_err());
+        assert!(super::super::compile_to_c("{\"a\":1} -> to_json").is_err());
+        assert!(super::super::compile_to_c("1 -> from_json -> $x").is_err());
     }
 }
