@@ -572,7 +572,7 @@ cargo add chap # this include eval function
 
 ## Builtin Functions
 
-[builtin function docs](https://github.com/ali77gh/Chap/tree/stable/src/runtime/builtin_function)
+[builtin function docs](https://github.com/ali77gh/Chap/tree/stable/src/builtin_function)
 
 ## Stars
 
