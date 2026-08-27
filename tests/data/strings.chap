@@ -1,0 +1,35 @@
+// strings and string functions
+"Hello", " ", "World" -> cat -> $greeting
+$greeting
+
+"ab", 3 -> repeat -> $repeated
+$repeated
+
+"hello", 0, 5 -> slice -> $sliced
+$sliced
+
+"hello world", 0, 5 -> sub_string
+"banana", "na" -> contains -> $contains
+$contains
+"banana", "xyz" -> has -> $not_contains
+$not_contains
+
+"ali", 1 -> charAt -> $first_char
+$first_char
+"ali", 3 -> char_at
+
+"aLi" -> toUpper
+"aLi" -> uppercase
+"ALI" -> toLower
+"ALI" -> lowercase
+
+"  spaced  " -> trim -> $trimmed
+$trimmed
+
+"hello" -> length -> $len1
+$len1
+"" -> len -> $len2
+$len2
+12345 -> to_string -> length
+
+"we have ", 3, " items" -> cat

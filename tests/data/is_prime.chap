@@ -1,0 +1,29 @@
+100 -> $limit 
+
+1 -> $i
+0 -> $c
+@loop
+
+    @if1, ($i, 2 -> lt) -> jump_if_not
+        @is -> jump
+    @if1
+
+    $i -> sqrt -> to int -> $end
+    $end -> increase
+
+    2 -> $inner_i
+    @inner_loop
+        @is_not, ($i, $inner_i -> mod), 0 -> jeq
+        $inner_i -> increase
+    @inner_loop, $inner_i, $end -> jneq
+
+    @is
+    $c -> increase
+    $i
+    @is_not
+    $i -> increase
+@loop, $i, $limit -> jneq
+
+""
+"We have ", $c," prime numbers from 1 to ", $limit -> cat
+

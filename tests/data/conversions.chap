@@ -1,0 +1,31 @@
+// type conversions and type_of
+10 -> to_string -> $str1
+$str1
+1.5 -> to_string -> $str2
+$str2
+true -> to_string -> $str3
+$str3
+"hi" -> tostr
+
+"42" -> to_int -> $int1
+$int1
+"39" -> to_int -> $int2
+$int2
+
+"2.5" -> to_float -> $float1
+$float1
+"3" -> to_float -> $float2
+$float2
+
+1 -> type_of -> $t1
+$t1
+1.5 -> type -> $t2
+$t2
+"text" -> type_of -> $t3
+$t3
+true -> type -> $t4
+$t4
+[1 2] -> type_of -> $t5
+$t5
+{"a":1} -> type -> $t6
+$t6

@@ -1,0 +1,35 @@
+// math extras: power, add_many, decrease, jump_if
+2, 10 -> pow -> $p1
+$p1
+3, 3 -> power -> $p2
+$p2
+0 -> $zero
+$zero, 5 -> pow -> $p3
+$p3
+
+1, 2, 3 -> add_many -> $sum1
+$sum1
+10, 20, 30, 40 -> add_all -> $sum2
+$sum2
+
+5 -> $counter
+$counter -> dec
+$counter
+$counter -> decrease
+$counter
+pass
+nop
+
+// jump_if (positive conditional jump)
+true -> $flag
+@t1, $flag -> jump_if
+"not printed"
+@t1
+$flag, true -> eq -> $jumped
+$jumped
+
+false -> $flag2
+@t2, $flag2 -> jump_if
+"printed because condition was false"
+@t2
+"end"

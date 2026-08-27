@@ -1,0 +1,65 @@
+// lists and maps
+[1 2 3] -> $list
+$list
+$list, 4 -> insert
+$list
+$list, 10 -> push
+$list
+
+$list, 2 -> get -> $second
+$second
+$list, 1 -> at -> $first
+$first
+
+$list -> pop -> $popped
+$popped
+$list
+$list -> last -> $last_item
+$last_item
+$list
+
+$list, 1 -> remove_at -> $removed
+$removed
+$list
+
+$list, 3 -> index_of -> $idx_of_3
+$idx_of_3
+$list, 999 -> index_of -> $idx_missing
+$idx_missing
+
+$list, 2 -> in -> $has2
+$has2
+$list, 99 -> includes -> $has99
+$has99
+$list, 1 -> rmit
+$list
+$list, 77 -> removeitem
+$list
+
+"abc", 1 -> length -> $len1
+$len1
+[1 2 3] -> length -> $len2
+$len2
+
+{"name":"Ali" "age":26} -> $map
+$map
+$map, "name" -> get -> $name
+$name
+$map, "age" -> in -> $has_age
+$has_age
+$map, "job" -> in -> $has_job
+$has_job
+{"city":"Tehran"} -> $extra
+$map, $extra -> insert
+$map
+$map, "city" -> rmit
+$map
+$map, "missing_key" -> remove_item
+$map
+
+// lists in lists and value copy semantics
+[1 2] -> $original
+$original -> $copy
+$copy, 3 -> insert
+$original
+$copy
